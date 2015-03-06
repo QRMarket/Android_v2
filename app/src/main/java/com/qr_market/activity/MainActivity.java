@@ -17,6 +17,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.checker.Checker;
 import com.qr_market.util.AutoOperationHandler;
@@ -85,7 +86,12 @@ public class MainActivity extends ActionBarActivity{
             parameters.put("cduMail", MarketUser.getInstance().getUserMail());
             parameters.put("cduPass", MarketUser.getInstance().getUserPass());
 
-            new HttpHandler().execute(parameters);
+            Map operationInfo = new HashMap();
+            operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_LOGIN);
+            operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Auth);
+
+            new HttpHandler(getApplicationContext()).execute(parameters , operationInfo);
+
 
         }else{
 

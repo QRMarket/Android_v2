@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
@@ -77,7 +78,11 @@ public class LoginActivity extends ActionBarActivity {
                 parameters.put("cduMail", cduName.getText().toString());
                 parameters.put("cduPass", cduPass.getText().toString());
 
-                new HttpHandler().execute(parameters);
+                Map operationInfo = new HashMap();
+                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_LOGIN);
+                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Auth);
+
+                new HttpHandler().execute(parameters , operationInfo);
 
             }
         });
