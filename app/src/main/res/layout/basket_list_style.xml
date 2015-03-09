@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dip">
+
+    <!-- ListRow Left side Thumbnail image -->
+<LinearLayout
+android:id="@+id/thumbnail"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignParentLeft="true"
+android:layout_marginRight="5dip"
+android:padding="3dip" >
+<ImageView
+    android:id="@+id/ProductImg"
+    android:layout_width="75dp"
+    android:layout_height="75dp"
+    android:layout_margin="10dp" />
+</LinearLayout>
+
+<!-- Product Title and Details -->
+<TextView
+android:id="@+id/ProductTitle"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="20dp"
+android:fontFamily="sans-serif-light"
+android:text="@string/Barcode_Title"
+android:textColor="@color/theme_color"
+android:textSize="@dimen/textsize_medium"
+android:gravity="center" />
+
+<TextView
+android:id="@+id/ProductDetail"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:layout_margin="20dp"
+android:layout_alignBottom="@+id/ProductTitle"
+android:fontFamily="sans-serif-light"
+android:text="@string/Barcode_Title"
+android:textColor="@color/theme_color"
+android:textSize="@dimen/textsize_medium"
+android:gravity="center" />
+
+<!-- Price Information-->
+<TextView
+android:id="@+id/PrPrice"
+android:layout_width="wrap_content"
+android:layout_height="wrap_content"
+android:layout_alignRight="@+id/ProductDetail"
+android:paddingTop="5dip"
+android:layout_centerHorizontal="true"
+android:text="20 TL"
+android:textColor="#343434"
+android:textSize="15dip" />
+
+</RelativeLayout>

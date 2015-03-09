@@ -8,4 +8,9 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_login">LoginActivity</string>
 
+    <string name="Register">register</string>
+    <string name="username">username</string>
+    <string name="Add_Basket">Sepete Ekle</string>
+    <string name="image_description">Image Description</string>
+
 </resources>

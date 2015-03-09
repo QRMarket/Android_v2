@@ -3,6 +3,8 @@ package com.qr_market.http;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,10 +32,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.qr_market.Guppy;
@@ -41,9 +48,13 @@ import com.qr_market.R;
 import com.qr_market.activity.LoginActivity;
 import com.qr_market.activity.MainActivity;
 import com.qr_market.activity.MarketActivity;
+import com.qr_market.async.ImageHandler;
+import com.qr_market.checker.Checker;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
+import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.CartFragment;
+import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketUser;
 
 
@@ -52,7 +63,7 @@ import com.qr_market.util.MarketUser;
  * @since 03.2015
  * @version v1.01
  */
-public class HttpHandler extends AsyncTask< Map , Integer, String> {
+public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
     public static final String HTTP_OP_LOGIN        = "HTTP_OP_LOGIN";
     public static final String HTTP_OP_MULTIPART    = "HTTP_OP_MULTIPART";
@@ -63,7 +74,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 
     private String servletName      = null;
     private Context context         = null;
-    private String OperationStatus         = null;      // Like Result Object
+    private String OperationStatus  = null;      // Like Result Object
 
 
 
@@ -102,14 +113,16 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
      */
 	@Override
 	protected String doInBackground(Map... params) {
-            try{
-                map_param = params[0];      // its need for db operations
-                map_opr = params[1];        // for nothing :)
 
-                return postData(params[0], params[1]);
+            try{
+                map_param = params[1];      // its need for db operations
+                map_opr = params[0];        // its need for post settings
+
+                return postData();
 
             }catch (ArrayIndexOutOfBoundsException e){
-                OperationStatus = "PARAM_ERROR";
+
+                OperationStatus = "MAP_PARAM_MISSING_ERROR";
                 this.cancel(true);
             }
 
@@ -119,28 +132,36 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
     @Override
     protected void onCancelled() {
 
-            Log.i("ONCANCELLED", OperationStatus);
-            if(OperationStatus.equalsIgnoreCase("PARAM_ERROR")){
-                Toast.makeText(context , "HTTPHANDLER Parameter error " , Toast.LENGTH_LONG);
-            }else {
-                Toast.makeText(context , "HTTPHANDLER Unknown error " , Toast.LENGTH_LONG);
-            }
+            Toast.makeText( context , OperationStatus , Toast.LENGTH_LONG).show();
 
     }
 	
 	@Override
     protected void onPostExecute(String resultStr) {
 
+
             if(resultStr!=null){
+
                 if(servletName!=null && servletName.equalsIgnoreCase("PRODUCT")){
-                    productGetInfo(resultStr);
+
+                        new HttpProcessor(resultStr , context).productGetInfo();
+
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDER")) {
 
+                        new HttpProcessor(resultStr , context).orderAddCart();
+
+                }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
+
+                        new HttpProcessor(resultStr , context).confirmCart();
+
                 }else{
-                    tryToGoMarketActivity(resultStr);
+                        String userMail = (String)map_param.get("cduMail");
+                        String userPass = (String)map_param.get("cduPass");
+                        new HttpProcessor(resultStr , context).userLogin(userMail , userPass);
                 }
             }else{
-                Toast.makeText(context , "HTTP REQUEST FAILURE" , Toast.LENGTH_LONG);
+
+                Toast.makeText(context , "NULL_RESPONSE" , Toast.LENGTH_LONG).show();
             }
 
     }
@@ -175,8 +196,8 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
          */
         public List getParameterPair(Map m){
 
-                List<NameValuePair> nameValuePairs = new ArrayList();
-
+            List<NameValuePair> nameValuePairs = new ArrayList();
+            try{
                 Iterator iter = m.keySet().iterator();
                 while(iter.hasNext()){
                     String key = (String) iter.next();
@@ -184,6 +205,9 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 
                     Log.i(key , (String) m.get(key));
                 }
+            }catch (NullPointerException e){
+                alert("MAP_PARAMETER_ERROR");
+            }
             return nameValuePairs;
         }
 
@@ -218,10 +242,13 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
                         httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
                         httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
                         httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
+                    }else {
+                        alert("UNMATCH_HEADER_TYPE");
                     }
 
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
+                    alert("UNEXPECTED_HEADER_SETTING_ERROR");
                 }
 
             return httppost;
@@ -290,40 +317,43 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
              */
 
                 /**
-                 * @param param
                  * @return
                  *
                  *  This function will used for requests && responses. Function only returns what server side
                  *  return.
                  */
-                public String postData(Map param , Map opr) {
+                public String postData() {
 
-                        // ***********************
-                        // *** INITIALIZATION ****
-                        // ***********************
                         String resultStr=null;
-                        HttpClient httpClient = new DefaultHttpClient();
-                        HttpPost httppost = new HttpPost( (String)opr.get(Guppy.http_Map_OP_URL) );
+                        if(is_map_opr_OK()){
 
-                        // ***********************
-                        // *** SET HEADER ********
-                        // ***********************
-                        httppost = setHttpHeader(httppost , (String)opr.get(Guppy.http_Map_OP_TYPE));
+                            // ***********************
+                            // *** INITIALIZATION ****
+                            // ***********************
+                            HttpClient httpClient = new DefaultHttpClient();
+                            HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
 
-                        // ***********************
-                        // *** POST OPERATION ****
-                        // ***********************
-                        resultStr = executeData(httpClient, httppost);
+                            // ***********************
+                            // *** SET HEADER ********
+                            // ***********************
+                            httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
 
+                            // ***********************
+                            // *** POST OPERATION ****
+                            // ***********************
+                            resultStr = executeData(httpClient, httppost);
 
-                        if(resultStr!=null){
-                            Log.i("RESULT" , resultStr);
                         }else{
-                            Log.i("RESULT" , "NULL");
+                            OperationStatus = "MAP_OPR_NOT_PROPER";
+                            this.cancel(true);
+                            return null;
                         }
 
                         return resultStr;
                 }
+
+
+
 
                 /**
                  * @param param
@@ -364,174 +394,41 @@ public class HttpHandler extends AsyncTask< Map , Integer, String> {
 
 
 
+    /**
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                                  CHECKER FUNCTIONs
+     ***********************************************************************************************
+     ***********************************************************************************************
+     */
+    public boolean is_map_opr_OK(){
 
+            boolean isOK=false;
+            try{
+                isOK = map_opr.get(Guppy.http_Map_OP_URL)!=null &&
+                        map_opr.get(Guppy.http_Map_OP_TYPE)!=null;
 
+            } catch (NullPointerException e){
 
-
-
-            /**
-             ***********************************************************************************************
-             *                                  RESULT OPERATIONs
-             ***********************************************************************************************
-             */
-
-
-            /**
-             * @param resultStr
-             *
-             *  This method is used to try to pass next Activity which is marketActivity
-             */
-            public void tryToGoMarketActivity(String resultStr){
-
-                boolean operationResultSuccess = false;
-
-                try {
-                    result = new JSONObject(resultStr);
-
-                    Iterator iterator = result.keys();
-                    while(iterator.hasNext()){
-                        String key = (String)iterator.next();
-                        Log.i("JSON KEY" , key);
-                        Log.i("JSON KEY" , result.getString(key));
-                    }
-
-
-                    String resCode = (String) result.get("resultCode");
-                    if(resCode.equalsIgnoreCase("GUPPY.001")){
-
-                            JSONObject resContent = result.getJSONObject("content");
-
-                            MarketUser.getInstance().setUserMail((String)map_param.get("cduMail"));
-                            MarketUser.getInstance().setUserPass((String)map_param.get("cduPass"));
-                            MarketUser.getInstance().setUserToken(resContent.getString("userToken"));
-                            MarketUser.getInstance().setUserSession(resContent.getString("userSession"));
-                            MarketUser.getInstance().setUserName(resContent.getString("userName"));
-
-                            // Get dbHelper
-                            DBHandler dbHelper = new DBHandler(context);
-                            // Check if there is exist user data then update it otherwise add new user to db
-                            SQLiteDatabase db = dbHelper.getReadableDatabase();
-                            // Set selection
-                            String[] selection = {
-                                    GuppyContract.GuppyUser._ID,
-                                    GuppyContract.GuppyUser.COLUMN_NAME_USER_NAME,
-                                    GuppyContract.GuppyUser.COLUMN_NAME_USER_TOKEN,
-                                    GuppyContract.GuppyUser.COLUMN_NAME_USER_SESSIONID,
-                                    GuppyContract.GuppyUser.COLUMN_NAME_USER_MAIL,
-                                    GuppyContract.GuppyUser.COLUMN_NAME_USER_PASSWORD
-                            };
-
-                            Cursor c = db.query( true , GuppyContract.GuppyUser.TABLE_NAME, selection, null, null, null, null,null,null );
-
-                            // Prepare for db operation
-                            db = dbHelper.getWritableDatabase();
-
-                            // Create a new map of values, where column names are the keys
-                            // ...USER_MAIL && ...USER_PASS are taken from parameter which is used for http request
-                            ContentValues values = new ContentValues();
-                            values.put(GuppyContract.GuppyUser.COLUMN_NAME_USER_TOKEN , resContent.getString("userToken"));
-                            values.put(GuppyContract.GuppyUser.COLUMN_NAME_USER_SESSIONID , resContent.getString("userSession"));
-                            values.put(GuppyContract.GuppyUser.COLUMN_NAME_USER_NAME , resContent.getString("userName"));
-                            values.put(GuppyContract.GuppyUser.COLUMN_NAME_USER_MAIL , (String)map_param.get("cduMail"));
-                            values.put(GuppyContract.GuppyUser.COLUMN_NAME_USER_PASSWORD , (String)map_param.get("cduPass"));
-
-                            if (c.moveToFirst()){
-                                // if user exist then update it
-                                String whereClause = GuppyContract.GuppyUser._ID + "=" + 1;
-                                long userId = db.update(GuppyContract.GuppyUser.TABLE_NAME , values , whereClause , null);
-                                Log.i("USER-ID update" , "" + userId);
-
-                            }else {
-                                // add new user to db
-                                // Edit db
-                                long userId = db.insert( GuppyContract.GuppyUser.TABLE_NAME,  null , values);
-                                Log.i("USER-ID insert" , "" + userId);
-                            }
-
-                            operationResultSuccess = true;
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                // After operations finish then start intent
-                if(operationResultSuccess){
-                    Intent intent = new Intent( context , MarketActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intent);
-                }else{
-                    Intent intent = new Intent( context , LoginActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    context.startActivity(intent);
-                }
             }
 
+        return isOK;
+    }
 
 
 
-            /**
-             * @param resultStr
-             *
-             *  This method is used to try to pass next Activity which is marketActivity
-             */
-            public void productGetInfo(String resultStr){
-
-                try {
-                    result = new JSONObject(resultStr);
-                    JSONObject resultContent = null;
-
-                    Iterator iterator = result.keys();
-                    while(iterator.hasNext()){
-                        String key = (String)iterator.next();
-                        Log.i("JSON KEY" , key);
-                        Log.i("JSON KEY" , result.getString(key));
-
-                        if(key.equalsIgnoreCase("content")){
-                            resultContent = new JSONObject(result.getString(key));
-                        }
-                    }
-
-
-                    // This area get result from JSON and put it in EditText value ...
-                    View cartFragmentView = CartFragment.getViewCartFragment();
-                    EditText productText = (EditText)cartFragmentView.findViewById(R.id.product_id);
-                    productText.setText(resultContent.getString("productID"));
-
-                    // This area used for toast message ...
-                    String productInfo = "Product:" + resultContent.getString("productName") + " - Price:" + resultContent.getString("price");
-                    Toast.makeText( context , productInfo, Toast.LENGTH_LONG).show();
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-
-            public void addToOrderList(String resultStr){
-                try {
-                    result = new JSONObject(resultStr);
-                    JSONObject resultContent = null;
-
-                    Iterator iterator = result.keys();
-                    while(iterator.hasNext()){
-                        String key = (String)iterator.next();
-                        Log.i("JSON KEY" , key);
-                        Log.i("JSON KEY" , result.getString(key));
-
-                        if(key.equalsIgnoreCase("content")){
-                            resultContent = new JSONObject(result.getString(key));
-                        }
-                    }
-
-
-
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
+    /**
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                                  ALERT FUNCTIONs
+     ***********************************************************************************************
+     ***********************************************************************************************
+     */
+    public void alert(String errText){
+        OperationStatus = "MAP_PARAM_MISSING_ERROR";
+        OperationStatus = errText;
+        this.cancel(true);
+    }
 
 
 }

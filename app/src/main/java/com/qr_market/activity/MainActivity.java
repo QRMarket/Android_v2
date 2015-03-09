@@ -90,7 +90,7 @@ public class MainActivity extends ActionBarActivity{
             operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_LOGIN);
             operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Auth);
 
-            new HttpHandler(getApplicationContext()).execute(parameters , operationInfo);
+            new HttpHandler(getApplicationContext()).execute( operationInfo , parameters );
 
 
         }else{

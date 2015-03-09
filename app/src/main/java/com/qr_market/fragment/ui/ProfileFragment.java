@@ -3,6 +3,8 @@ package com.qr_market.fragment.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -12,11 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.activity.MarketActivity;
+import com.qr_market.async.ImageHandler;
 import com.qr_market.http.HttpHandler;
 
 import org.apache.http.HttpHost;
@@ -33,6 +37,8 @@ import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -112,6 +118,20 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        final ImageView img = (ImageView)view.findViewById(R.id.imageView);
+        Button bitmap = (Button)view.findViewById(R.id.bitmap);
+        bitmap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(img==null){
+                    System.out.println("Element is NULL");
+                }else{
+                    //new ImageHandler(img).execute(Guppy.url_Servlet_IMAGE + "/pim061001.jpg");
+                }
+
+            }
+        });
 
         return view;
     }
@@ -173,7 +193,7 @@ public class ProfileFragment extends Fragment {
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_MULTIPART);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Sample);
 
-                new HttpHandler().execute(parameters , operationInfo);
+                new HttpHandler().execute( operationInfo , parameters);
 
             }
 

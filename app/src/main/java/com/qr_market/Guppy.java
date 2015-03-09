@@ -12,7 +12,7 @@ public class Guppy {
     public static String url_Servlet_Auth       = url + "/Auth";
     public static String url_Servlet_Order      = url + "/OrderServlet";
 
-
+    public static String url_Servlet_IMAGE      = url + "/images";
     public static String url_Servlet_Sample     = url_serverPort + "/Sample_WebApplication_3_Upload/SampleServlet";
 
     // OPERATION KEYS

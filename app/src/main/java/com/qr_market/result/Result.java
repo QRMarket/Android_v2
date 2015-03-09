@@ -12,8 +12,8 @@ import java.util.ResourceBundle;
 
 
 /**
- *
  * @author Kemal Sami KARACA
+ * @since 06.03.2015
  */
 public class Result <T> implements Serializable{
     

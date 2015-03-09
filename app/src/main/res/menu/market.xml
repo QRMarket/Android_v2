@@ -15,4 +15,10 @@
         android:title="Delete db"
         app:showAsAction="never"/>
 
+    <item
+        android:id="@+id/confirmCart"
+        android:orderInCategory="100"
+        android:title="Confirm Cart"
+        app:showAsAction="never"/>
+
 </menu>

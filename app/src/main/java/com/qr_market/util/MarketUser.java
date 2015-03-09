@@ -1,5 +1,8 @@
 package com.qr_market.util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Kemal Sami KARACA
  * @since 04.03.2015
@@ -15,19 +18,21 @@ public class MarketUser {
     private static String userToken;
     private static String userSession;
     private static String userPass;
+    private static List<MarketProduct> productList;
 
     static{
         //initializeStaticObjects();
     }
 
 
-    private static MarketUser instance = null;
+    private static MarketUser instance = getInstance();
     protected MarketUser() {
         isAuth = false;
         userName = null;
         userMail = null;
         userToken = null;
         userSession = null;
+        productList = new ArrayList<>();
     }
 
     public static MarketUser getInstance() {
@@ -35,6 +40,15 @@ public class MarketUser {
             instance = new MarketUser();
         }
         return instance;
+    }
+
+
+    public static List<MarketProduct> getProductList() {
+        return productList;
+    }
+
+    public static void setProductList(List<MarketProduct> productList) {
+        MarketUser.productList = productList;
     }
 
     public boolean isAuth() {
@@ -86,11 +100,4 @@ public class MarketUser {
     }
 
 
-    public static void initializeStaticObjects(){
-        isAuth = false;
-        userName = null;
-        userMail = null;
-        userToken = null;
-        userSession = null;
-    }
 }

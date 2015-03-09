@@ -9,19 +9,28 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.fragment.adapter.GuppyFragmentPageAdapter;
+import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
 import com.qr_market.db.DBHandler;
+import com.qr_market.http.HttpHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author Kemal Sami KARACA
  * @since 02.2015
  * @version v1.01
+ *
+ * @last 09.03.2015
  */
 public class MarketActivity extends ActionBarActivity implements CartFragment.OnFragmentInteractionListener,
-                                                                    ProfileFragment.OnFragmentInteractionListener{
+                                                                    ProfileFragment.OnFragmentInteractionListener,
+                                                                    BarcodeFragment.OnFragmentInteractionListener{
 
     private static Context context = null;
 
@@ -70,6 +79,10 @@ public class MarketActivity extends ActionBarActivity implements CartFragment.On
             case R.id.db_delete:
                 getApplicationContext().deleteDatabase(DBHandler.DATABASE_NAME);
                 break;
+            case R.id.confirmCart:
+
+                confirmCart();
+                break;
             default:
                 break;
         }
@@ -80,6 +93,20 @@ public class MarketActivity extends ActionBarActivity implements CartFragment.On
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+
+    public void confirmCart(){
+
+        Map parameters = new HashMap();
+        parameters.put("cdosDo", "confirmOrderList");
+
+        Map operationInfo = new HashMap();
+        operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+        operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
+
+        new HttpHandler( getApplicationContext() , "ORDERCONFIRM").execute( operationInfo , parameters);
 
     }
 

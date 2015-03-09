@@ -2,59 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" tools:context="com.qr_market.fragment.ui.CartFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView android:layout_width="match_parent" android:layout_height="match_parent"
-        android:text="Cart Fragment"
-        android:layout_gravity="center" />
 
-    <RelativeLayout
+    <ListView
+        android:id="@+id/BasketList"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_gravity="center">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Get Product Info"
-            android:id="@+id/barcode_qr"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="137dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Barcode Scanner "
-            android:id="@+id/barcode_scan"
-            android:layout_marginTop="29dp"
-            android:layout_below="@+id/barcode_qr"
-            android:layout_alignLeft="@+id/barcode_qr"
-            android:layout_alignStart="@+id/barcode_qr" />
-
-        <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/product_id"
-            android:layout_below="@+id/barcode_scan"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginTop="63dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:text="cpr_005" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="add to cart"
-            android:id="@+id/addCart"
-            android:layout_below="@+id/product_id"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true" />
-
-    </RelativeLayout>
+        android:background="#ffffffff">
+    </ListView>
 
 
 </FrameLayout>

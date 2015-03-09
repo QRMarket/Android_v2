@@ -1,25 +1,19 @@
 package com.qr_market.activity;
 
-import android.content.ContentValues;
+
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.provider.AlarmClock;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.db.DBHandler;
-import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.http.HttpHandler;
 
 import java.util.HashMap;
@@ -30,7 +24,7 @@ import java.util.Map;
  * @since 04.03.2015
  * @version v1.01
  */
-public class LoginActivity extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
 
     private static View view;
@@ -57,19 +51,16 @@ public class LoginActivity extends ActionBarActivity {
 
         final DBHandler dbHelper = new DBHandler(getApplicationContext());
 
-        Button twitter = (Button) findViewById(R.id.twitter);
-        Button facebook = (Button) findViewById(R.id.fb);
-        TextView registration = (TextView) findViewById(R.id.registration);
-        TextView forget = (TextView) findViewById(R.id.forget);
-
         setView(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
-        Button button = (Button) findViewById(R.id.Login);
-        final EditText cduName = (EditText) findViewById(R.id.LoginUserName);
-        final EditText cduPass = (EditText) findViewById(R.id.LoginPassword);
 
+        Button login = (Button) findViewById(R.id.guppyLogin);
+        Button register = (Button) findViewById(R.id.guppyRegister);
+        final EditText cduName = (EditText) findViewById(R.id.TextUsrname);
+        final EditText cduPass = (EditText) findViewById(R.id.TextPsw);
 
-        button.setOnClickListener(new View.OnClickListener() {
+        login.setOnClickListener(this);
+        login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -82,8 +73,15 @@ public class LoginActivity extends ActionBarActivity {
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_LOGIN);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Auth);
 
-                new HttpHandler().execute(parameters , operationInfo);
+                new HttpHandler(getApplicationContext()).execute( operationInfo , parameters );
+            }
+        });
 
+        register.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getApplicationContext() , "Register button does not work for now" , Toast.LENGTH_LONG);
             }
         });
 
@@ -92,6 +90,12 @@ public class LoginActivity extends ActionBarActivity {
         // TEST ACTIONS
         // -----------------------------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------
+        /*
+        Button twitter = (Button) findViewById(R.id.twitter);
+        Button facebook = (Button) findViewById(R.id.fb);
+        TextView registration = (TextView) findViewById(R.id.registration);
+        TextView forget = (TextView) findViewById(R.id.forget);
+
         twitter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -153,7 +157,7 @@ public class LoginActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
 
-                        /*
+
                         String name = Environment.getExternalStorageDirectory().getName();
                         Log.i("Environmet" , name);
 
@@ -170,7 +174,7 @@ public class LoginActivity extends ActionBarActivity {
                             // Do something else on failure
                             Log.i("Operation" , "FAIL");
                         }
-                        */
+
 
                 // Check is there db for user
                 DBHandler dbHelper = new DBHandler(MainActivity.getMainContext());
@@ -181,6 +185,8 @@ public class LoginActivity extends ActionBarActivity {
 
             }
         });
+
+        */
         // -----------------------------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------
         // TEST ACTIONS
@@ -210,6 +216,10 @@ public class LoginActivity extends ActionBarActivity {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
 
 
     /**
@@ -245,4 +255,6 @@ public class LoginActivity extends ActionBarActivity {
             startActivity(intent);
         }
     }
+
+
 }

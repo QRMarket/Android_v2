@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    tools:context="com.special.MenuActivity$HomeFragment">
+
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center"
+            android:layout_marginTop="50dp">
+
+            <TextView
+                android:id="@+id/barcode_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="20dp"
+                android:fontFamily="sans-serif-light"
+                android:text="@string/Barcode_Title"
+                android:textColor="@color/theme_color"
+                android:textSize="@dimen/textsize_xlarge"
+                android:gravity="center" />
+
+
+        </LinearLayout>
+
+    	<LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/BtnReadBarcode"
+                android:layout_margin="20dp"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="@string/btn_read_barcode"
+                style="@style/UIButtonInverse"
+                android:textSize="22dp"
+                android:textStyle="bold" />
+        
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/barcode_productinfo_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <TableLayout
+                xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:shrinkColumns="*"
+                android:stretchColumns="*"
+                android:background="#ffffff"
+                android:id="@+id/barcode_product">
+                <!-- Row 1 with single column -->
+                <TableRow
+                    android:layout_height="wrap_content"
+                    android:layout_width="fill_parent"
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:layout_width="fill_parent" android:layout_height="wrap_content"
+                        android:textSize="22dp" android:text="Ürün Detay"  android:layout_span="3"
+                        android:padding="10dip" android:background="@color/theme_color"
+                        android:textColor="@color/white_transparent"/>
+                </TableRow>
+
+                <!-- Row 2 with 3 columns -->
+                <TableRow
+                    android:id="@+id/tableRow1"
+                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal">
+                    <ImageView
+                        android:id="@+id/product_image"
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:src="@drawable/ph_1"
+                        android:padding="10dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_height="fill_parent"
+                    android:layout_width="match_parent"
+                    android:gravity="center_horizontal">
+                    <TextView
+                        android:id="@+id/product_name" android:text="Coco Cola 1L"
+                        android:layout_weight="1"
+                        android:textColor="#000000"
+                        android:padding="20dip" android:gravity="center"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:textSize="25dp" />
+                    <TextView
+                        android:id="@+id/product_price" android:text="2.5 TL"
+                        android:layout_weight="1"
+                        android:textColor="#000000"
+                        android:padding="20dip" android:gravity="center"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:textSize="25dp" />
+                </TableRow>
+
+                <!-- Row 3 with 2 columns -->
+                <TableRow
+                    android:layout_height="fill_parent"
+                    android:layout_width="fill_parent"
+                    android:gravity="center_horizontal">
+                    <Button
+                        android:id="@+id/btnAddFav"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="3dp"
+                        android:text="@string/favBtn"
+                        style="@style/UIButton"
+                        android:background="#ffffa425"
+                        android:textSize="20dp" />
+                    <Button
+                        android:id="@+id/btnAddBasket"
+                        android:layout_width="250dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="3dp"
+                        android:text="@string/Add_Basket"
+                        style="@style/UIButton"
+                        android:background="@color/green"
+                        android:textSize="20dp" />
+
+
+
+                </TableRow>
+
+            </TableLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>
+
