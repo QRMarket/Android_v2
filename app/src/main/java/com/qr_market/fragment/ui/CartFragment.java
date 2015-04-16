@@ -102,50 +102,6 @@ public class CartFragment extends Fragment {
         ListView listViewBasket   = (ListView) view.findViewById(R.id.BasketList);
         listViewBasket.setAdapter(new GuppyFragmentListAdapter( getActivity(), MarketUser.getInstance().getProductList()));
 
-/*
-        // Inflate the layout for this fragment
-        Button qrReader = (Button) view.findViewById(R.id.barcode_qr);
-        Button barcode = (Button) view.findViewById(R.id.barcode_scan);
-        Button addCart = (Button) view.findViewById(R.id.addCart);
-
-        qrReader.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                scanQR(v);
-
-            }
-        });
-
-        barcode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                scanBar(v);
-
-            }
-        });
-
-        addCart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                EditText productInfo = (EditText)view.findViewById(R.id.product_id);
-
-                Map parameters = new HashMap();
-                parameters.put("cdosDo", "addToOrderList");
-                parameters.put("cdpUID", productInfo.getText().toString());
-                parameters.put("cdpAmount", "3");
-
-                Map operationInfo = new HashMap();
-                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-
-                new HttpHandler(getActivity().getApplicationContext(),"ORDER").execute(parameters , operationInfo);
-
-            }
-        });
-*/
         return view;
     }
 

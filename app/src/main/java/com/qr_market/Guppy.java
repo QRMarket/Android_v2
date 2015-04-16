@@ -1,7 +1,9 @@
 package com.qr_market;
 
 /**
- * Created by kemal on 05/03/15.
+ * @author Kemal Sami KARACA
+ * @since 05.03.2015
+ * @version v1.01
  */
 public class Guppy {
 
@@ -11,6 +13,7 @@ public class Guppy {
     public static String url                    = url_serverPort + "/QR_Market_Web";
     public static String url_Servlet_Auth       = url + "/Auth";
     public static String url_Servlet_Order      = url + "/OrderServlet";
+    public static String url_Servlet_Product    = url + "/ProductServlet";
 
     public static String url_Servlet_IMAGE      = url + "/images";
     public static String url_Servlet_Sample     = url_serverPort + "/Sample_WebApplication_3_Upload/SampleServlet";

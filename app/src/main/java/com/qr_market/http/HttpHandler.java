@@ -18,6 +18,7 @@ import org.apache.http.StatusLine;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -52,6 +53,7 @@ import com.qr_market.async.ImageHandler;
 import com.qr_market.checker.Checker;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
+import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.util.MarketProduct;
@@ -82,7 +84,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     private View view;
     private JSONObject result;
     private MainActivity mainActivity;
-
+    private BasketFragmentListAdapter myBasketAdapter;
 
     @Deprecated
     public HttpHandler(){
@@ -97,6 +99,11 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     public HttpHandler(Context context , String servletName ){
         this.context = context;
         this.servletName = servletName;
+    }
+    public HttpHandler(Context context , String servletName , BasketFragmentListAdapter myBasketAdapter ){
+        this.context = context;
+        this.servletName = servletName;
+        this.myBasketAdapter = myBasketAdapter;
     }
     public HttpHandler(Context context , String servletName , String url ){
         this.context = context;
@@ -119,6 +126,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                 map_opr = params[0];        // its need for post settings
 
                 return postData();
+                //return postData_4_4_2();
 
             }catch (ArrayIndexOutOfBoundsException e){
 
@@ -129,10 +137,12 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
         return null;
 	}
 
+
     @Override
     protected void onCancelled() {
 
             Toast.makeText( context , OperationStatus , Toast.LENGTH_LONG).show();
+            autoLoginFailure();
 
     }
 	
@@ -150,6 +160,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
                         new HttpProcessor(resultStr , context).orderAddCart();
 
+                }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
+
+                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter);
+
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 
                         new HttpProcessor(resultStr , context).confirmCart();
@@ -157,15 +171,16 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                 }else{
                         String userMail = (String)map_param.get("cduMail");
                         String userPass = (String)map_param.get("cduPass");
+                        Log.i("HTTP REQUEST RESULT >>> " ,resultStr );
                         new HttpProcessor(resultStr , context).userLogin(userMail , userPass);
                 }
             }else{
 
                 Toast.makeText(context , "NULL_RESPONSE" , Toast.LENGTH_LONG).show();
+                autoLoginFailure();
             }
 
     }
-
 
 
 
@@ -177,6 +192,16 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
      ***********************************************************************************************
      */
 
+        public void autoLoginFailure(){
+
+            if( ((String)map_opr.get(Guppy.http_Map_OP_TYPE)).equalsIgnoreCase(HTTP_OP_LOGIN)){
+                Log.i("<<< HttpHandler - AUTOLOGIN >>>", "Autologin failure");
+                Intent intent = new Intent( context , LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                context.startActivity(intent);
+            }
+
+        }
 
 
 
@@ -219,6 +244,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                         httppost.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
                         httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
                         httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
+                        httppost.setHeader("user-agent", "guppy-mobile");
                         httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
 
                     }else if(opType.equalsIgnoreCase(HTTP_OP_MULTIPART)){
@@ -229,6 +255,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                         httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
                         httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
                         httppost.addHeader("content-type" , "multipart/form-data");
+                        httppost.setHeader("user-agent", "guppy-mobile");
                         // MULTI-PART SETTINGs
 
                         // http://stackoverflow.com/questions/1378920/how-can-i-make-a-multipart-form-data-post-request-using-java
@@ -241,6 +268,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                         httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
                         httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
                         httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
+                        httppost.setHeader("user-agent", "guppy-mobile");
                         httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
                     }else {
                         alert("UNMATCH_HEADER_TYPE");
@@ -257,10 +285,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
         private String executeData(HttpClient httpclient , HttpPost httppost){
                 String resultStr=null;
                 try {
+
                         // Execute HTTP Post Request
                         HttpResponse response = httpclient.execute(httppost);
                         StatusLine statusLine = response.getStatusLine();
-
                         if(statusLine.getStatusCode() == HttpStatus.SC_OK){
                             ByteArrayOutputStream out = new ByteArrayOutputStream();
                             response.getEntity().writeTo(out);
@@ -286,7 +314,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
             String resultStr=null;
             try {
                 // Execute HTTP Post Request
-                HttpResponse response = httpclient.execute(httppost);
+                CloseableHttpResponse response = httpclient.execute(httppost);
                 StatusLine statusLine = response.getStatusLine();
 
                 if(statusLine.getStatusCode() == HttpStatus.SC_OK){
@@ -356,26 +384,24 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
 
                 /**
-                 * @param param
                  * @return
                  *
                  *  This function will used for requests && responses. Function only returns what server side
                  *  return. (UPDATED Version )
                  */
-                public String postData_4_4_2(Map param , Map opr) {
+                public String postData_4_4_2() {
 
                         // ***********************
                         // *** INITIALIZATION ****
                         // ***********************
                         String resultStr=null;
                         CloseableHttpClient httpclient = HttpClients.createDefault();
-
-                        HttpPost httppost = new HttpPost( (String)opr.get(Guppy.http_Map_OP_URL) );
+                        HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
 
                         // ***********************
                         // *** SET HEADER ********
                         // ***********************
-                        httppost = setHttpHeader(httppost , (String)opr.get(Guppy.http_Map_OP_TYPE));
+                        httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
 
                         // ***********************
                         // *** POST OPERATION ****

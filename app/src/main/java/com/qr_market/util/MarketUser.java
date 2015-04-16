@@ -19,6 +19,7 @@ public class MarketUser {
     private static String userSession;
     private static String userPass;
     private static List<MarketProduct> productList;
+    private static List<MarketUserAddress> addressList;
 
     static{
         //initializeStaticObjects();
@@ -33,6 +34,7 @@ public class MarketUser {
         userToken = null;
         userSession = null;
         productList = new ArrayList<>();
+        addressList = new ArrayList<>();
     }
 
     public static MarketUser getInstance() {
@@ -42,6 +44,11 @@ public class MarketUser {
         return instance;
     }
 
+    public static MarketUser getInstance(boolean newInstance) {
+        return newInstance ? new MarketUser() : instance ;
+    }
+
+
 
     public static List<MarketProduct> getProductList() {
         return productList;
@@ -49,6 +56,14 @@ public class MarketUser {
 
     public static void setProductList(List<MarketProduct> productList) {
         MarketUser.productList = productList;
+    }
+
+    public static List<MarketUserAddress> getAddressList() {
+        return addressList;
+    }
+
+    public static void setAddressList(List<MarketUserAddress> addressList) {
+        MarketUser.addressList = addressList;
     }
 
     public boolean isAuth() {

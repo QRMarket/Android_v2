@@ -7,8 +7,17 @@
     <color name="bar_separator_color">#ebebeb</color>
     <color name="white_transparent">#D9FFFFFF</color><!--  Used as background in some activities -->
     <color name="gray_transparent">#A61F1F21</color>
-    <color name="gray">#1F1F21</color>
     <color name="green">#FF99CC00</color>
     <color name="red">#FF0000</color>
     <color name="transparent">@android:color/transparent</color>
+
+
+    <color name="LvHeaderColor">#ffc107</color>
+    <color name="BgColor">#ee7970</color>
+    <color name="lvHeaderTextColor">#168686</color>
+    <color name="primaryTextColor">#333333</color>
+    <color name="secondaryTextColor">#777777</color>
+    <color name="goblinGreen">#168686</color>
+    <color name="lvHeaderDividerColor">#009688</color>
+    <color name="lvDividerColor">#E0E0E0</color>
 </resources>

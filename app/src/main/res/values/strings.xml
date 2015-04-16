@@ -13,4 +13,22 @@
     <string name="Add_Basket">Sepete Ekle</string>
     <string name="image_description">Image Description</string>
 
+    <string name="BtnGO">Devam</string>
+    <string name="btnCheck">Kontrol Et</string>
+    <string name="prompt_arrival_time_spinner">Ödeme şeklini seçin</string>
+    <string name="Payment_Title">Sipariş Onay</string>
+    <string name="Payment_methode">Ödeme şekli</string>
+    <string name="arrival_time">Gönderme zamanı</string>
+    <string name="text_input_note">Notunuz...</string>
+    <string name="spinner_payment_prompt">Ödeme şekli seç</string>
+    <string name="btnBack">Geri</string>
+
+    <string name="drawer_open">Open drawer navigation</string>
+    <string name="drawer_close">Navigation drawer Close</string>
+
+    <string name="title_user">Kemal KARACA</string>
+    <string name="subtitle_user">kskaraca@gmail.com</string>
+
+    <string name="clear"></string>
+
 </resources>

@@ -1,59 +1,115 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="5dip">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    tools:context=".MainActivity"
+    style="@style/listViewItem"
+    android:background="@android:drawable/list_selector_background">
 
-    <!-- ListRow Left side Thumbnail image -->
-<LinearLayout
-android:id="@+id/thumbnail"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_alignParentLeft="true"
-android:layout_marginRight="5dip"
-android:padding="3dip" >
-<ImageView
-    android:id="@+id/ProductImg"
-    android:layout_width="75dp"
-    android:layout_height="75dp"
-    android:layout_margin="10dp" />
-</LinearLayout>
+    <View
+        android:id="@+id/item_separator"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/lvDividerHeight"
+        android:background="@color/lvDividerColor"/>
 
-<!-- Product Title and Details -->
-<TextView
-android:id="@+id/ProductTitle"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_margin="20dp"
-android:fontFamily="sans-serif-light"
-android:text="@string/Barcode_Title"
-android:textColor="@color/theme_color"
-android:textSize="@dimen/textsize_medium"
-android:gravity="center" />
+    <ImageButton
+        android:background="@android:drawable/list_selector_background"
+        android:src="@drawable/ic_plus"
+        android:id="@+id/button"
+        android:layout_height="50dp"
+        android:focusable="false"
+        android:layout_width="50dp"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
 
-<TextView
-android:id="@+id/ProductDetail"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:layout_margin="20dp"
-android:layout_alignBottom="@+id/ProductTitle"
-android:fontFamily="sans-serif-light"
-android:text="@string/Barcode_Title"
-android:textColor="@color/theme_color"
-android:textSize="@dimen/textsize_medium"
-android:gravity="center" />
+        />
 
-<!-- Price Information-->
-<TextView
-android:id="@+id/PrPrice"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:layout_alignRight="@+id/ProductDetail"
-android:paddingTop="5dip"
-android:layout_centerHorizontal="true"
-android:text="20 TL"
-android:textColor="#343434"
-android:textSize="15dip" />
+    <ImageButton
+        android:background="@android:drawable/list_selector_background"
+        android:src="@drawable/ic_minus"
+        android:id="@+id/btnReduce"
+        android:layout_width="50dp"
+        android:layout_alignParentRight="true"
+        android:layout_height="50dp"
+        android:layout_below="@+id/button"
+        android:clickable="true"
+
+        />
+    <EditText
+        android:id="@+id/TxtProductAmount"
+        android:layout_width="40dp"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@+id/button"
+
+        android:layout_centerVertical="true"
+        android:background="@android:drawable/edit_text"
+        android:singleLine="true"/>
+
+    <View
+        android:id="@+id/vertical_divider"
+        style="@style/listViewVerticalDivider"
+        android:layout_height="fill_parent"
+        android:layout_toLeftOf="@id/button"
+        />
+
+    <ImageView
+        android:id="@+id/ProductImg"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_margin="10dp"
+        android:layout_gravity="left"
+        android:layout_centerInParent="true"
+        android:layout_alignParentLeft="true"/>
+    <TextView
+        android:textIsSelectable="false"
+        android:id="@+id/ProductTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        style="@style/listViewPrimaryDetail"
+        android:singleLine="true"
+        android:layout_gravity="left"
+        android:layout_toRightOf="@+id/ProductImg"
+        />
+
+    <TextView
+        android:textIsSelectable="false"
+        android:id="@+id/ProductDetail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ProductTitle"
+        style="@style/listViewSecondaryDetail"
+        android:singleLine="true"
+        android:layout_gravity="left"
+        android:layout_toRightOf="@+id/ProductImg"
+        />
+
+    <!-- Price Information-->
+    <TextView
+        android:id="@+id/PrPrice"
+        android:textIsSelectable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ProductDetail"
+        style="@style/listViewPrimaryDetail"
+        android:singleLine="true"
+        android:textSize="18dp"
+        android:layout_toRightOf="@+id/ProductImg"
+        android:textColor="@color/orange_dark"
+        />
+    <TextView
+        android:id="@+id/PrPrice2"
+        android:textIsSelectable="false"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ProductDetail"
+        style="@style/listViewPrimaryDetail"
+        android:singleLine="true"
+        android:textSize="18dp"
+        android:layout_toRightOf="@+id/ProductImg"
+        android:textColor="@color/orange_dark"
+        />
+
 
 </RelativeLayout>

@@ -1,12 +1,19 @@
 package com.qr_market.fragment.adapter;
 
+import android.graphics.Color;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.qr_market.fragment.ui.BarcodeFragment;
+import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
+import com.qr_market.fragment.util.FragmentPagerList;
+import com.qr_market.fragment.util.FragmentUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Kemal Sami KARACA
@@ -15,10 +22,12 @@ import com.qr_market.fragment.ui.ProfileFragment;
  */
 public class GuppyFragmentPageAdapter extends FragmentPagerAdapter {
 
-
-    public GuppyFragmentPageAdapter(FragmentManager fm) {
+    private List<FragmentPagerList> fragmentTabs;
+    public GuppyFragmentPageAdapter(FragmentManager fm , List<FragmentPagerList> fragmentTabs) {
         super(fm);
+        this.fragmentTabs = fragmentTabs;
     }
+
 
     /**
      ***********************************************************************************************
@@ -29,27 +38,16 @@ public class GuppyFragmentPageAdapter extends FragmentPagerAdapter {
      */
     @Override
     public Fragment getItem(int position) {
-
-        Fragment fragment=null;
-        switch (position){
-            case 0:
-                fragment = BarcodeFragment.newInstance("","");
-                break;
-            case 1:
-                fragment = CartFragment.newInstance("","");
-                break;
-            case 2:
-                fragment = ProfileFragment.newInstance("","");
-                break;
-            default:
-                break;
-        }
-
-        return fragment;
+        return fragmentTabs.get(position).getFragment();
     }
 
     @Override
     public int getCount() {
-        return 3;
+        return fragmentTabs.size();
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return fragmentTabs.get(position).getTitle();
     }
 }

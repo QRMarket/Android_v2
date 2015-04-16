@@ -58,7 +58,7 @@
             android:id="@+id/barcode_productinfo_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="30dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:orientation="horizontal">
@@ -77,10 +77,16 @@
                     android:layout_width="fill_parent"
                     android:gravity="center_horizontal">
                     <TextView
-                        android:layout_width="fill_parent" android:layout_height="wrap_content"
-                        android:textSize="22dp" android:text="Ürün Detay"  android:layout_span="3"
-                        android:padding="10dip" android:background="@color/theme_color"
-                        android:textColor="@color/white_transparent"/>
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="22dp"
+                        android:text="Ürün Detay"
+                        android:layout_span="3"
+                        android:padding="10dip"
+                        android:background="@color/theme_color"
+                        android:textColor="@color/white_transparent">
+
+                    </TextView>
                 </TableRow>
 
                 <!-- Row 2 with 3 columns -->
@@ -125,27 +131,28 @@
                 <TableRow
                     android:layout_height="fill_parent"
                     android:layout_width="fill_parent"
+                    android:layout_marginLeft="5dp"
                     android:gravity="center_horizontal">
                     <Button
                         android:id="@+id/btnAddFav"
-                        android:layout_width="300dp"
+                        android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:layout_margin="3dp"
+                        android:layout_margin="5dp"
                         android:text="@string/favBtn"
                         style="@style/UIButton"
-                        android:background="#ffffa425"
-                        android:textSize="20dp" />
+                        android:textSize="15dp"
+                        android:focusable="true"
+                        android:background="@drawable/guppybutton"
+                        />
                     <Button
                         android:id="@+id/btnAddBasket"
-                        android:layout_width="250dp"
+                        android:layout_width="150dp"
                         android:layout_height="40dp"
-                        android:layout_margin="3dp"
+                        android:layout_margin="5dp"
                         android:text="@string/Add_Basket"
                         style="@style/UIButton"
-                        android:background="@color/green"
-                        android:textSize="20dp" />
-
-
+                        android:background="@drawable/guppybutton"
+                        android:textSize="15dp" />
 
                 </TableRow>
 

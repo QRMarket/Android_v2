@@ -13,24 +13,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.activity.MarketActivity;
-import com.qr_market.fragment.adapter.GuppyFragmentListAdapter;
 import com.qr_market.http.HttpHandler;
-import com.qr_market.result.Result;
 import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketUser;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -103,6 +96,7 @@ public class BarcodeFragment extends Fragment {
         TableLayout tableLayout = (TableLayout) barcodeView.findViewById(R.id.barcode_product);
         tableLayout.setVisibility(View.INVISIBLE);
 
+        // ***********************
         // BUTTON ACTIONS
         Button barcode = (Button) barcodeView.findViewById(R.id.BtnReadBarcode);
         barcode.setOnClickListener(new View.OnClickListener(){
@@ -122,12 +116,14 @@ public class BarcodeFragment extends Fragment {
             }
         });
 
-
         Button fav_button = (Button) barcodeView.findViewById(R.id.btnAddFav);
         fav_button.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
+
+                Toast.makeText( MarketActivity.getContext(), "We are sorry!!! Work in progress add_Fav method" , Toast.LENGTH_LONG);
+
                 List<MarketProduct> mp= MarketUser.getInstance().getProductList();
 
                 System.out.println("-- MP size is " + mp.size());
@@ -141,6 +137,8 @@ public class BarcodeFragment extends Fragment {
                 }
             }
         });
+        // BUTTON ACTIONS --END--
+        // ***********************
 
         return barcodeView;
     }
@@ -163,38 +161,6 @@ public class BarcodeFragment extends Fragment {
     }
 
 
-    /*
-	 * This method used to get result data of sub-activities(intents)
-	 */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
-        if (requestCode == 0) {
-
-            if (resultCode == Activity.RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                Toast toast = Toast.makeText( MarketActivity.getContext(), "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
-                toast.show();
-
-                Log.i("Content", contents);
-                Log.i("Format",format);
-
-                Map parameters = new HashMap();
-                parameters.put("cdpsDo", "getProduct");
-
-                Map operationInfo = new HashMap();
-                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_serverPort + "/" + contents);
-
-                Log.i("Final URL" , (String)operationInfo.get(Guppy.http_Map_OP_URL));
-
-                new HttpHandler( this.getActivity().getApplicationContext() , "PRODUCT").execute( operationInfo , parameters);
-            }
-        }
-    }
-
-
     /**
      ***********************************************************************************************
      ***********************************************************************************************
@@ -208,10 +174,11 @@ public class BarcodeFragment extends Fragment {
             //start the scanning activity from the com.google.zxing.client.android.SCAN intent
             Intent intent = new Intent(ACTION_SCAN);
             intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
-            startActivityForResult(intent, 0);
+            startActivityForResult(intent, 110);
+
         } catch (ActivityNotFoundException anfe) {
             //on catch, show the download dialog
-            //showDialog(MarketActivity.this, "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
+            showDialog(getActivity(), "No Scanner Found", "Download a scanner code activity?", "Yes", "No").show();
         }
     }
 
@@ -221,7 +188,7 @@ public class BarcodeFragment extends Fragment {
         // --------------------------------------
         // -1- SEND REQUEST FOR ADDING TO CART
         Map parameters = new HashMap();
-        parameters.put("cdosDo", "addToOrderList");
+        parameters.put("cdosDo", "productUpdate");
         parameters.put("cdpUID", MarketProduct.getProductInstance().getProduct_uid());
         parameters.put("cdpAmount", "1");
 
@@ -234,6 +201,41 @@ public class BarcodeFragment extends Fragment {
 
     }
 
+
+    /**
+     *
+     * @deprecated
+     * @IMPORTANT This method override @ViewPagerFragmentList Fragment therefore,
+     *              it is NOT USED here anymore...
+     *
+     *              >>> To change, edit ViewPagerFragmentList.onActivityResult
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        if (requestCode == 110) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Toast toast = Toast.makeText( MarketActivity.getContext(), "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
+                toast.show();
+
+                Map parameters = new HashMap();
+                parameters.put("cdpsDo", "getProduct");
+
+                Map operationInfo = new HashMap();
+                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_serverPort + "/" + contents);
+
+                Log.i("Final URL" , (String)operationInfo.get(Guppy.http_Map_OP_URL));
+                Log.i("Guppy URL" , Guppy.url_serverPort);
+                Log.i("Content URL" , contents);
+
+                new HttpHandler( this.getActivity().getApplicationContext() , "PRODUCT").execute( operationInfo , parameters);
+            }
+        }
+    }
 
 
 

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_alignBottom="@+id/item_image"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffd7d7d7" >
+
+        <TextView
+            android:id="@+id/item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Total Price"
+            android:textSize="@dimen/lvHeadingTextSize"
+            android:textColor="@color/gray"/>
+
+        <TextView
+            android:id="@+id/TotalPrice2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/item_numbertext"
+            android:layout_centerVertical="true"
+            android:fontFamily="sans-serif-light"
+
+            android:textColor="@color/theme_color"
+            android:textSize="@dimen/lvHeadingTextSize" />
+
+        <TextView
+            android:id="@+id/item_numbertext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:padding="5dp"
+            android:text="TL"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/lvSecondaryTextSize" />
+
+    </RelativeLayout>
+    <Button
+        android:id="@+id/LvBtnGo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Devam" />
+</LinearLayout>

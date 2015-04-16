@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent"
+    tools:context=".MainActivity"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/PaymentTitleLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/payment_title"
+            android:text="@string/Payment_Title"
+            android:textSize="@dimen/lvPrimaryTextSize"
+            style="@style/listViewPrimaryDetail"
+            android:textColor="@color/red_dark"
+            android:gravity="bottom|left"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_alignParentLeft="true"/>
+
+    </LinearLayout>
+
+
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginBottom="10dp"
+        style="@style/listViewItem"
+        android:background="@android:drawable/list_selector_background">
+        <LinearLayout
+            android:id="@+id/MainLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/PaymentLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_margin="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:text="@string/arrival_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    style="@style/listViewPrimaryDetail"
+                    android:textColor="@color/orange_dark"
+                    android:ellipsize="marquee"
+                    android:layout_alignParentLeft="true"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="right"
+                    android:layout_gravity="right">
+
+                    <EditText
+                        android:gravity="right"
+                        android:layout_alignParentRight="true"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/timeselect"
+                        />
+                    <Spinner
+                        android:id="@+id/ArrivalTimeSpinner"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="left"
+                        android:spinnerMode="dialog"
+                        android:prompt="@string/prompt_arrival_time_spinner"
+                        />
+                </LinearLayout>
+
+
+
+                <TextView
+                    android:text="@string/Payment_methode"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    style="@style/listViewPrimaryDetail"
+                    android:textColor="@color/orange_dark"
+                    android:ellipsize="marquee"
+                    android:layout_alignParentLeft="true"/>
+
+                <Spinner
+                    android:id="@+id/PaymentSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:spinnerMode="dropdown"
+                    android:prompt="@string/spinner_payment_prompt" />
+
+                <TextView
+                    android:text="Adres"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentTop="true"
+                    style="@style/listViewPrimaryDetail"
+                    android:textColor="@color/orange_dark"
+                    android:ellipsize="marquee"
+                    android:layout_alignParentLeft="true"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/listViewItem"
+                    android:background="@android:drawable/list_selector_background">
+
+                    <TextView
+                        android:clickable="true"
+                        android:id="@+id/AdressOfUser"
+                        android:layout_height="fill_parent"
+                        android:layout_width="match_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:inputType="textMultiLine"
+                        android:gravity="top"
+                        android:padding="10dp"
+                        style="@style/listViewPrimaryDetail"
+                        android:imeActionId="@+id/AdressOfUser"
+                        android:maxLines="2"
+                        android:background="#eee"
+                        android:height="65dp"
+                        android:width="300dp"/>
+
+                    <ImageButton
+                        style="@style/listViewItemButtonStyle"
+                        android:background="@android:drawable/list_selector_background"
+                        android:src="@drawable/abc_ic_go"
+                        android:id="@+id/BtnAdressSelector"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/AdressOfUser"
+                        android:clickable="true"
+                        android:height="65dp"/>
+
+                </RelativeLayout>
+
+                <EditText
+                    android:id="@+id/editTextNot"
+                    android:background="@android:drawable/edit_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:padding="8dp"
+                    android:textColor="@color/gray"
+                    android:inputType="textMultiLine"
+                    android:hint="@string/text_input_note"
+                    android:gravity="top"
+                    android:ems="10"
+                    android:focusable="true"
+                    android:selectAllOnFocus="true"
+                    android:enabled="true"
+                    android:layout_marginTop="10dp">
+                </EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/btnBack"
+                    android:background="@color/gray"
+                    android:textColor="@color/white"
+                    android:width="100dp"
+                    android:layout_margin="3dp"/>
+
+                <Button
+                    android:id="@+id/btnGo"
+                    android:layout_width="wrap_content"
+                    android:background="@color/green_google_play"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:text="@string/BtnGO"
+                    android:width="100dp"
+                    android:layout_margin="3dp"/>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

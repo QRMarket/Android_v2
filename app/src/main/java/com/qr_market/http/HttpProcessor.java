@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,17 +22,22 @@ import com.qr_market.activity.MarketActivity;
 import com.qr_market.async.ImageHandler;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
+import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.fragment.adapter.GuppyFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
+import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.util.MarketProduct;
+import com.qr_market.util.MarketProductImage;
 import com.qr_market.util.MarketUser;
+import com.qr_market.util.MarketUserAddress;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-
+import java.util.List;
 
 
 /**
@@ -88,17 +95,33 @@ public class HttpProcessor {
                 Log.i("JSON KEY" , result.getString(key));
             }
 
-
             String resCode = (String) result.get("resultCode");
             if(resCode.equalsIgnoreCase("GUPPY.001")){
 
                 JSONObject resContent = result.getJSONObject("content");
 
+                MarketUser.getInstance(true);
                 MarketUser.getInstance().setUserMail(userMail);
                 MarketUser.getInstance().setUserPass(userPass);
                 MarketUser.getInstance().setUserToken(resContent.getString("userToken"));
                 MarketUser.getInstance().setUserSession(resContent.getString("userSession"));
                 MarketUser.getInstance().setUserName(resContent.getString("userName"));
+
+                ArrayList<MarketUserAddress> userAddresses = new ArrayList<>();
+                JSONArray resAddress = resContent.getJSONArray("userAddress");
+                for(int i=0; i<resAddress.length(); i++){
+                    JSONObject address = resAddress.getJSONObject(i);
+                    MarketUserAddress uAddress = new MarketUserAddress();
+                    uAddress.setAid( address.has("aid") ? address.getString("aid") : null );
+                    uAddress.setCity( address.has("city") ? address.getString("city") : null );
+                    uAddress.setBorough( address.has("borough") ? address.getString("borough") : null );
+                    uAddress.setLocality( address.has("locality") ? address.getString("locality") : null );
+                    uAddress.setStreet( address.has("street") ? address.getString("street") : null );
+                    uAddress.setAvenue( address.has("avenue") ? address.getString("avenue") : null );
+                    uAddress.setDesc( address.has("desc") ? address.getString("desc") : null);
+                    userAddresses.add(uAddress);
+                }
+                MarketUser.setAddressList(userAddresses);
 
                 // Get dbHelper
                 DBHandler dbHelper = new DBHandler(context);
@@ -182,16 +205,59 @@ public class HttpProcessor {
 
                 // ADD PRODUCT TO USER
                 MarketProduct lastProduct = MarketProduct.getProductInstance().clone();
+                lastProduct.setProduct_amount(1);
                 MarketUser.getInstance().getProductList().add(lastProduct);
 
+
                 // GET VIEW LIST
-                ListView listViewBasket   = (ListView) CartFragment.getViewCartFragment().findViewById(R.id.BasketList);
-                listViewBasket.setAdapter(new GuppyFragmentListAdapter( context , MarketUser.getInstance().getProductList() ));
+                ListView listViewBasket   = (ListView) BasketFragment.getViewBasketFragment().findViewById(R.id.listViewSwp);
+                listViewBasket.setAdapter(new BasketFragmentListAdapter(context ,MarketUser.getInstance().getProductList()));
+
+
+                // GET VIEW LIST
+                //ListView listViewBasket   = (ListView) CartFragment.getViewCartFragment().findViewById(R.id.BasketList);
+                //listViewBasket.setAdapter(new GuppyFragmentListAdapter( context , MarketUser.getInstance().getProductList() ));
 
                 // SET PRODUCT INFO VISIBLE
                 BarcodeFragment.getViewBarcodeFragment().findViewById(R.id.barcode_product).setVisibility(View.INVISIBLE);
 
                 operationResultSuccess = true;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return operationResultSuccess;
+    }
+
+
+
+
+
+
+    // ---------------------------------------------------------------------------------------------
+    /**
+     * @return
+     *
+     * This function is used to handle "order" RESPONSEs
+     *
+     */
+    public boolean orderUpdateCart(BasketFragmentListAdapter myBasketAdapter){
+        boolean operationResultSuccess = false;
+
+        try {
+            JSONObject result = new JSONObject(requestResult);
+
+            String resCode = (String) result.get("resultCode");
+            if(resCode.equalsIgnoreCase("GUPPY.001")){
+
+                MarketProduct pro = BasketFragmentListAdapter.workingProduct;
+                pro.setProduct_amount(pro.getProduct_amount()+1);
+
+                Log.i("Number # " , "" + myBasketAdapter.getCount());
+
+                myBasketAdapter.notifyDataSetChanged();
             }
 
         } catch (JSONException e) {
@@ -282,11 +348,41 @@ public class HttpProcessor {
             newProduct.setProduct_price(resultContent.getString("price"));
             newProduct.setProduct_image(new ArrayList<Bitmap>());
             newProduct.setProduct_image_url(new ArrayList<String>());
+
             for(int i=0; i<resultContent.getJSONArray("images").length(); i++) {
                 newProduct.getProduct_image_url().add(Guppy.url_Servlet_IMAGE + "/" + (String) resultContent.getJSONArray("images").get(i));
             }
-            new ImageHandler(imgElem).execute(newProduct);
+
+            // **********************
+            // GET IMAGES
+            // **********************
+            ArrayList<MarketProductImage> pImageList = new ArrayList();
+            JSONArray imageList = resultContent.getJSONArray("productImages");
+            for(int i=0; i<imageList.length(); i++){
+                JSONObject image = imageList.getJSONObject(i);
+                MarketProductImage pImage = new MarketProductImage();
+                pImage.setImageID(image.getString("imageID"));
+                pImage.setImageSource(image.getString("imageSource"));
+                pImage.setImageSourceType(image.getString("imageSourceType"));
+                pImage.setImageContentType(image.getString("imageContentType"));
+                pImage.setImageType(image.getString("imageType"));
+                pImageList.add(pImage);
+
+                // IMAGE DECODING
+                // ---------------------------------------
+                if(pImage.getImageSourceType().equalsIgnoreCase("BASE64")){
+                    byte[] decodedString = Base64.decode( image.getString("imageSource") , Base64.DEFAULT);
+                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                    newProduct.getProduct_image().add(decodedByte);
+
+                    imgElem.setImageBitmap(decodedByte);
+                }else if(pImage.getImageSourceType().equalsIgnoreCase("URL")){
+                    //new ImageHandler(imgElem).execute(newProduct);
+                }
+                // ---------------------------------------
+            }
             // ---------------------------------------
+
 
 
             TextView productText = (TextView)barcodeFragmentView.findViewById(R.id.product_name);

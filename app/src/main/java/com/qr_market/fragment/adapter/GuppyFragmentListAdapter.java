@@ -23,6 +23,7 @@ import java.util.List;
  * @since 07.03.2015
  * @version v1.01
  *
+ * @deprecated
  * @last 08.03.2015
  */
 public class GuppyFragmentListAdapter extends BaseAdapter {
@@ -81,7 +82,7 @@ public class GuppyFragmentListAdapter extends BaseAdapter {
 
                     // inflate the layout
                     LayoutInflater inflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    view = inflator.inflate(R.layout.basket_list_style, null);
+                    view = inflator.inflate(R.layout.basket_list_style_old, null);
 
                     // well set up the ViewHolder
                     viewHolder = new ViewHolder();

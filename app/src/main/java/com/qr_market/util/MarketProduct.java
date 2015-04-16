@@ -19,6 +19,7 @@ public class MarketProduct {
     private String product_name;
     private String product_price;
     private String product_price_type;
+    private double product_amount;
     private List<String> product_image_url;
     private List<Bitmap> product_image;
     private String p_detail;
@@ -132,5 +133,13 @@ public class MarketProduct {
 
     public void setProduct_image_url(List<String> product_image_url) {
         this.product_image_url = product_image_url;
+    }
+
+    public double getProduct_amount() {
+        return product_amount;
+    }
+
+    public void setProduct_amount(double product_amount) {
+        this.product_amount = product_amount;
     }
 }

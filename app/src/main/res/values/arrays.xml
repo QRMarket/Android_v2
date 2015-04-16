@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="nav_menu_items">
+        <item>Ana Sayfa</item>
+        <item>Kişisel Bilgilerim</item>
+        <item>Adreslerim</item>
+        <item>Önceki Siparişlerim</item>
+        <item>Kuponlarım</item>
+        <item>ÇIKIŞ YAP</item>
+    </string-array>
+
+</resources>
