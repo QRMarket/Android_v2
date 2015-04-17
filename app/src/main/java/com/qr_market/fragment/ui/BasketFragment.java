@@ -1,6 +1,7 @@
 package com.qr_market.fragment.ui;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.qr_market.R;
+import com.qr_market.activity.MarketActivity;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.util.MarketUser;
 
@@ -125,15 +127,16 @@ public class BasketFragment extends Fragment {
         setmAdapter(new BasketFragmentListAdapter(getActivity(), MarketUser.getProductList()));
         lv.setAdapter(getmAdapter());
 
-
         //Set LV footer Button clickable
         LvGoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.content_frame2, new PaymentFragment(), "NewFragmentTag");
                 ft.commit();
                 lv.setVisibility(View.INVISIBLE);
+
             }
         });
 

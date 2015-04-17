@@ -196,45 +196,9 @@ public class BarcodeFragment extends Fragment {
         operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
         operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
-        new HttpHandler(getActivity().getApplicationContext(),"ORDER").execute( operationInfo , parameters);
+        new HttpHandler(getActivity(),"ORDER").execute( operationInfo , parameters);
         // --------------------------------------
 
-    }
-
-
-    /**
-     *
-     * @deprecated
-     * @IMPORTANT This method override @ViewPagerFragmentList Fragment therefore,
-     *              it is NOT USED here anymore...
-     *
-     *              >>> To change, edit ViewPagerFragmentList.onActivityResult
-     */
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-
-        if (requestCode == 110) {
-
-            if (resultCode == Activity.RESULT_OK) {
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                Toast toast = Toast.makeText( MarketActivity.getContext(), "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
-                toast.show();
-
-                Map parameters = new HashMap();
-                parameters.put("cdpsDo", "getProduct");
-
-                Map operationInfo = new HashMap();
-                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_serverPort + "/" + contents);
-
-                Log.i("Final URL" , (String)operationInfo.get(Guppy.http_Map_OP_URL));
-                Log.i("Guppy URL" , Guppy.url_serverPort);
-                Log.i("Content URL" , contents);
-
-                new HttpHandler( this.getActivity().getApplicationContext() , "PRODUCT").execute( operationInfo , parameters);
-            }
-        }
     }
 
 
@@ -262,5 +226,48 @@ public class BarcodeFragment extends Fragment {
         return downloadDialog.show();
     }
 
+
+    /**
+     *
+     * @deprecated
+     * @IMPORTANT This method override @ViewPagerFragmentList Fragment therefore,
+     *              it is NOT USED here anymore...
+     *
+     *              >>> To change, edit ViewPagerFragmentList.onActivityResult
+     */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+
+        // DEPRECATED
+        // DEPRECATED
+        // DEPRECATED
+        // DEPRECATED
+        if (requestCode == 110) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                String contents = intent.getStringExtra("SCAN_RESULT");
+                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
+                Toast toast = Toast.makeText( MarketActivity.getContext(), "Content:" + contents + " Format:" + format, Toast.LENGTH_LONG);
+                toast.show();
+
+                Map parameters = new HashMap();
+                parameters.put("cdpsDo", "getProduct");
+
+                Map operationInfo = new HashMap();
+                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_serverPort + "/" + contents);
+
+                Log.i("Final URL" , (String)operationInfo.get(Guppy.http_Map_OP_URL));
+                Log.i("Guppy URL" , Guppy.url_serverPort);
+                Log.i("Content URL" , contents);
+
+                new HttpHandler( getActivity().getApplicationContext() , "PRODUCT" ).execute( operationInfo , parameters);
+            }
+        }
+        // DEPRECATED
+        // DEPRECATED
+        // DEPRECATED
+        // DEPRECATED
+    }
 
 }

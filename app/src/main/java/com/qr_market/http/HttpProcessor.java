@@ -1,5 +1,6 @@
 package com.qr_market.http;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -54,11 +55,16 @@ public class HttpProcessor {
 
     private String requestResult    = null;
     private Context context         = null;
+    private Activity activity       = null;
 
 
     public HttpProcessor(String requestResult , Context context){
         this.requestResult = requestResult;
         this.context = context;
+    }
+    public HttpProcessor(String requestResult , Activity activity){
+        this.requestResult = requestResult;
+        this.activity = activity;
     }
 
 
@@ -107,21 +113,31 @@ public class HttpProcessor {
                 MarketUser.getInstance().setUserSession(resContent.getString("userSession"));
                 MarketUser.getInstance().setUserName(resContent.getString("userName"));
 
-                ArrayList<MarketUserAddress> userAddresses = new ArrayList<>();
-                JSONArray resAddress = resContent.getJSONArray("userAddress");
-                for(int i=0; i<resAddress.length(); i++){
-                    JSONObject address = resAddress.getJSONObject(i);
-                    MarketUserAddress uAddress = new MarketUserAddress();
-                    uAddress.setAid( address.has("aid") ? address.getString("aid") : null );
-                    uAddress.setCity( address.has("city") ? address.getString("city") : null );
-                    uAddress.setBorough( address.has("borough") ? address.getString("borough") : null );
-                    uAddress.setLocality( address.has("locality") ? address.getString("locality") : null );
-                    uAddress.setStreet( address.has("street") ? address.getString("street") : null );
-                    uAddress.setAvenue( address.has("avenue") ? address.getString("avenue") : null );
-                    uAddress.setDesc( address.has("desc") ? address.getString("desc") : null);
-                    userAddresses.add(uAddress);
+                // *************************************
+                // TRY TO GET USER ADDRESS FROM RESPONSE
+                // *************************************
+                try{
+
+                    ArrayList<MarketUserAddress> userAddresses = new ArrayList<>();
+                    JSONArray resAddress = resContent.getJSONArray("userAddress");
+                    for(int i=0; i<resAddress.length(); i++){
+                        JSONObject address = resAddress.getJSONObject(i);
+                        MarketUserAddress uAddress = new MarketUserAddress();
+                        uAddress.setAid( address.has("aid") ? address.getString("aid") : null );
+                        uAddress.setCity( address.has("city") ? address.getString("city") : null );
+                        uAddress.setBorough( address.has("borough") ? address.getString("borough") : null );
+                        uAddress.setLocality( address.has("locality") ? address.getString("locality") : null );
+                        uAddress.setStreet( address.has("street") ? address.getString("street") : null );
+                        uAddress.setAvenue( address.has("avenue") ? address.getString("avenue") : null );
+                        uAddress.setDesc( address.has("desc") ? address.getString("desc") : null);
+                        userAddresses.add(uAddress);
+                    }
+                    MarketUser.setAddressList(userAddresses);
+
+                }catch (JSONException err){
+                    Log.e("GUPPY-JSONException" , "Response is not return userAddress");
                 }
-                MarketUser.setAddressList(userAddresses);
+
 
                 // Get dbHelper
                 DBHandler dbHelper = new DBHandler(context);
@@ -208,15 +224,10 @@ public class HttpProcessor {
                 lastProduct.setProduct_amount(1);
                 MarketUser.getInstance().getProductList().add(lastProduct);
 
-
                 // GET VIEW LIST
                 ListView listViewBasket   = (ListView) BasketFragment.getViewBasketFragment().findViewById(R.id.listViewSwp);
-                listViewBasket.setAdapter(new BasketFragmentListAdapter(context ,MarketUser.getInstance().getProductList()));
-
-
-                // GET VIEW LIST
-                //ListView listViewBasket   = (ListView) CartFragment.getViewCartFragment().findViewById(R.id.BasketList);
-                //listViewBasket.setAdapter(new GuppyFragmentListAdapter( context , MarketUser.getInstance().getProductList() ));
+                //listViewBasket.setAdapter(new BasketFragmentListAdapter(context ,MarketUser.getInstance().getProductList()));
+                listViewBasket.setAdapter(new BasketFragmentListAdapter(activity ,MarketUser.getInstance().getProductList()));
 
                 // SET PRODUCT INFO VISIBLE
                 BarcodeFragment.getViewBarcodeFragment().findViewById(R.id.barcode_product).setVisibility(View.INVISIBLE);
@@ -243,7 +254,7 @@ public class HttpProcessor {
      * This function is used to handle "order" RESPONSEs
      *
      */
-    public boolean orderUpdateCart(BasketFragmentListAdapter myBasketAdapter){
+    public boolean orderUpdateCart(BasketFragmentListAdapter myBasketAdapter , double value){
         boolean operationResultSuccess = false;
 
         try {
@@ -253,9 +264,7 @@ public class HttpProcessor {
             if(resCode.equalsIgnoreCase("GUPPY.001")){
 
                 MarketProduct pro = BasketFragmentListAdapter.workingProduct;
-                pro.setProduct_amount(pro.getProduct_amount()+1);
-
-                Log.i("Number # " , "" + myBasketAdapter.getCount());
+                pro.setProduct_amount(value);
 
                 myBasketAdapter.notifyDataSetChanged();
             }

@@ -189,15 +189,14 @@ public class ViewPagerFragmentList extends Fragment {
                 parameters.put("cdpsDo", "getProduct");
                 parameters.put("cdpUID", contents);
 
-
                 Map operationInfo = new HashMap();
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Product);
-                //operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_serverPort + "/" + contents);
 
                 Log.i("Final URL" , (String)operationInfo.get(Guppy.http_Map_OP_URL));
 
                 new HttpHandler( this.getActivity().getApplicationContext() , "PRODUCT").execute( operationInfo , parameters);
+                //new HttpHandler( getActivity() , "PRODUCT" ).execute( operationInfo , parameters);
             }
         }
     }

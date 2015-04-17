@@ -1,5 +1,6 @@
 package com.qr_market.fragment.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -37,6 +38,7 @@ public class BasketFragmentListAdapter extends BaseAdapter {
     private BasketFragmentListAdapter myBasketAdapter;
 
     public static MarketProduct workingProduct;
+    private Activity activity;
 
     List<MarketProduct> productList = new ArrayList<MarketProduct>();
     ViewHolder viewHolder;
@@ -49,6 +51,7 @@ public class BasketFragmentListAdapter extends BaseAdapter {
      ***********************************************************************************************
      ***********************************************************************************************
      */
+/*
     public BasketFragmentListAdapter(Context context, List<MarketProduct> productList) {
 
         myBasketAdapter = BasketFragmentListAdapter.this;
@@ -57,6 +60,17 @@ public class BasketFragmentListAdapter extends BaseAdapter {
         this.productList    = productList;
         inflater = LayoutInflater.from(context);
 
+    }
+*/
+
+    public BasketFragmentListAdapter(Activity activity, List<MarketProduct> productList) {
+
+        this.activity = activity;
+        mContext = activity.getApplicationContext();
+        myBasketAdapter = BasketFragmentListAdapter.this;
+        mSelectedItemsIds = new SparseBooleanArray();
+        this.productList    = productList;
+        inflater = LayoutInflater.from(mContext);
     }
 
 
@@ -136,6 +150,8 @@ public class BasketFragmentListAdapter extends BaseAdapter {
         viewHolder.image.setTag(position);
 
 
+
+
         //  ViewHolder ACTION
         //      ViewHolder ACTION
         //          ViewHolder ACTION
@@ -161,13 +177,7 @@ public class BasketFragmentListAdapter extends BaseAdapter {
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
-                new HttpHandler(mContext,"ORDERUPDATE",myBasketAdapter).execute( operationInfo , parameters);
-
-                /* işlem sonrasında
-                updateProduct.setProduct_amount(updateProduct.getProduct_amount()+1);
-                notifyDataSetChanged();
-                */
-
+                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter,(workingProduct.getProduct_amount()+1)).execute( operationInfo , parameters);
             }
         });
 
@@ -175,17 +185,25 @@ public class BasketFragmentListAdapter extends BaseAdapter {
         viewHolder.DownBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Decrease quantity
+                // -1-get view itself
                 int position = ((Integer) v.getTag()).intValue();
 
-                MarketProduct updateProduct = productList.get(position);
-                updateProduct.setProduct_amount(updateProduct.getProduct_amount() - 1);
+                // -2-replace with process view
+                // -3-request to increase amount of product
+                workingProduct = productList.get(position);
 
-                if(updateProduct.getProduct_amount()==0)
-                {
-                    productList.remove(updateProduct);
-                }
-                notifyDataSetChanged();
+                Map parameters = new HashMap();
+                parameters.put("cdosDo", "productUpdate");
+                parameters.put("cdpUID", workingProduct.getProduct_uid());
+                parameters.put("cdpAmount", "" + (workingProduct.getProduct_amount()-1) );
+
+                Map operationInfo = new HashMap();
+                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
+
+                //new HttpHandler(mContext,"ORDERUPDATE",myBasketAdapter).execute( operationInfo , parameters);
+                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter,(workingProduct.getProduct_amount()-1)).execute( operationInfo , parameters);
+
             }
         });
 

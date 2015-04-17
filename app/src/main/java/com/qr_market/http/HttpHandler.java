@@ -28,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -73,13 +74,13 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     private Map map_param           = null; // Parameters for http request
     private Map map_opr             = null; // Request meta properties such as url, header type ...
 
-
     private String servletName      = null;
     private Context context         = null;
     private String OperationStatus  = null;      // Like Result Object
+    private double productAmount;
 
-
-
+    private ProgressDialog progressDialog;
+    private Activity activity;
     private Intent intent;
     private View view;
     private JSONObject result;
@@ -96,6 +97,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     public HttpHandler(Context context){
         this.context = context;
     }
+    public HttpHandler(Activity activity){
+        this.activity = activity;
+        this.context = activity.getApplication().getApplicationContext();
+    }
     public HttpHandler(Context context , String servletName ){
         this.context = context;
         this.servletName = servletName;
@@ -105,6 +110,25 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
         this.servletName = servletName;
         this.myBasketAdapter = myBasketAdapter;
     }
+    public HttpHandler(Activity activity , String servletName , BasketFragmentListAdapter myBasketAdapter ){
+        this.activity = activity;
+        this.context = activity.getApplication().getApplicationContext();
+        this.servletName = servletName;
+        this.myBasketAdapter = myBasketAdapter;
+    }
+    public HttpHandler(Activity activity , String servletName , BasketFragmentListAdapter myBasketAdapter , double productAmount ){
+        this.activity = activity;
+        this.context = activity.getApplication().getApplicationContext();
+        this.servletName = servletName;
+        this.myBasketAdapter = myBasketAdapter;
+        this.productAmount = productAmount;
+    }
+    public HttpHandler(Activity activity , String servletName ){
+        this.activity = activity;
+        this.context = activity.getApplication().getApplicationContext();
+        this.servletName = servletName;
+    }
+
     public HttpHandler(Context context , String servletName , String url ){
         this.context = context;
         this.servletName = servletName;
@@ -118,6 +142,16 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
      ***********************************************************************************************
      ***********************************************************************************************
      */
+    @Override
+    protected void onPreExecute(){
+
+        if(activity!=null){
+            progressDialog = ProgressDialog.show( activity , null ,"HTTP-Async task called", true);
+        }
+
+    }
+
+
 	@Override
 	protected String doInBackground(Map... params) {
 
@@ -144,6 +178,9 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
             Toast.makeText( context , OperationStatus , Toast.LENGTH_LONG).show();
             autoLoginFailure();
 
+            if(progressDialog!=null){
+                progressDialog.dismiss();
+            }
     }
 	
 	@Override
@@ -158,11 +195,12 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDER")) {
 
-                        new HttpProcessor(resultStr , context).orderAddCart();
+                        //new HttpProcessor(resultStr , context).orderAddCart();
+                        new HttpProcessor(resultStr , activity).orderAddCart();
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
 
-                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter);
+                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter , productAmount);
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 
@@ -180,6 +218,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
                 autoLoginFailure();
             }
 
+
+            if(progressDialog!=null){
+                progressDialog.dismiss();
+            }
     }
 
 
