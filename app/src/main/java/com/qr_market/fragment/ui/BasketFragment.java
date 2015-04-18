@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.support.v4.app.Fragment;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.qr_market.R;
 import com.qr_market.activity.MarketActivity;
@@ -116,16 +118,30 @@ public class BasketFragment extends Fragment {
         View header = getActivity().getLayoutInflater().inflate(R.layout.basket_lv_header, null);
         lv.addHeaderView(header);
 
-
         //Add Footer layout To LV
         View footer=getActivity().getLayoutInflater().inflate(R.layout.basket_lv_footer,null);
-        Button LvGoBtn=(Button) footer.findViewById(R.id.LvBtnGo);
-        LvGoBtn.setEnabled(true);
+        final Button LvGoBtn=(Button) footer.findViewById(R.id.LvBtnGo);
         lv.addFooterView(footer);
 
         //SET ADAPTER
         setmAdapter(new BasketFragmentListAdapter(getActivity(), MarketUser.getProductList()));
         lv.setAdapter(getmAdapter());
+
+        lv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+
+                if(MarketUser.getProductList().size()>0){
+                    //Toast.makeText( getActivity().getApplicationContext(), "Open Continue button", Toast.LENGTH_LONG).show();
+                    LvGoBtn.setEnabled(true);
+                }else{
+                    //Toast.makeText( getActivity().getApplicationContext(), "Close Continue button", Toast.LENGTH_LONG).show();
+                    LvGoBtn.setEnabled(false);
+                }
+
+                Log.i("-GUPPY- " , "Size of the basket is " + lv.getAdapter().getCount());
+            }
+        });
 
         //Set LV footer Button clickable
         LvGoBtn.setOnClickListener(new View.OnClickListener() {

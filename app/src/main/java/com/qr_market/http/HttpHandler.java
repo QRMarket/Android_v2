@@ -78,6 +78,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     private Context context         = null;
     private String OperationStatus  = null;      // Like Result Object
     private double productAmount;
+    private int productPosition;
 
     private ProgressDialog progressDialog;
     private Activity activity;
@@ -116,12 +117,13 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
         this.servletName = servletName;
         this.myBasketAdapter = myBasketAdapter;
     }
-    public HttpHandler(Activity activity , String servletName , BasketFragmentListAdapter myBasketAdapter , double productAmount ){
+    public HttpHandler(Activity activity , String servletName , BasketFragmentListAdapter myBasketAdapter , int productPosition ,  double productAmount ){
         this.activity = activity;
         this.context = activity.getApplication().getApplicationContext();
         this.servletName = servletName;
         this.myBasketAdapter = myBasketAdapter;
         this.productAmount = productAmount;
+        this.productPosition=productPosition;
     }
     public HttpHandler(Activity activity , String servletName ){
         this.activity = activity;
@@ -200,7 +202,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
 
-                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter , productAmount);
+                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter , productPosition , productAmount);
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 

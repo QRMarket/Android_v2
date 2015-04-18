@@ -217,6 +217,7 @@ public class HttpProcessor {
             JSONObject result = new JSONObject(requestResult);
 
             String resCode = (String) result.get("resultCode");
+            String resText = (String) result.get("resultText");
             if(resCode.equalsIgnoreCase("GUPPY.001")){
 
                 // ADD PRODUCT TO USER
@@ -233,6 +234,10 @@ public class HttpProcessor {
                 BarcodeFragment.getViewBarcodeFragment().findViewById(R.id.barcode_product).setVisibility(View.INVISIBLE);
 
                 operationResultSuccess = true;
+
+            }else{
+                Log.e("GUPPY-Response.Code" , resCode);
+                Log.e("GUPPY-Response.Text" , resText);
             }
 
         } catch (JSONException e) {
@@ -254,7 +259,7 @@ public class HttpProcessor {
      * This function is used to handle "order" RESPONSEs
      *
      */
-    public boolean orderUpdateCart(BasketFragmentListAdapter myBasketAdapter , double value){
+    public boolean orderUpdateCart(BasketFragmentListAdapter myBasketAdapter , int position , double value){
         boolean operationResultSuccess = false;
 
         try {
@@ -264,7 +269,11 @@ public class HttpProcessor {
             if(resCode.equalsIgnoreCase("GUPPY.001")){
 
                 MarketProduct pro = BasketFragmentListAdapter.workingProduct;
-                pro.setProduct_amount(value);
+                if(value>0){
+                    pro.setProduct_amount(value);
+                }else{
+                    MarketUser.getProductList().remove(position);
+                }
 
                 myBasketAdapter.notifyDataSetChanged();
             }

@@ -177,7 +177,7 @@ public class BasketFragmentListAdapter extends BaseAdapter {
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
-                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter,(workingProduct.getProduct_amount()+1)).execute( operationInfo , parameters);
+                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter,position,(workingProduct.getProduct_amount()+1)).execute( operationInfo , parameters);
             }
         });
 
@@ -202,7 +202,7 @@ public class BasketFragmentListAdapter extends BaseAdapter {
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
                 //new HttpHandler(mContext,"ORDERUPDATE",myBasketAdapter).execute( operationInfo , parameters);
-                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter,(workingProduct.getProduct_amount()-1)).execute( operationInfo , parameters);
+                new HttpHandler(activity,"ORDERUPDATE",myBasketAdapter, position ,(workingProduct.getProduct_amount()-1)).execute( operationInfo , parameters);
 
             }
         });
