@@ -197,12 +197,11 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDER")) {
 
-                        //new HttpProcessor(resultStr , context).orderAddCart();
                         new HttpProcessor(resultStr , activity).orderAddCart();
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
 
-                        new HttpProcessor(resultStr , context).orderUpdateCart(myBasketAdapter , productPosition , productAmount);
+                        new HttpProcessor(resultStr , activity).orderUpdateCart(myBasketAdapter , productPosition , productAmount);
 
                 }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 

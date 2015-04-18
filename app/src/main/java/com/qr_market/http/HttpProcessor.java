@@ -20,7 +20,6 @@ import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.activity.LoginActivity;
 import com.qr_market.activity.MarketActivity;
-import com.qr_market.async.ImageHandler;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
@@ -276,6 +275,10 @@ public class HttpProcessor {
                 }
 
                 myBasketAdapter.notifyDataSetChanged();
+
+                TextView totalPrice = (TextView)activity.findViewById(R.id.footer_total_price);
+                totalPrice.setText(String.format("%,.2f" , getTotalPrice()));
+
             }
 
         } catch (JSONException e) {
@@ -286,6 +289,16 @@ public class HttpProcessor {
     }
 
 
+    public double getTotalPrice(){
+        double totalPrice=0;
+        List<MarketProduct> pList = MarketUser.getProductList();
+
+        for(MarketProduct product : pList){
+            totalPrice = totalPrice + product.getProduct_amount() * Double.parseDouble(product.getProduct_price());
+        }
+
+        return totalPrice;
+    }
 
 
 
