@@ -148,81 +148,81 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     protected void onPreExecute(){
 
         if(activity!=null){
-            progressDialog = ProgressDialog.show( activity , null ,"HTTP-Async task called", true);
+            progressDialog = ProgressDialog.show( activity , null ,"Loading", true);
         }
 
     }
 
 
-	@Override
-	protected String doInBackground(Map... params) {
+    @Override
+    protected String doInBackground(Map... params) {
 
-            try{
-                map_param = params[1];      // its need for db operations
-                map_opr = params[0];        // its need for post settings
+        try{
+            map_param = params[1];      // its need for db operations
+            map_opr = params[0];        // its need for post settings
 
-                return postData();
-                //return postData_4_4_2();
+            return postData();
+            //return postData_4_4_2();
 
-            }catch (ArrayIndexOutOfBoundsException e){
+        }catch (ArrayIndexOutOfBoundsException e){
 
-                OperationStatus = "MAP_PARAM_MISSING_ERROR";
-                this.cancel(true);
-            }
+            OperationStatus = "MAP_PARAM_MISSING_ERROR";
+            this.cancel(true);
+        }
 
         return null;
-	}
+    }
 
 
     @Override
     protected void onCancelled() {
 
-            Toast.makeText( context , OperationStatus , Toast.LENGTH_LONG).show();
-            autoLoginFailure();
+        Toast.makeText( context , OperationStatus , Toast.LENGTH_LONG).show();
+        autoLoginFailure();
 
-            if(progressDialog!=null){
-                progressDialog.dismiss();
-            }
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+        }
     }
-	
-	@Override
+
+    @Override
     protected void onPostExecute(String resultStr) {
 
 
-            if(resultStr!=null){
+        if(resultStr!=null){
 
-                if(servletName!=null && servletName.equalsIgnoreCase("PRODUCT")){
+            if(servletName!=null && servletName.equalsIgnoreCase("PRODUCT")){
 
-                        new HttpProcessor(resultStr , context).productGetInfo();
+                new HttpProcessor(resultStr , context).productGetInfo();
 
-                }else if(servletName!=null && servletName.equalsIgnoreCase("ORDER")) {
+            }else if(servletName!=null && servletName.equalsIgnoreCase("ORDER")) {
 
-                        new HttpProcessor(resultStr , activity).orderAddCart();
+                new HttpProcessor(resultStr , activity).orderAddCart();
 
-                }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
+            }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERUPDATE")) {
 
-                        new HttpProcessor(resultStr , activity).orderUpdateCart(myBasketAdapter , productPosition , productAmount);
+                new HttpProcessor(resultStr , activity).orderUpdateCart(myBasketAdapter , productPosition , productAmount);
 
-                }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
+            }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 
-                        new HttpProcessor(resultStr , context).confirmCart();
+                new HttpProcessor(resultStr , activity ).confirmCart();
 
-                }else{
-                        String userMail = (String)map_param.get("cduMail");
-                        String userPass = (String)map_param.get("cduPass");
-                        Log.i("HTTP REQUEST RESULT >>> " ,resultStr );
-                        new HttpProcessor(resultStr , context).userLogin(userMail , userPass);
-                }
             }else{
-
-                Toast.makeText(context , "NULL_RESPONSE" , Toast.LENGTH_LONG).show();
-                autoLoginFailure();
+                String userMail = (String)map_param.get("cduMail");
+                String userPass = (String)map_param.get("cduPass");
+                Log.i("HTTP REQUEST RESULT >>> " ,resultStr );
+                new HttpProcessor(resultStr , context).userLogin(userMail , userPass);
             }
+        }else{
+
+            Toast.makeText(context , "NULL_RESPONSE" , Toast.LENGTH_LONG).show();
+            autoLoginFailure();
+        }
 
 
-            if(progressDialog!=null){
-                progressDialog.dismiss();
-            }
+        if(progressDialog!=null){
+            progressDialog.dismiss();
+        }
     }
 
 
@@ -235,16 +235,16 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
      ***********************************************************************************************
      */
 
-        public void autoLoginFailure(){
+    public void autoLoginFailure(){
 
-            if( ((String)map_opr.get(Guppy.http_Map_OP_TYPE)).equalsIgnoreCase(HTTP_OP_LOGIN)){
-                Log.i("<<< HttpHandler - AUTOLOGIN >>>", "Autologin failure");
-                Intent intent = new Intent( context , LoginActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                context.startActivity(intent);
-            }
-
+        if( ((String)map_opr.get(Guppy.http_Map_OP_TYPE)).equalsIgnoreCase(HTTP_OP_LOGIN)){
+            Log.i("<<< HttpHandler - AUTOLOGIN >>>", "Autologin failure");
+            Intent intent = new Intent( context , LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            context.startActivity(intent);
         }
+
+    }
 
 
 
@@ -256,210 +256,210 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
      ***********************************************************************************************
      */
 
-        /**
-         * @param
-         * @return
-         *
-         *  This function convert Map<key,value> parameters to List<NameValuePair>
-         */
-        public List getParameterPair(Map m){
+    /**
+     * @param
+     * @return
+     *
+     *  This function convert Map<key,value> parameters to List<NameValuePair>
+     */
+    public List getParameterPair(Map m){
 
-            List<NameValuePair> nameValuePairs = new ArrayList();
-            try{
-                Iterator iter = m.keySet().iterator();
-                while(iter.hasNext()){
-                    String key = (String) iter.next();
-                    nameValuePairs.add(new BasicNameValuePair(key, (String) m.get(key)));
+        List<NameValuePair> nameValuePairs = new ArrayList();
+        try{
+            Iterator iter = m.keySet().iterator();
+            while(iter.hasNext()){
+                String key = (String) iter.next();
+                nameValuePairs.add(new BasicNameValuePair(key, (String) m.get(key)));
 
-                    Log.i(key , (String) m.get(key));
-                }
-            }catch (NullPointerException e){
-                alert("MAP_PARAMETER_ERROR");
+                Log.i(key , (String) m.get(key));
             }
-            return nameValuePairs;
+        }catch (NullPointerException e){
+            alert("MAP_PARAMETER_ERROR");
         }
+        return nameValuePairs;
+    }
 
 
-        private HttpPost setHttpHeader(HttpPost httppost , String opType ){
+    private HttpPost setHttpHeader(HttpPost httppost , String opType ){
 
-                try {
-                    if(opType.equalsIgnoreCase(HTTP_OP_LOGIN)){
-                        httppost.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                        httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
-                        httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
-                        httppost.setHeader("user-agent", "guppy-mobile");
-                        httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
+        try {
+            if(opType.equalsIgnoreCase(HTTP_OP_LOGIN)){
+                httppost.addHeader("accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
+                httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
+                httppost.setHeader("user-agent", "guppy-mobile");
+                httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
 
-                    }else if(opType.equalsIgnoreCase(HTTP_OP_MULTIPART)){
-                        String cookie1 = "JSESSIONID="+ MarketUser.getInstance().getUserSession();
-                        String cookie2 = "cduToken="+ MarketUser.getInstance().getUserToken();
-                        httppost.addHeader("accept" , "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                        httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
-                        httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
-                        httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
-                        httppost.addHeader("content-type" , "multipart/form-data");
-                        httppost.setHeader("user-agent", "guppy-mobile");
-                        // MULTI-PART SETTINGs
+            }else if(opType.equalsIgnoreCase(HTTP_OP_MULTIPART)){
+                String cookie1 = "JSESSIONID="+ MarketUser.getInstance().getUserSession();
+                String cookie2 = "cduToken="+ MarketUser.getInstance().getUserToken();
+                httppost.addHeader("accept" , "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
+                httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
+                httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
+                httppost.addHeader("content-type" , "multipart/form-data");
+                httppost.setHeader("user-agent", "guppy-mobile");
+                // MULTI-PART SETTINGs
 
-                        // http://stackoverflow.com/questions/1378920/how-can-i-make-a-multipart-form-data-post-request-using-java
-                        // 62 rank sahibi ikinci alanda yaniti veriyor
+                // http://stackoverflow.com/questions/1378920/how-can-i-make-a-multipart-form-data-post-request-using-java
+                // 62 rank sahibi ikinci alanda yaniti veriyor
 
-                    }else if(opType.equalsIgnoreCase(HTTP_OP_NORMAL)){
-                        String cookie1 = "JSESSIONID="+ MarketUser.getInstance().getUserSession();
-                        String cookie2 = "cduToken="+ MarketUser.getInstance().getUserToken();
-                        httppost.addHeader("accept" , "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
-                        httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
-                        httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
-                        httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
-                        httppost.setHeader("user-agent", "guppy-mobile");
-                        httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
-                    }else {
-                        alert("UNMATCH_HEADER_TYPE");
-                    }
-
-                } catch (UnsupportedEncodingException e) {
-                    e.printStackTrace();
-                    alert("UNEXPECTED_HEADER_SETTING_ERROR");
-                }
-
-            return httppost;
-        }
-
-        private String executeData(HttpClient httpclient , HttpPost httppost){
-                String resultStr=null;
-                try {
-
-                        // Execute HTTP Post Request
-                        HttpResponse response = httpclient.execute(httppost);
-                        StatusLine statusLine = response.getStatusLine();
-                        if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            response.getEntity().writeTo(out);
-
-                            resultStr = out.toString();
-
-                        } else{
-                            //Closes the connection.
-                            response.getEntity().getContent().close();
-                            throw new IOException(statusLine.getReasonPhrase());
-                        }
-
-                } catch (ClientProtocolException e) {
-                    resultStr = null;
-                } catch (IOException e) {
-                    resultStr = null;
-                }
-
-            return resultStr;
-        }
-
-        private String executeData(CloseableHttpClient httpclient , HttpPost httppost){
-            String resultStr=null;
-            try {
-                // Execute HTTP Post Request
-                CloseableHttpResponse response = httpclient.execute(httppost);
-                StatusLine statusLine = response.getStatusLine();
-
-                if(statusLine.getStatusCode() == HttpStatus.SC_OK){
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-
-                    resultStr = out.toString();
-
-                } else{
-                    //Closes the connection.
-                    response.getEntity().getContent().close();
-                    throw new IOException(statusLine.getReasonPhrase());
-                }
-
-            } catch (ClientProtocolException e) {
-                resultStr = null;
-            } catch (IOException e) {
-                resultStr = null;
+            }else if(opType.equalsIgnoreCase(HTTP_OP_NORMAL)){
+                String cookie1 = "JSESSIONID="+ MarketUser.getInstance().getUserSession();
+                String cookie2 = "cduToken="+ MarketUser.getInstance().getUserToken();
+                httppost.addHeader("accept" , "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8");
+                httppost.addHeader("accept-encoding", "gzip, deflate, sdch");
+                httppost.addHeader("accept-language" , "en-US,en;q=0.8,tr;q=0.6");
+                httppost.addHeader("cookie" , cookie1+"; "+ cookie2);
+                httppost.setHeader("user-agent", "guppy-mobile");
+                httppost.setEntity(new UrlEncodedFormEntity( getParameterPair(map_param) ));
+            }else {
+                alert("UNMATCH_HEADER_TYPE");
             }
 
-            return resultStr;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            alert("UNEXPECTED_HEADER_SETTING_ERROR");
         }
 
-            /**
-             ***********************************************************************************************
-             *                                  POST FUNCTIONs
-             ***********************************************************************************************
-             */
+        return httppost;
+    }
 
-                /**
-                 * @return
-                 *
-                 *  This function will used for requests && responses. Function only returns what server side
-                 *  return.
-                 */
-                public String postData() {
+    private String executeData(HttpClient httpclient , HttpPost httppost){
+        String resultStr=null;
+        try {
 
-                        String resultStr=null;
-                        if(is_map_opr_OK()){
+            // Execute HTTP Post Request
+            HttpResponse response = httpclient.execute(httppost);
+            StatusLine statusLine = response.getStatusLine();
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
 
-                            // ***********************
-                            // *** INITIALIZATION ****
-                            // ***********************
-                            HttpClient httpClient = new DefaultHttpClient();
-                            HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
+                resultStr = out.toString();
 
-                            // ***********************
-                            // *** SET HEADER ********
-                            // ***********************
-                            httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
+            } else{
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
+            }
 
-                            // ***********************
-                            // *** POST OPERATION ****
-                            // ***********************
-                            resultStr = executeData(httpClient, httppost);
+        } catch (ClientProtocolException e) {
+            resultStr = null;
+        } catch (IOException e) {
+            resultStr = null;
+        }
 
-                        }else{
-                            OperationStatus = "MAP_OPR_NOT_PROPER";
-                            this.cancel(true);
-                            return null;
-                        }
+        return resultStr;
+    }
 
-                        return resultStr;
-                }
+    private String executeData(CloseableHttpClient httpclient , HttpPost httppost){
+        String resultStr=null;
+        try {
+            // Execute HTTP Post Request
+            CloseableHttpResponse response = httpclient.execute(httppost);
+            StatusLine statusLine = response.getStatusLine();
+
+            if(statusLine.getStatusCode() == HttpStatus.SC_OK){
+                ByteArrayOutputStream out = new ByteArrayOutputStream();
+                response.getEntity().writeTo(out);
+
+                resultStr = out.toString();
+
+            } else{
+                //Closes the connection.
+                response.getEntity().getContent().close();
+                throw new IOException(statusLine.getReasonPhrase());
+            }
+
+        } catch (ClientProtocolException e) {
+            resultStr = null;
+        } catch (IOException e) {
+            resultStr = null;
+        }
+
+        return resultStr;
+    }
+
+    /**
+     ***********************************************************************************************
+     *                                  POST FUNCTIONs
+     ***********************************************************************************************
+     */
+
+    /**
+     * @return
+     *
+     *  This function will used for requests && responses. Function only returns what server side
+     *  return.
+     */
+    public String postData() {
+
+        String resultStr=null;
+        if(is_map_opr_OK()){
+
+            // ***********************
+            // *** INITIALIZATION ****
+            // ***********************
+            HttpClient httpClient = new DefaultHttpClient();
+            HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
+
+            // ***********************
+            // *** SET HEADER ********
+            // ***********************
+            httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
+
+            // ***********************
+            // *** POST OPERATION ****
+            // ***********************
+            resultStr = executeData(httpClient, httppost);
+
+        }else{
+            OperationStatus = "MAP_OPR_NOT_PROPER";
+            this.cancel(true);
+            return null;
+        }
+
+        return resultStr;
+    }
 
 
 
 
-                /**
-                 * @return
-                 *
-                 *  This function will used for requests && responses. Function only returns what server side
-                 *  return. (UPDATED Version )
-                 */
-                public String postData_4_4_2() {
+    /**
+     * @return
+     *
+     *  This function will used for requests && responses. Function only returns what server side
+     *  return. (UPDATED Version )
+     */
+    public String postData_4_4_2() {
 
-                        // ***********************
-                        // *** INITIALIZATION ****
-                        // ***********************
-                        String resultStr=null;
-                        CloseableHttpClient httpclient = HttpClients.createDefault();
-                        HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
+        // ***********************
+        // *** INITIALIZATION ****
+        // ***********************
+        String resultStr=null;
+        CloseableHttpClient httpclient = HttpClients.createDefault();
+        HttpPost httppost = new HttpPost( (String)map_opr.get(Guppy.http_Map_OP_URL) );
 
-                        // ***********************
-                        // *** SET HEADER ********
-                        // ***********************
-                        httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
+        // ***********************
+        // *** SET HEADER ********
+        // ***********************
+        httppost = setHttpHeader(httppost , (String)map_opr.get(Guppy.http_Map_OP_TYPE));
 
-                        // ***********************
-                        // *** POST OPERATION ****
-                        // ***********************
-                        resultStr = executeData(httpclient, httppost);
+        // ***********************
+        // *** POST OPERATION ****
+        // ***********************
+        resultStr = executeData(httpclient, httppost);
 
 
-                        if(resultStr!=null){
-                            Log.i("RESULT" , resultStr);
-                        }else{
-                            Log.i("RESULT" , "NULL");
-                        }
+        if(resultStr!=null){
+            Log.i("RESULT" , resultStr);
+        }else{
+            Log.i("RESULT" , "NULL");
+        }
 
-                        return resultStr;
-                }
+        return resultStr;
+    }
 
 
 
@@ -472,14 +472,14 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
      */
     public boolean is_map_opr_OK(){
 
-            boolean isOK=false;
-            try{
-                isOK = map_opr.get(Guppy.http_Map_OP_URL)!=null &&
-                        map_opr.get(Guppy.http_Map_OP_TYPE)!=null;
+        boolean isOK=false;
+        try{
+            isOK = map_opr.get(Guppy.http_Map_OP_URL)!=null &&
+                    map_opr.get(Guppy.http_Map_OP_TYPE)!=null;
 
-            } catch (NullPointerException e){
+        } catch (NullPointerException e){
 
-            }
+        }
 
         return isOK;
     }

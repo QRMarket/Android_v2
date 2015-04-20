@@ -14,7 +14,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+
 
 import com.qr_market.Guppy;
 import com.qr_market.R;
@@ -23,10 +24,8 @@ import com.qr_market.activity.MarketActivity;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
-import com.qr_market.fragment.adapter.GuppyFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
-import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketProductImage;
 import com.qr_market.util.MarketUser;
@@ -117,7 +116,7 @@ public class HttpProcessor {
                 // *************************************
                 try{
 
-                    ArrayList<MarketUserAddress> userAddresses = new ArrayList<>();
+                    ArrayList<MarketUserAddress> userAddresses = new ArrayList();
                     JSONArray resAddress = resContent.getJSONArray("userAddress");
                     for(int i=0; i<resAddress.length(); i++){
                         JSONObject address = resAddress.getJSONObject(i);
@@ -175,6 +174,7 @@ public class HttpProcessor {
                 }else {
                     // add new user to db
                     // Edit db
+                    values.put(GuppyContract.GuppyUser._ID , 1);
                     long userId = db.insert( GuppyContract.GuppyUser.TABLE_NAME,  null , values);
                     Log.i("USER-ID insert" , "" + userId);
                 }
@@ -289,16 +289,6 @@ public class HttpProcessor {
     }
 
 
-    public double getTotalPrice(){
-        double totalPrice=0;
-        List<MarketProduct> pList = MarketUser.getProductList();
-
-        for(MarketProduct product : pList){
-            totalPrice = totalPrice + product.getProduct_amount() * Double.parseDouble(product.getProduct_price());
-        }
-
-        return totalPrice;
-    }
 
 
 
@@ -318,12 +308,8 @@ public class HttpProcessor {
             String resCode = (String) result.get("resultCode");
             if(resCode.equalsIgnoreCase("GUPPY.001")){
 
+                // First of all remove products
                 MarketUser.getInstance().setProductList(new ArrayList<MarketProduct>());
-                ListView listViewBasket   = (ListView) CartFragment.getViewCartFragment().findViewById(R.id.BasketList);
-                listViewBasket.setAdapter(new GuppyFragmentListAdapter( context , MarketUser.getInstance().getProductList() ));
-
-                System.out.println(requestResult);
-                Toast.makeText(context , "CART CONFIRM SUCCESS" , Toast.LENGTH_LONG).show();
 
                 operationResultSuccess = true;
             }
@@ -433,5 +419,23 @@ public class HttpProcessor {
         }
     }
 
+
+
+
+    // ---------------------------------------------------------------------------------------------
+    // UTIL FUNCTIONS
+    /**
+     *
+     */
+    public static double getTotalPrice(){
+        double totalPrice=0;
+        List<MarketProduct> pList = MarketUser.getProductList();
+
+        for(MarketProduct product : pList){
+            totalPrice = totalPrice + product.getProduct_amount() * Double.parseDouble(product.getProduct_price());
+        }
+
+        return totalPrice;
+    }
 
 }

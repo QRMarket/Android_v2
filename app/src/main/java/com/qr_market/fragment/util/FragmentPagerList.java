@@ -7,21 +7,34 @@ import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
 
+import java.util.ArrayList;
+
 /**
  * @author Kemal Sami KARACA
  * @since 12.04.2015
  * @version v1.01
+ * @description
+ *      aaa
  */
 public class FragmentPagerList {
 
+    private final int fragmentIndicatorColor;
+    private final int fragmentDividerColor;
+    private final CharSequence fragmentTitle;
+    private final Fragment fragment;
 
-    private final CharSequence mTitle;
-    private final int mIndicatorColor;
-    private final int mDividerColor;
+    public FragmentPagerList(Fragment fragment , CharSequence title, int indicatorColor, int dividerColor) {
+        this.fragmentTitle = title;
+        this.fragmentIndicatorColor = indicatorColor;
+        this.fragmentDividerColor = dividerColor;
+        this.fragment = fragment;
+    }
+
+
+/*
+    private Fragment[] listFragments;
     private final int position;
 
-
-    private Fragment[] listFragments;
     public FragmentPagerList(int position, CharSequence title, int indicatorColor, int dividerColor) {
         this.mTitle = title;
         this.position = position;
@@ -39,17 +52,22 @@ public class FragmentPagerList {
     public Fragment getFragment() {
         return listFragments[position];
     }
+*/
+
+    public Fragment getFragment() {
+        return this.fragment;
+    }
 
     public CharSequence getTitle() {
-        return mTitle;
+        return fragmentTitle;
     }
 
     public int getIndicatorColor() {
-        return mIndicatorColor;
+        return fragmentIndicatorColor;
     }
 
     public int getDividerColor() {
-        return mDividerColor;
+        return fragmentDividerColor;
     }
 
 }

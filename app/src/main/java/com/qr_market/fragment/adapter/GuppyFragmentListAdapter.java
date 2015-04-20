@@ -1,6 +1,7 @@
 package com.qr_market.fragment.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,45 +72,46 @@ public class GuppyFragmentListAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-            System.out.println("-- PRODUCT POSITION IS " + position);
-            System.out.println("++ " + MarketUser.getInstance().getProductList().get(position).getProduct_image_url());
-
             View view = convertView;
-            if(productList.size()>=1){
+            try {
+    
+                if (productList.size() >= 1) {
+                    if (convertView == null) {
 
-                if(convertView==null){
+                        // inflate the layout
+                        LayoutInflater inflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        view = inflator.inflate(R.layout.basket_list_style_old, null);
 
+                        // well set up the ViewHolder
+                        viewHolder = new ViewHolder();
+                        viewHolder.title = (TextView) view.findViewById(R.id.ProductTitle);
+                        viewHolder.price = (TextView) view.findViewById(R.id.PrPrice);
+                        viewHolder.detail = (TextView) view.findViewById(R.id.ProductDetail);
+                        viewHolder.image = (ImageView) view.findViewById(R.id.ProductImg);
 
-                    // inflate the layout
-                    LayoutInflater inflator = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                    view = inflator.inflate(R.layout.basket_list_style_old, null);
+                        // store the holder with the view.
+                        view.setTag(viewHolder);
 
-                    // well set up the ViewHolder
-                    viewHolder = new ViewHolder();
-                    viewHolder.title = (TextView) view.findViewById(R.id.ProductTitle);
-                    viewHolder.price = (TextView) view.findViewById(R.id.PrPrice);
-                    viewHolder.detail = (TextView) view.findViewById(R.id.ProductDetail);
-                    viewHolder.image = (ImageView) view.findViewById(R.id.ProductImg);
+                    } else {
+                        viewHolder = (ViewHolder) convertView.getTag();
+                    }
 
-                    // store the holder with the view.
-                    view.setTag(viewHolder);
+                    if (productList.get(position).getProduct_image().size() > 0) {
+                        viewHolder.image.setImageBitmap(productList.get(position).getProduct_image().get(0));
+                    } else {
 
-                }else{
-                    viewHolder = (ViewHolder) convertView.getTag();
+                    }
+
+                    viewHolder.title.setText(productList.get(position).getProduct_name());
+                    viewHolder.detail.setText("sss");
+                    viewHolder.price.setText(productList.get(position).getProduct_price());
+
                 }
+            }catch (NullPointerException ee){
 
-                System.out.println("-- PRODUCTION IMAGE SIZE :: " + productList.get(position).getProduct_image().size() );
-                if(productList.get(position).getProduct_image().size() >0 ){
-                    viewHolder.image.setImageBitmap(productList.get(position).getProduct_image().get(0));
-                }else{
+                Log.e("GuppyFragmentListAdapter", "getView error");
 
-                }
-
-                viewHolder.title.setText(productList.get(position).getProduct_name());
-                viewHolder.detail.setText("sss");
-                viewHolder.price.setText(productList.get(position).getProduct_price());
             }
-
 
         return view;
 

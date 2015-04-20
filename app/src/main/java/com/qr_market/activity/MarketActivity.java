@@ -30,6 +30,7 @@ import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.fragment.ui.PaymentFragment;
+import com.qr_market.fragment.ui.PaymentResultFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
 import com.qr_market.db.DBHandler;
 import com.qr_market.fragment.ui.ViewPagerFragmentList;
@@ -51,7 +52,8 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
                                                                     ProfileFragment.OnFragmentInteractionListener,
                                                                     BarcodeFragment.OnFragmentInteractionListener,
                                                                     BasketFragment.OnFragmentInteractionListener,
-                                                                    PaymentFragment.OnFragmentInteractionListener{
+                                                                    PaymentFragment.OnFragmentInteractionListener,
+                                                                    PaymentResultFragment.OnFragmentInteractionListener{
 
     private static Context context = null;
     public static Context getContext() {

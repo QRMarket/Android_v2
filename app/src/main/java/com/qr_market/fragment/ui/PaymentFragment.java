@@ -1,5 +1,6 @@
 package com.qr_market.fragment.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -38,12 +39,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link PaymentFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link PaymentFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * @author Kemal Sami KARACA
+ * @since 02.2015
+ * @version v1.01
+ *
+ * @description
+ *      xxx
+ *
+ * @last 20.04.2015
  */
 public class PaymentFragment extends Fragment implements OnItemSelectedListener {
 
@@ -53,20 +56,28 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
     private String mParam1;
     private String mParam2;
 
+
     private static View view;
     private OnFragmentInteractionListener mListener;
 
-    public static View getViewPaymentFragment(){
-        return view;
-    }
+    private Spinner SpinnerPaymentMethode,SpinnerArrivalTime;
+    private Button confirmOrder;
+    EditText timeText;
+    StringBuilder CurrentDate;
+    Calendar calendar = Calendar.getInstance();
+    int year = calendar.get(Calendar.YEAR);
+    int month = calendar.get(Calendar.MONTH);
+    int day = calendar.get(Calendar.DAY_OF_MONTH);
+    String time,SelectedDate;
+    private static EditText TimeSelect;
+
 
     /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PaymentFragment.
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                  CONSTRUCTOR & ENCAPSULATION METHODS
+     ***********************************************************************************************
+     ***********************************************************************************************
      */
     public static PaymentFragment newInstance(String param1, String param2) {
         PaymentFragment fragment = new PaymentFragment();
@@ -81,6 +92,21 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
         // Required empty public constructor
     }
 
+    public static View getViewPaymentFragment(){
+        return view;
+    }
+
+
+
+
+
+    /**
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                              OVERRIDE METHODS
+     ***********************************************************************************************
+     ***********************************************************************************************
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,122 +116,114 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
         }
     }
 
-    private Spinner SpinnerPaymentMethode,SpinnerArrivalTime;
-    private Button confirmOrder;
-    EditText timeText;
-    StringBuilder CurrentDate;
-    Calendar calendar = Calendar.getInstance();
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH);
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    String time,SelectedDate;
-    private static EditText TimeSelect;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        // -0- Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_payment, container, false);
 
-
+        // -1- SET ADDRESS
         TextView userAddressView = (TextView) view.findViewById(R.id.AdressOfUser);
         userAddressView.setText(MarketUser.getAddressList().get(0).getAddressString());
 
-                timeText = (EditText)view.findViewById(R.id.timeselect);
+        timeText = (EditText)view.findViewById(R.id.timeselect);
 
-                //Spinners
-                SpinnerPaymentMethode =(Spinner) view.findViewById(R.id.PaymentSpinner);
-                SpinnerArrivalTime=(Spinner) view.findViewById(R.id.ArrivalTimeSpinner);
+        //Spinners
+        SpinnerPaymentMethode =(Spinner) view.findViewById(R.id.PaymentSpinner);
+        SpinnerArrivalTime=(Spinner) view.findViewById(R.id.ArrivalTimeSpinner);
 
-                // display the current date (this method is below)
-                CurrentDate = new StringBuilder().append(month+1).append("-")
-                                                    .append(day).append("-")
-                                                    .append(year).append("");
-
-
-
-                //List and Array Adapter For Payment methode
-                List<String> list = new ArrayList<String>();
-                list.add("Kredi");
-                list.add("Nakit");
-                list.add("Online");
-
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,list);
-                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                SpinnerPaymentMethode.setAdapter(dataAdapter);
+        // display the current date (this method is below)
+        CurrentDate = new StringBuilder().append(month+1).append("-")
+                .append(day).append("-")
+                .append(year).append("");
 
 
-                //List and Array Adapter For Order Arrival Time
-                List<String> ListTime=new ArrayList<String>();
-                ListTime.add("Bugün");
-                ListTime.add("Zaman ve tarih seç");
+        //List and Array Adapter For Payment method
+        List<String> list = new ArrayList<String>();
+        list.add("Kredi");
+        list.add("Nakit");
+        list.add("Online");
 
-                ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,ListTime);
-                dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                SpinnerArrivalTime.setAdapter(dataAdapter2);
-
-
-                SpinnerPaymentMethode.setOnItemSelectedListener(this);
-                SpinnerArrivalTime.setOnItemSelectedListener(this);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,list);
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SpinnerPaymentMethode.setAdapter(dataAdapter);
 
 
-                TimeSelect=(EditText) view.findViewById(R.id.timeselect);
-                TimeSelect.setText(new StringBuilder().append(month+1).append("-")
-                        .append(day).append("-")
-                        .append(year).append(""));
-                TimeSelect.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                /*
-                                DialogFragment newFragment2 =new TimePickerFragment();
-                                newFragment2.show(getFragmentManager(), "timePicker");
+        //List and Array Adapter For Order Arrival Time
+        List<String> ListTime=new ArrayList<String>();
+        ListTime.add("Bugün");
+        ListTime.add("Zaman ve tarih seç");
 
-                                DialogFragment newFragment = new DatePickerFragment();
-                                newFragment.show(getFragmentManager(), "datePicker");
-                */
+        ArrayAdapter<String> dataAdapter2 = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,ListTime);
+        dataAdapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        SpinnerArrivalTime.setAdapter(dataAdapter2);
 
-                    }
-                });
+
+        SpinnerPaymentMethode.setOnItemSelectedListener(this);
+        SpinnerArrivalTime.setOnItemSelectedListener(this);
+
+
+        TimeSelect=(EditText) view.findViewById(R.id.timeselect);
+        TimeSelect.setText(new StringBuilder().append(month+1).append("-")
+                .append(day).append("-")
+                .append(year).append(""));
+        TimeSelect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                DialogFragment newFragment2 =new TimePickerFragment();
+                newFragment2.show(getFragmentManager(), "timePicker");
+
+                DialogFragment newFragment = new DatePickerFragment();
+                newFragment.show(getFragmentManager(), "datePicker");
+
+            }
+        });
 
 
 
 
 
-                confirmOrder= (Button) view.findViewById(R.id.btnGo);
-                confirmOrder.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast.makeText(getActivity(), ((EditText)view.findViewById(R.id.timeselect)).getText().toString() , Toast.LENGTH_LONG).show();
+        confirmOrder= (Button) view.findViewById(R.id.btnGo);
+        confirmOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-                        Log.i("CONFIRM PARAM " , "time " +((EditText)view.findViewById(R.id.timeselect)).getText().toString() );
-                        Log.i("CONFIRM PARAM " , "note " +((EditText)view.findViewById(R.id.editTextNot)).getText().toString() );
-                        Log.i("CONFIRM PARAM " , "payment " + "NOT READY" );
-                        Log.i("CONFIRM PARAM " , "addressID " + "NOT READY" );
+                String aid = MarketUser.getAddressList().get(0).getAid();
+                String ptype = String.valueOf(SpinnerPaymentMethode.getSelectedItem());
+                String date = ((EditText)view.findViewById(R.id.timeselect)).getText().toString();
+                String note = ((EditText)view.findViewById(R.id.editTextNot)).getText().toString();
 
-                        String aid = MarketUser.getAddressList().get(0).getAid();
-                        String ptype = String.valueOf(SpinnerPaymentMethode.getSelectedItem());
-                        String date = ((EditText)view.findViewById(R.id.timeselect)).getText().toString();
-                        String note = ((EditText)view.findViewById(R.id.editTextNot)).getText().toString();
+                Map parameters = new HashMap();
+                parameters.put("cdosDo", "confirmOrderList");
+                parameters.put("aid", aid);
+                parameters.put("ptype", ptype);
+                parameters.put("date", date);
+                parameters.put("note", note);
 
-                        confirmCart(aid,ptype,date,note);
-                    }
+                Map operationInfo = new HashMap();
+                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
+                new HttpHandler( getActivity() , "ORDERCONFIRM" ).execute( operationInfo , parameters);
 
-                });
+                // Bu noktada artık sipariş verilmiştir. Sonuç ise diğer fragment'e dönecektir
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame2, PaymentResultFragment.newInstance("",""), "Payment result");
+                ft.commit();
+            }
+        });
 
-                Button BackBtn=(Button) view.findViewById(R.id.btnBack);
-                BackBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Fragment fr =new BasketFragment();
-                        fr.isHidden();
-                        final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                        ft.replace(R.id.content_frame2, new BasketFragment(), "NewFragmentTag");
-
-                        ft.commit();
-
-                    }
-                });
+        Button BackBtn=(Button) view.findViewById(R.id.btnBack);
+        BackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame2, BasketFragment.newInstance("",""), "NewFragmentTag");
+                ft.commit();
+            }
+        });
 
 
         return view;
@@ -251,7 +269,6 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
 
         if(SpinnerArrivalTime.getSelectedItemPosition()==1){
-/*
 
             DialogFragment newFragment = new DatePickerFragment();
             newFragment.show(getFragmentManager(), "datePicker");
@@ -263,7 +280,7 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
 
             }
-*/
+
         }else{
             TimeSelect.setText("Hemen("+CurrentDate+")");
         }
@@ -275,6 +292,17 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
     }
 
+
+
+
+
+    /**
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                              INTERFACE CLASS
+     ***********************************************************************************************
+     ***********************************************************************************************
+     */
     /**
      * This interface must be implemented by activities that contain this
      * fragment to allow an interaction in this fragment to be communicated
@@ -291,22 +319,7 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
     }
 
 
-    public void confirmCart(String aid, String ptype, String date, String note){
 
-        Map parameters = new HashMap();
-        parameters.put("cdosDo", "confirmOrderList");
-        parameters.put("aid", aid);
-        parameters.put("ptype", ptype);
-        parameters.put("date", date);
-        parameters.put("note", note);
-
-        Map operationInfo = new HashMap();
-        operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-        operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-
-        new HttpHandler( getActivity().getApplicationContext() , "ORDERCONFIRM").execute( operationInfo , parameters);
-
-    }
 
 
     /**
@@ -317,9 +330,8 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
      ***********************************************************************************************
      */
 
-
-/*
     //Time Picker Fragment
+    @SuppressLint("ValidFragment")
     public  class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
         @Override
@@ -347,6 +359,7 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
 
     //Date Picker Fragment
+    @SuppressLint("ValidFragment")
     public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
         @Override
@@ -371,6 +384,6 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
         }
 
     }
-    */
+
 
 }
