@@ -311,7 +311,15 @@ public class HttpProcessor {
                 // First of all remove products
                 MarketUser.getInstance().setProductList(new ArrayList<MarketProduct>());
 
+                TextView paymentResult = (TextView) activity.findViewById(R.id.payment_result_text);
+                paymentResult.setText("İşleminiz başarıyla gerçekleşmiştir");
+
                 operationResultSuccess = true;
+
+            }else{
+
+                TextView paymentResult = (TextView) activity.findViewById(R.id.payment_result_text);
+                paymentResult.setText("İşleminizde problemle karşılaştık...");
             }
 
         } catch (JSONException e) {
