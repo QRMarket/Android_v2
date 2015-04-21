@@ -74,7 +74,7 @@ public class GuppyFragmentListAdapter extends BaseAdapter {
 
             View view = convertView;
             try {
-    
+
                 if (productList.size() >= 1) {
                     if (convertView == null) {
 
