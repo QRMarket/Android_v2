@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:paddingRight="15dp"
     android:orientation="vertical"
-    android:background="@color/navigation_items">
+    android:background="@color/backgroud_user">
 
     <RelativeLayout
         android:layout_width="match_parent"
