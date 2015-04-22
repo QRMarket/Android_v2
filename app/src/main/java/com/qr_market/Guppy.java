@@ -8,7 +8,7 @@ package com.qr_market;
 public class Guppy {
 
     public static String url_scheme             = "http://";
-    public static String url_server             = url_scheme + "193.140.63.162";
+    public static String url_server             = url_scheme + "localhost";
     public static String url_serverPort         = url_server + ":8080";
     public static String url                    = url_serverPort + "/QR_Market_Web";
     public static String url_Servlet_Auth       = url + "/Auth";
