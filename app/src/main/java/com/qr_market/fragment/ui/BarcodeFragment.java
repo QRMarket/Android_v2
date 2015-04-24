@@ -12,7 +12,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -108,7 +107,7 @@ public class BarcodeFragment extends Fragment {
             }
         });
 
-        Button add_button = (Button) barcodeView.findViewById(R.id.btnAddBasket);
+        BootstrapButton add_button = (BootstrapButton) barcodeView.findViewById(R.id.btnAddBasket);
         add_button.setOnClickListener(new View.OnClickListener(){
 
             @Override
@@ -117,7 +116,7 @@ public class BarcodeFragment extends Fragment {
             }
         });
 
-        Button fav_button = (Button) barcodeView.findViewById(R.id.btnAddFav);
+        BootstrapButton fav_button = (BootstrapButton) barcodeView.findViewById(R.id.btnAddFav);
         fav_button.setOnClickListener(new View.OnClickListener(){
 
             @Override
