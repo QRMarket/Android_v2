@@ -7,4 +7,5 @@
     <string name="product_title">Coco Cola 1L</string>
     <string name="product_price">2.5 TL</string>
     <string name="favBtn">Favorilere Ekle</string>
+    <string name="AddBsktBtn">Sepete Ekle</string>
 </resources>
