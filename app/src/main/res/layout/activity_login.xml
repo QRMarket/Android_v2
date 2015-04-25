@@ -22,7 +22,7 @@
             android:src="@drawable/logotrans"/>
         <EditText
             android:id="@+id/TextUsrname"
-            android:text="kemal"
+            android:text="userone@gmail.com"
             android:padding="8dp"
             android:background="@drawable/tab_default"
             android:textColor="@android:color/black"
@@ -38,7 +38,8 @@
         </EditText>
         <EditText
             android:id="@+id/TextPsw"
-            android:text="kemal"
+            android:text="userone"
+            android:inputType="textPassword"
             android:padding="8dp"
             android:background="@drawable/tab_default"
             android:textColor="@android:color/black"
