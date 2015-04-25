@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +90,7 @@ public class ViewPagerFragmentList extends Fragment {
 
         fragmentTabs.add(new FragmentPagerList(BarcodeFragment.newInstance("","") , "Ana Sayfa", getResources().getColor(FragmentUtils.colors[0]),  Color.BLUE));
         fragmentTabs.add(new FragmentPagerList(BasketFragment.newInstance("","") , "Sepet", getResources().getColor(FragmentUtils.colors[3]),  Color.BLUE));
-        fragmentTabs.add(new FragmentPagerList(CartFragment.newInstance("","") , "Kampanyalar", getResources().getColor(FragmentUtils.colors[5]),  Color.BLUE));
+        fragmentTabs.add(new FragmentPagerList(ProfileFragment.newInstance("","") , "Kampanyalar", getResources().getColor(FragmentUtils.colors[5]),  Color.BLUE));
         fragmentTabs.add(new FragmentPagerList(ProfileFragment.newInstance("","") , "Önceki Siparişler", getResources().getColor(FragmentUtils.colors[8]),  Color.BLUE));
 /*
         fragmentTabs.add(new FragmentPagerList(0, "Ana Sayfa", getResources().getColor(FragmentUtils.colors[0]),  Color.YELLOW));
