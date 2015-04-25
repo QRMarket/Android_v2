@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
+import android.widget.Toast;
 
 
 import com.qr_market.Guppy;
@@ -343,84 +343,88 @@ public class HttpProcessor {
     public void productGetInfo(){
 
         try {
+
             JSONObject result = new JSONObject(requestResult);
             JSONObject resultContent = null;
+            String resCode = (String) result.get("resultCode");
+            if(resCode.equalsIgnoreCase("GUPPY.001")){
 
-            Iterator iterator = result.keys();
-            while(iterator.hasNext()){
-                String key = (String)iterator.next();
-                Log.i("JSON KEY" , key);
-                Log.i("JSON KEY" , result.getString(key));
+                Iterator iterator = result.keys();
+                while(iterator.hasNext()){
+                    String key = (String)iterator.next();
+                    Log.i("JSON KEY" , key);
+                    Log.i("JSON KEY" , result.getString(key));
 
-                if(key.equalsIgnoreCase("content")){
-                    resultContent = new JSONObject(result.getString(key));
+                    if(key.equalsIgnoreCase("content")){
+                        resultContent = new JSONObject(result.getString(key));
+                    }
                 }
-            }
 
-            // This area get result from JSON and put it in EditText value ...
-            View barcodeFragmentView = BarcodeFragment.getViewBarcodeFragment();
+                // This area get result from JSON and put it in EditText value ...
+                View barcodeFragmentView = BarcodeFragment.getViewBarcodeFragment();
 
-            // URL to ImageView AREA
-            ImageView imgElem = (ImageView)barcodeFragmentView.findViewById(R.id.product_image);
+                // URL to ImageView AREA
+                ImageView imgElem = (ImageView)barcodeFragmentView.findViewById(R.id.product_image);
 
 
-            // ---------------------------------------
-            // UPDATE STATIC MARKET PRODUCT OBJECT
-            MarketProduct newProduct = MarketProduct.getProductInstance();
-            newProduct.setProduct_name(resultContent.getString("productName"));
-            newProduct.setProduct_uid(resultContent.getString("productID"));
-            newProduct.setProduct_price_type(resultContent.getString("priceType"));
-            newProduct.setProduct_price(resultContent.getString("price"));
-            newProduct.setProduct_image(new ArrayList<Bitmap>());
-            newProduct.setProduct_image_url(new ArrayList<String>());
-
-            for(int i=0; i<resultContent.getJSONArray("images").length(); i++) {
-                newProduct.getProduct_image_url().add(Guppy.url_Servlet_IMAGE + "/" + (String) resultContent.getJSONArray("images").get(i));
-            }
-
-            // **********************
-            // GET IMAGES
-            // **********************
-            ArrayList<MarketProductImage> pImageList = new ArrayList();
-            JSONArray imageList = resultContent.getJSONArray("productImages");
-            for(int i=0; i<imageList.length(); i++){
-                JSONObject image = imageList.getJSONObject(i);
-                MarketProductImage pImage = new MarketProductImage();
-                pImage.setImageID(image.getString("imageID"));
-                pImage.setImageSource(image.getString("imageSource"));
-                pImage.setImageSourceType(image.getString("imageSourceType"));
-                pImage.setImageContentType(image.getString("imageContentType"));
-                pImage.setImageType(image.getString("imageType"));
-                pImageList.add(pImage);
-
-                // IMAGE DECODING
                 // ---------------------------------------
-                if(pImage.getImageSourceType().equalsIgnoreCase("BASE64")){
-                    byte[] decodedString = Base64.decode( image.getString("imageSource") , Base64.DEFAULT);
-                    Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-                    newProduct.getProduct_image().add(decodedByte);
+                // UPDATE STATIC MARKET PRODUCT OBJECT
+                MarketProduct newProduct = MarketProduct.getProductInstance();
+                newProduct.setProduct_name(resultContent.getString("productName"));
+                newProduct.setProduct_uid(resultContent.getString("productID"));
+                newProduct.setProduct_price_type(resultContent.getString("priceType"));
+                newProduct.setProduct_price(resultContent.getString("price"));
+                newProduct.setProduct_image(new ArrayList<Bitmap>());
+                newProduct.setProduct_image_url(new ArrayList<String>());
 
-                    imgElem.setImageBitmap(decodedByte);
-                }else if(pImage.getImageSourceType().equalsIgnoreCase("URL")){
-                    //new ImageHandler(imgElem).execute(newProduct);
+                for(int i=0; i<resultContent.getJSONArray("images").length(); i++) {
+                    newProduct.getProduct_image_url().add(Guppy.url_Servlet_IMAGE + "/" + (String) resultContent.getJSONArray("images").get(i));
+                }
+
+                // **********************
+                // GET IMAGES
+                // **********************
+                ArrayList<MarketProductImage> pImageList = new ArrayList();
+                JSONArray imageList = resultContent.getJSONArray("productImages");
+                for(int i=0; i<imageList.length(); i++){
+                    JSONObject image = imageList.getJSONObject(i);
+                    MarketProductImage pImage = new MarketProductImage();
+                    pImage.setImageID(image.getString("imageID"));
+                    pImage.setImageSource(image.getString("imageSource"));
+                    pImage.setImageSourceType(image.getString("imageSourceType"));
+                    pImage.setImageContentType(image.getString("imageContentType"));
+                    pImage.setImageType(image.getString("imageType"));
+                    pImageList.add(pImage);
+
+                    // IMAGE DECODING
+                    // ---------------------------------------
+                    if(pImage.getImageSourceType().equalsIgnoreCase("BASE64")){
+                        byte[] decodedString = Base64.decode( image.getString("imageSource") , Base64.DEFAULT);
+                        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+                        newProduct.getProduct_image().add(decodedByte);
+
+                        imgElem.setImageBitmap(decodedByte);
+                    }else if(pImage.getImageSourceType().equalsIgnoreCase("URL")){
+                        //new ImageHandler(imgElem).execute(newProduct);
+                    }
+                    // ---------------------------------------
                 }
                 // ---------------------------------------
+
+
+                TextView productText = (TextView)barcodeFragmentView.findViewById(R.id.product_name);
+                productText.setText(newProduct.getProduct_name());
+
+                TextView productPrice = (TextView)barcodeFragmentView.findViewById(R.id.product_price);
+                productPrice.setText(newProduct.getProduct_price());
+
+                // SET PRODUCT INFO VISIBLE
+                barcodeFragmentView.findViewById(R.id.barcode_product).setVisibility(View.VISIBLE);
+
+            }else{
+
+                Toast.makeText(context,"Ürün bulunamadı", Toast.LENGTH_LONG).show();
             }
-            // ---------------------------------------
-
-
-
-            TextView productText = (TextView)barcodeFragmentView.findViewById(R.id.product_name);
-            productText.setText(newProduct.getProduct_name());
-
-            TextView productPrice = (TextView)barcodeFragmentView.findViewById(R.id.product_price);
-            productPrice.setText(newProduct.getProduct_price());
-
-
-
-            // SET PRODUCT INFO VISIBLE
-            barcodeFragmentView.findViewById(R.id.barcode_product).setVisibility(View.VISIBLE);
-
 
         } catch (JSONException e) {
             e.printStackTrace();
