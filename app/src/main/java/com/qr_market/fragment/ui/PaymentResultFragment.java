@@ -3,12 +3,21 @@ package com.qr_market.fragment.ui;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.support.v4.app.Fragment;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.qr_market.Guppy;
 import com.qr_market.R;
+import com.qr_market.http.HttpHandler;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -78,7 +87,15 @@ public class PaymentResultFragment extends Fragment {
         // -1- Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_payment_result, container, false);
 
-
+        BootstrapButton orderFinish = (BootstrapButton) view.findViewById(R.id.orderfinish);
+        orderFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.content_frame2, BasketFragment.newInstance("",""), "BasketFragmentTag");
+                ft.commit();
+            }
+        });
 
 
         return view;
