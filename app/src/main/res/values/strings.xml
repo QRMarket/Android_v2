@@ -40,5 +40,7 @@
     <string name="favBtn">Favorilere Ekle</string>
     <string name="AddBsktBtn">Sepete Ekle</string>
     <string name="Welcome">Guppy\'ye Hoş Geldiniz..!</string>
+    <string name="PaymentResultText">Siparişiniz Başarıyla Bize Ulaşmıştır.</string>
+    <string name="PaymentStatusTxt">Teşekkürler!!</string>
 
 </resources>

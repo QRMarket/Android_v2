@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.activity.LoginActivity;
@@ -26,6 +27,7 @@ import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
+import com.qr_market.fragment.util.FragmentUtils;
 import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketProductImage;
 import com.qr_market.util.MarketUser;
@@ -311,15 +313,30 @@ public class HttpProcessor {
                 // First of all remove products
                 MarketUser.getInstance().setProductList(new ArrayList<MarketProduct>());
 
+                TextView paymentStatus = (TextView)activity.findViewById(R.id.payment_result_status);
+                paymentStatus.setText("Teşekkürler!");
+
                 TextView paymentResult = (TextView) activity.findViewById(R.id.payment_result_text);
-                paymentResult.setText("İşleminiz başarıyla gerçekleşmiştir");
+                paymentResult.setText("Siparişiniz Başarıyla Bize Ulaşmıştır.");
+
+                FontAwesomeText success_icon =(FontAwesomeText) activity.findViewById(R.id.payment_result_icon);
+                success_icon.setIcon("fa-check-circle");
 
                 operationResultSuccess = true;
 
             }else{
 
+                TextView paymentStatus = (TextView)activity.findViewById(R.id.payment_result_status);
+                paymentStatus.setText("Üzgünüz!");
+                paymentStatus.setTextColor(FragmentUtils.colors[7]);
+
                 TextView paymentResult = (TextView) activity.findViewById(R.id.payment_result_text);
                 paymentResult.setText("İşleminizde problemle karşılaştık...");
+                paymentResult.setTextColor(FragmentUtils.colors[7]);
+
+                FontAwesomeText success_icon =(FontAwesomeText) activity.findViewById(R.id.payment_result_icon);
+                success_icon.setIcon("fa-exclamation-triangle");
+                success_icon.setTextColor(FragmentUtils.colors[7]);
             }
 
         } catch (JSONException e) {

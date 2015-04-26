@@ -1,22 +1,54 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="com.qr_market.fragment.ui.PaymentResultFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/payment_result_text"
-        android:text="@string/hello_blank_fragment" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+
+        android:gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/payment_result_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/bbutton_success_pressed"
+            android:textStyle="bold"
+            android:textSize="18dp"
+            android:text="@string/PaymentStatusTxt"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/payment_result_text"
+            android:textColor="@color/bbutton_success"
+            android:textSize="18dp"
+            android:text="@string/PaymentResultText" />
+
+        <com.beardedhen.androidbootstrap.FontAwesomeText
+            android:id="@+id/payment_result_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:textColor="@color/bbutton_success_edge"
+            android:textSize="32sp"
+            />
+
+    </LinearLayout>
+
 
 
     <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/orderfinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="3dp"
         android:text="Tamam"
         android:textSize="@dimen/textsize_medium"/>
 
-</FrameLayout>
+</LinearLayout>
