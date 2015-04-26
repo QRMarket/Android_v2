@@ -2,15 +2,16 @@ package com.qr_market.activity;
 
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
+
+import com.beardedhen.androidbootstrap.BootstrapButton;
+import com.beardedhen.androidbootstrap.BootstrapEditText;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.db.DBHandler;
@@ -53,11 +54,10 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
         setView(this.getWindow().getDecorView().findViewById(android.R.id.content));
 
-
-        Button login = (Button) findViewById(R.id.guppyLogin);
-        Button register = (Button) findViewById(R.id.guppyRegister);
-        final EditText cduName = (EditText) findViewById(R.id.TextUsrname);
-        final EditText cduPass = (EditText) findViewById(R.id.TextPsw);
+        BootstrapButton login = (BootstrapButton) findViewById(R.id.guppyLogin);
+        BootstrapButton register = (BootstrapButton) findViewById(R.id.guppyRegister);
+        final BootstrapEditText cduName = (BootstrapEditText) findViewById(R.id.TextUsrname);
+        final BootstrapEditText cduPass = (BootstrapEditText) findViewById(R.id.TextPsw);
 
         login.setOnClickListener(this);
         login.setOnClickListener(new View.OnClickListener() {
