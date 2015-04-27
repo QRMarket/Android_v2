@@ -25,9 +25,11 @@ import com.qr_market.activity.MarketActivity;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
+import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.util.FragmentUtils;
+import com.qr_market.util.MarketOrder;
 import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketProductImage;
 import com.qr_market.util.MarketUser;
@@ -280,6 +282,7 @@ public class HttpProcessor {
 
                 TextView totalPrice = (TextView)activity.findViewById(R.id.footer_total_price);
                 totalPrice.setText(String.format("%,.2f" , getTotalPrice()));
+                operationResultSuccess = true;
 
             }
 
@@ -337,6 +340,51 @@ public class HttpProcessor {
                 FontAwesomeText success_icon =(FontAwesomeText) activity.findViewById(R.id.payment_result_icon);
                 success_icon.setIcon("fa-exclamation-triangle");
                 success_icon.setTextColor(FragmentUtils.colors[7]);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return operationResultSuccess;
+    }
+
+
+
+
+
+
+    // ---------------------------------------------------------------------------------------------
+    /**
+     * @return
+     *
+     * This function is used to handle "getOrderList" RESPONSES
+     *
+     */
+    public boolean getOrderList(OrderFragmentListAdapter myOrderAdapter){
+        boolean operationResultSuccess = false;
+
+        try {
+            JSONObject result = new JSONObject(requestResult);
+
+            String resCode = (String) result.get("resultCode");
+            if(resCode.equalsIgnoreCase("GUPPY.001")){
+
+                MarketOrder.setOrderListInstance(null);
+                for(int i=0; i<result.getJSONArray("content").length(); i++) {
+
+                    MarketOrder marketOrder = new MarketOrder();
+                    marketOrder.setOrderId((String) result.getJSONArray("content").get(i));
+                    MarketOrder.getOrderListInstance().add(marketOrder);
+
+                }
+                myOrderAdapter.setOrderList(MarketOrder.getOrderListInstance());
+                myOrderAdapter.notifyDataSetChanged();
+
+                operationResultSuccess = true;
+
+            }else{
+                Toast.makeText(activity.getApplicationContext(), "Önceki siparişleriniz alınırken hata oluştu", Toast.LENGTH_LONG).show();
             }
 
         } catch (JSONException e) {

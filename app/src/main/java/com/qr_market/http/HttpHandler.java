@@ -55,6 +55,7 @@ import com.qr_market.checker.Checker;
 import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
+import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.util.MarketProduct;
@@ -87,6 +88,7 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
     private JSONObject result;
     private MainActivity mainActivity;
     private BasketFragmentListAdapter myBasketAdapter;
+    private OrderFragmentListAdapter myOrderAdapter;
 
     @Deprecated
     public HttpHandler(){
@@ -110,6 +112,12 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
         this.context = context;
         this.servletName = servletName;
         this.myBasketAdapter = myBasketAdapter;
+    }
+    public HttpHandler(Activity activity , String servletName , OrderFragmentListAdapter myOrderAdapter ){
+        this.activity = activity;
+        this.context = activity.getApplicationContext();
+        this.servletName = servletName;
+        this.myOrderAdapter = myOrderAdapter;
     }
     public HttpHandler(Activity activity , String servletName , BasketFragmentListAdapter myBasketAdapter ){
         this.activity = activity;
@@ -206,6 +214,10 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
             }else if(servletName!=null && servletName.equalsIgnoreCase("ORDERCONFIRM")) {
 
                 new HttpProcessor(resultStr , activity ).confirmCart();
+
+            }else if(servletName!=null && servletName.equalsIgnoreCase("GETORDERLIST")) {
+
+                new HttpProcessor(resultStr , activity ).getOrderList(myOrderAdapter);
 
             }else{
                 String userMail = (String)map_param.get("cduMail");

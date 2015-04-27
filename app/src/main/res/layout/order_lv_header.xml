@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/purple_dark">
+
+        <TextView
+            android:id="@+id/order_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Order List"
+            android:textSize="@dimen/lvSecondaryTextSize"
+            android:textColor="#ffffffff"/>
+
+
+        <com.beardedhen.androidbootstrap.FontAwesomeText
+            android:id="@+id/order_lv_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/bbutton_default"
+            android:textSize="24sp"
+            />
+
+    </RelativeLayout>
+
+</LinearLayout>
