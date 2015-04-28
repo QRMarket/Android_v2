@@ -27,7 +27,12 @@ import java.util.Map;
 /**
  * @author Kemal Sami KARACA
  * @since 02.03.2015
- * @version v1.02
+ * @version v1.01
+ *
+ * @description
+ *      Adapter of basket list
+ *
+ * @last 02.03.2015
  */
 public class BasketFragmentListAdapter extends BaseAdapter {
 

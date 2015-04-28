@@ -45,7 +45,6 @@ public class GuppyContract {
                         GuppyUser.COLUMN_NAME_USER_PASSWORD + TYPE_TEXT + COMMA_SEP +
                         GuppyUser.COLUMN_NAME_USER_NAME + TYPE_TEXT +
                         " )";
-
         private static final String SQL_DELETE_ENTRIES =
                 "DROP TABLE IF EXISTS " + GuppyUser.TABLE_NAME;
 

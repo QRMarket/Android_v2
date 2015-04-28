@@ -42,5 +42,6 @@
     <string name="Welcome">Guppy\'ye Hoş Geldiniz..!</string>
     <string name="PaymentResultText">Siparişiniz Başarıyla Bize Ulaşmıştır.</string>
     <string name="PaymentStatusTxt">Teşekkürler!!</string>
+    <string name="reorder_btn">Siparişi Tekrarla</string>
 
 </resources>

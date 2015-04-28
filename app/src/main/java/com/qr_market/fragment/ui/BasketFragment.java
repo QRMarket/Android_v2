@@ -21,12 +21,14 @@ import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.util.MarketUser;
 
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link BasketFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link BasketFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * @author Kemal Sami KARACA
+ * @since 04.2015
+ * @version v1.01
+ *
+ * @description
+ *      xxx
+ *
+ * @last 26.04.2015
  */
 public class BasketFragment extends Fragment {
 

@@ -21,6 +21,7 @@ public class MarketUser {
     private static List<MarketProduct> productList;
     private static List<MarketUserAddress> addressList;
 
+
     static{
         //initializeStaticObjects();
     }

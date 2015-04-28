@@ -29,6 +29,7 @@ import com.qr_market.fragment.adapter.GuppyFragmentPageAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
+import com.qr_market.fragment.ui.OrderFragment;
 import com.qr_market.fragment.ui.PaymentFragment;
 import com.qr_market.fragment.ui.PaymentResultFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
@@ -50,6 +51,7 @@ import java.util.Map;
 public class MarketActivity extends ActionBarActivity implements ViewPagerFragmentList.OnFragmentInteractionListener,
                                                                     CartFragment.OnFragmentInteractionListener,
                                                                     ProfileFragment.OnFragmentInteractionListener,
+                                                                    OrderFragment.OnFragmentInteractionListener,
                                                                     BarcodeFragment.OnFragmentInteractionListener,
                                                                     BasketFragment.OnFragmentInteractionListener,
                                                                     PaymentFragment.OnFragmentInteractionListener,
