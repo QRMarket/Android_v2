@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -113,12 +115,15 @@ public class OrderFragment extends Fragment {
 
 
         // Refresh page
-        FontAwesomeText orderRefresh = (FontAwesomeText)view.findViewById(R.id.order_lv_refresh);
+        final FontAwesomeText orderRefresh = (FontAwesomeText)view.findViewById(R.id.order_lv_refresh);
         orderRefresh.setIcon("fa-refresh");
         parameters = new HashMap();
         orderRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Animation animation = AnimationUtils.loadAnimation(getActivity().getApplicationContext(), R.anim.clockwise);
+                orderRefresh.startAnimation(animation);
 
                 // API CALL
                 Toast.makeText( getActivity(), "Refresh clicked", Toast.LENGTH_LONG).show();
