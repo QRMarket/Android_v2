@@ -42,7 +42,6 @@ public class OrderFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private OrderFragmentListAdapter orderAdapter;
 
-    private Map parameters;
     private View view;
 
     /**
@@ -112,12 +111,22 @@ public class OrderFragment extends Fragment {
         setOrderAdapter(new OrderFragmentListAdapter(getActivity(), MarketOrder.getOrderListInstance()));
         orderListView.setAdapter(getOrderAdapter());
 
+        //INITIAL ORDER-LIST REQUEST
+        Map parameters;
+        parameters = new HashMap();
+        parameters.put("cdosDo", "getOrderLists");
+
+        Map operationInfo = new HashMap();
+        operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+        operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
+        new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute( operationInfo , parameters);
+
 
 
         // Refresh page
         final FontAwesomeText orderRefresh = (FontAwesomeText)view.findViewById(R.id.order_lv_refresh);
         orderRefresh.setIcon("fa-refresh");
-        parameters = new HashMap();
+
         orderRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,7 +137,7 @@ public class OrderFragment extends Fragment {
                 // API CALL
                 Toast.makeText( getActivity(), "Refresh clicked", Toast.LENGTH_LONG).show();
 
-                parameters = new HashMap();
+                Map parameters = new HashMap();
                 parameters.put("cdosDo", "getOrderLists");
 
                 Map operationInfo = new HashMap();
@@ -140,15 +149,6 @@ public class OrderFragment extends Fragment {
             }
         });
 
-
-        parameters = new HashMap();
-        parameters.put("cdosDo", "getOrderLists");
-
-        Map operationInfo = new HashMap();
-        operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-        operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-
-        new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute( operationInfo , parameters);
 
         return view;
     }

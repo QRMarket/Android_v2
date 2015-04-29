@@ -12,7 +12,7 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lvDividerHeight"
-        android:background="@color/lvDividerColor"/>
+        android:background="@color/purple_light"/>
 
 
 
@@ -44,25 +44,14 @@
         android:singleLine="true"
         android:layout_gravity="left"
         />
-    <TextView
-        android:id="@+id/ordered_product"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/listViewPrimaryDetail"
-        android:layout_below="@id/ordered_market_name"
-        android:textColor="@color/black"
-        android:textSize="@dimen/lvSecondaryTextSize"
-        android:text="Coco-Cola 2.5 L"
-        android:singleLine="true"
-        android:layout_gravity="left"
-        />
+
 
     <TextView
         android:id="@+id/ordered_market_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/listViewSecondaryDetail"
-        android:layout_below="@id/ordered_product"
+        style="@style/listViewPrimaryDetail"
+        android:layout_below="@id/ordered_market_name"
         android:textColor="@color/gray"
         android:textSize="@dimen/lvSecondaryTextSize"
         android:text="Ankara"
@@ -89,7 +78,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginBottom="5dp"
         android:layout_below="@+id/ordered_market_adress"
-        android:layout_height="@dimen/lvDividerHeight"
+        android:layout_height="0dp"
         android:background="@color/lvDividerColor"
         />
 
@@ -161,11 +150,11 @@
 
 
          <com.beardedhen.androidbootstrap.BootstrapButton
+             android:id="@+id/ReOrderBtn"
              android:layout_width="wrap_content"
              android:layout_alignParentRight="true"
              android:layout_height="wrap_content"
              android:layout_marginRight="20dp"
-             android:layout_marginBottom="20dp"
              android:layout_centerVertical="true"
              android:layout_below="@+id/order_button_separator"
              android:text="@string/reorder_btn"

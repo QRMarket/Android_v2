@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.R;
 import com.qr_market.util.MarketOrder;
@@ -102,6 +104,9 @@ public class OrderFragmentListAdapter extends BaseAdapter {
                 timeIcon.setIcon("fa-clock-o");
                 orderView.setTag(viewHolder);
 
+
+
+
         }else{
 
                 viewHolder = (ViewHolder) convertView.getTag();
@@ -112,6 +117,18 @@ public class OrderFragmentListAdapter extends BaseAdapter {
 
         // Start settings
         viewHolder.orderId.setText(order.getOrderId());
+
+
+        //ReOrder Button here
+        BootstrapButton reOrder=(BootstrapButton) orderView.findViewById(R.id.ReOrderBtn);
+        reOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Toast.makeText(context, "Bu işlem yapım aşamasındadır..", Toast.LENGTH_LONG).show();
+
+            }
+        });
 
         return orderView;
     }
