@@ -41,7 +41,7 @@
             android:textSize="@dimen/lvSecondaryTextSize" />
 
     </RelativeLayout>
-    <Button
+        <com.beardedhen.androidbootstrap.BootstrapButton
         android:id="@+id/LvBtnGo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

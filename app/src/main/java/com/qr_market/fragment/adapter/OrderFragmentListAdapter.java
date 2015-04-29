@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.R;
 import com.qr_market.util.MarketOrder;
 
@@ -95,6 +96,10 @@ public class OrderFragmentListAdapter extends BaseAdapter {
                 //viewHolder.orderId = (TextView) v.findViewById(R.id.ProductTitle);
 
                 // -4-store the holder with the view.
+
+                //Set Time Icon
+                FontAwesomeText timeIcon = (FontAwesomeText) orderView.findViewById(R.id.order_time_icon);
+                timeIcon.setIcon("fa-clock-o");
                 orderView.setTag(viewHolder);
 
         }else{

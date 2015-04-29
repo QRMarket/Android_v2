@@ -1,22 +1,18 @@
 package com.qr_market.fragment.ui;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.v4.app.Fragment;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.qr_market.R;
-import com.qr_market.activity.MarketActivity;
 import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
 import com.qr_market.util.MarketUser;
 
@@ -122,7 +118,7 @@ public class BasketFragment extends Fragment {
 
         //Add Footer layout To LV
         View footer=getActivity().getLayoutInflater().inflate(R.layout.basket_lv_footer,null);
-        final Button LvGoBtn=(Button) footer.findViewById(R.id.LvBtnGo);
+        final BootstrapButton LvGoBtn=(BootstrapButton) footer.findViewById(R.id.LvBtnGo);
         lv.addFooterView(footer);
 
         //SET ADAPTER

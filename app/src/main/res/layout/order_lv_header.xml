@@ -26,6 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:layout_alignParentRight="true"
+            android:clickable="true"
             android:textColor="@color/bbutton_default"
             android:textSize="24sp"
             />
