@@ -92,10 +92,11 @@ public class OrderFragmentListAdapter extends BaseAdapter {
                 orderView = inflater.inflate(R.layout.order_list_style, null);
 
                 // -3- Set up the ViewHolder
-                viewHolder.orderId = (TextView) orderView.findViewById(R.id.order_item_title);
-                //viewHolder.orderId = (TextView) v.findViewById(R.id.ProductTitle);
-                //viewHolder.orderId = (TextView) v.findViewById(R.id.ProductTitle);
-                //viewHolder.orderId = (TextView) v.findViewById(R.id.ProductTitle);
+                viewHolder.orderId          = (TextView) orderView.findViewById(R.id.order_item_title);
+                viewHolder.orderCompany     = (TextView) orderView.findViewById(R.id.order_market_name);
+                viewHolder.orderDate        = (TextView) orderView.findViewById(R.id.order_date);
+                viewHolder.orderAddressCity = (TextView) orderView.findViewById(R.id.order_market_city);
+                viewHolder.orderAddress     = (TextView) orderView.findViewById(R.id.ordered_market_adress);
 
                 // -4-store the holder with the view.
 
@@ -117,6 +118,10 @@ public class OrderFragmentListAdapter extends BaseAdapter {
 
         // Start settings
         viewHolder.orderId.setText(order.getOrderId());
+        viewHolder.orderCompany.setText(order.getCompanyName());
+        viewHolder.orderDate.setText(order.getDate());
+        viewHolder.orderAddressCity.setText(order.getAddress().getCity());
+        viewHolder.orderAddress.setText(order.getAddress().getBorough() + "/" + order.getAddress().getLocality());
 
 
         //ReOrder Button here
@@ -151,5 +156,9 @@ public class OrderFragmentListAdapter extends BaseAdapter {
      */
     public class ViewHolder {
         TextView orderId;
+        TextView orderCompany;
+        TextView orderDate;
+        TextView orderAddressCity;
+        TextView orderAddress;
     }
 }

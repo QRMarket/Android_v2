@@ -97,20 +97,7 @@ public class BasketFragment extends Fragment {
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_basket, container, false);
 
-        /*
-        MarketProduct pro1 = new MarketProduct("pname1","pname1 bla bla", "1.5",R.drawable.ph_2);
-        MarketProduct pro2 = new MarketProduct("pname2","pname2 bla bla", "2.5",R.drawable.ph_4);
-        MarketProduct pro3 = new MarketProduct("pname3","pname3 bla bla", "3.5",R.drawable.ph_2);
-        MarketProduct pro4 = new MarketProduct("pname4","pname4 bla bla", "4.5",R.drawable.ph_3);
-        MarketProduct pro5 = new MarketProduct("pname5","pname5 bla bla", "5.5",R.drawable.ph_4);
 
-        List<MarketProduct> productList=new ArrayList<MarketProduct>();
-        productList.add(pro1);
-        productList.add(pro2);
-        productList.add(pro3);
-        productList.add(pro4);
-        productList.add(pro5);
-        */
 
         final ListView lv  = (ListView) view.findViewById(R.id.listViewSwp);
         View header = getActivity().getLayoutInflater().inflate(R.layout.basket_lv_header, null);
@@ -125,6 +112,11 @@ public class BasketFragment extends Fragment {
         setmAdapter(new BasketFragmentListAdapter(getActivity(), MarketUser.getProductList()));
         lv.setAdapter(getmAdapter());
 
+
+
+        // LISTENERs
+            // LISTENERs
+                // LISTENERs
         lv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -157,7 +149,6 @@ public class BasketFragment extends Fragment {
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

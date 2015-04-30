@@ -17,7 +17,13 @@ public class MarketOrder {
 
     private static List<MarketOrder> orderList = null;
     private static MarketOrder oInstance = null;
-    private String orderId;
+
+    private String orderID;
+    private String paymentType;
+    private String note;
+    private String date;
+    private String companyName;
+    private Address address;
 
 
     /**
@@ -51,7 +57,7 @@ public class MarketOrder {
     public MarketOrder() {
     }
     public MarketOrder(String orderId) {
-        this.orderId = orderId;
+        this.orderID = orderId;
     }
 
 
@@ -64,9 +70,49 @@ public class MarketOrder {
      ***********************************************************************************************
      */
     public String getOrderId() {
-        return orderId;
+        return orderID;
     }
     public void setOrderId(String orderId) {
-        this.orderId = orderId;
+        this.orderID = orderId;
+    }
+
+    public String getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(String paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }
