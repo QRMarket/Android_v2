@@ -114,7 +114,7 @@ public class OrderFragment extends Fragment {
         //INITIAL ORDER-LIST REQUEST
         Map parameters;
         parameters = new HashMap();
-        parameters.put("cdosDo", "getOrderLists");
+        parameters.put("cdosDo", "getOrderList");
 
         Map operationInfo = new HashMap();
         operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
@@ -138,7 +138,7 @@ public class OrderFragment extends Fragment {
                 Toast.makeText( getActivity(), "Refresh clicked", Toast.LENGTH_LONG).show();
 
                 Map parameters = new HashMap();
-                parameters.put("cdosDo", "getOrderLists");
+                parameters.put("cdosDo", "getOrderList");
 
                 Map operationInfo = new HashMap();
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);

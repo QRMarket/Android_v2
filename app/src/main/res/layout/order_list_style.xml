@@ -33,7 +33,7 @@
 
     <TextView
         android:textIsSelectable="false"
-        android:id="@+id/ordered_market_name"
+        android:id="@+id/order_market_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/order_item_title"
@@ -47,11 +47,11 @@
 
 
     <TextView
-        android:id="@+id/ordered_market_city"
+        android:id="@+id/order_market_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/listViewPrimaryDetail"
-        android:layout_below="@id/ordered_market_name"
+        android:layout_below="@id/order_market_name"
         android:textColor="@color/gray"
         android:textSize="@dimen/lvSecondaryTextSize"
         android:text="Ankara"
@@ -62,7 +62,7 @@
         android:textIsSelectable="false"
         android:id="@+id/ordered_market_adress"
         style="@style/listViewSecondaryDetail"
-        android:layout_below="@id/ordered_market_city"
+        android:layout_below="@id/order_market_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/gray"
@@ -96,7 +96,7 @@
                 />
 
                 <TextView
-                    android:id="@+id/ordered_date"
+                    android:id="@+id/order_date"
                     android:layout_width="wrap_content"
                     android:layout_toRightOf="@+id/order_time_icon"
                     android:layout_height="wrap_content"

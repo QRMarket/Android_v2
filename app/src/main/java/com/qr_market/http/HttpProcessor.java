@@ -29,6 +29,7 @@ import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.util.FragmentUtils;
+import com.qr_market.util.Address;
 import com.qr_market.util.MarketOrder;
 import com.qr_market.util.MarketProduct;
 import com.qr_market.util.MarketProductImage;
@@ -381,11 +382,26 @@ public class HttpProcessor {
                 MarketOrder.setOrderListInstance(null);
                 for(int i=0; i<result.getJSONArray("content").length(); i++) {
 
+
+                    JSONObject singleOrder = (JSONObject) result.getJSONArray("content").getJSONObject(i);
                     MarketOrder marketOrder = new MarketOrder();
-                    marketOrder.setOrderId((String) result.getJSONArray("content").get(i));
+                    marketOrder.setOrderId(singleOrder.getString("orderID"));
+                    marketOrder.setCompanyName(singleOrder.getString("companyName"));
+                    marketOrder.setPaymentType(singleOrder.getString("paymentType"));
+                    marketOrder.setNote(singleOrder.getString("note"));
+                    marketOrder.setDate(singleOrder.getString("date"));
+
+                    // GET Address of Order
+                    Address address = new Address();
+                    address.setCity(singleOrder.getJSONObject("address").getString("city"));
+                    address.setBorough(singleOrder.getJSONObject("address").getString("borough"));
+                    address.setLocality(singleOrder.getJSONObject("address").getString("locality"));
+
+                    marketOrder.setAddress(address);
                     MarketOrder.getOrderListInstance().add(marketOrder);
 
                 }
+
                 myOrderAdapter.setOrderList(MarketOrder.getOrderListInstance());
                 myOrderAdapter.notifyDataSetChanged();
 
