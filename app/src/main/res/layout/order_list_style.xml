@@ -147,9 +147,7 @@
 
 
 
-
-
-         <com.beardedhen.androidbootstrap.BootstrapButton
+             <com.beardedhen.androidbootstrap.BootstrapButton
              android:id="@+id/ReOrderBtn"
              android:layout_width="wrap_content"
              android:layout_alignParentRight="true"
@@ -159,7 +157,6 @@
              android:layout_below="@+id/order_button_separator"
              android:text="@string/reorder_btn"
              bootstrap:bb_type="success"/>
-
 
 
 

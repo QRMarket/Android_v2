@@ -8,6 +8,37 @@
         android:layout_height="match_parent" >
     </FrameLayout>
 
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/fragment_basket_main_layout"
+        android:orientation="vertical"
+        android:layout_marginTop="100dp"
+        android:gravity="center_horizontal">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/empty_basket_img"
+            android:layout_height="wrap_content"
+            android:src="@drawable/empty_cart"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/listViewPrimaryDetail"
+            android:text="@string/empty_basket_txt"
+            android:textColor="@color/gray"
+            android:textSize="18dp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="@style/listViewSecondaryDetail"
+            android:text="@string/add_new_product_to_basket"
+            android:textColor="@color/bbutton_default_pressed_edge"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal"
+            android:textSize="16dp"/>
+
+    </LinearLayout>
+
     <ListView
         android:id="@+id/listViewSwp"
         android:layout_width="fill_parent"
