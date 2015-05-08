@@ -98,20 +98,7 @@ public class BasketFragment extends Fragment {
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_basket, container, false);
 
-        /*
-        MarketProduct pro1 = new MarketProduct("pname1","pname1 bla bla", "1.5",R.drawable.ph_2);
-        MarketProduct pro2 = new MarketProduct("pname2","pname2 bla bla", "2.5",R.drawable.ph_4);
-        MarketProduct pro3 = new MarketProduct("pname3","pname3 bla bla", "3.5",R.drawable.ph_2);
-        MarketProduct pro4 = new MarketProduct("pname4","pname4 bla bla", "4.5",R.drawable.ph_3);
-        MarketProduct pro5 = new MarketProduct("pname5","pname5 bla bla", "5.5",R.drawable.ph_4);
-
-        List<MarketProduct> productList=new ArrayList<MarketProduct>();
-        productList.add(pro1);
-        productList.add(pro2);
-        productList.add(pro3);
-        productList.add(pro4);
-        productList.add(pro5);
-        */
+        final LinearLayout emptyBasketLayout = (LinearLayout) view.findViewById(R.id.fragment_basket_main_layout);
 
         final ListView lv  = (ListView) view.findViewById(R.id.listViewSwp);
         View header = getActivity().getLayoutInflater().inflate(R.layout.basket_lv_header, null);
@@ -133,9 +120,13 @@ public class BasketFragment extends Fragment {
                 if(MarketUser.getProductList().size()>0){
                     //Toast.makeText( getActivity().getApplicationContext(), "Open Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(true);
+                    emptyBasketLayout.setVisibility(View.INVISIBLE);
+                    lv.setVisibility(View.VISIBLE);
                 }else{
                     //Toast.makeText( getActivity().getApplicationContext(), "Close Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(false);
+                    emptyBasketLayout.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.INVISIBLE);
                 }
 
                 Log.i("-GUPPY- " , "Size of the basket is " + lv.getAdapter().getCount());
@@ -151,7 +142,7 @@ public class BasketFragment extends Fragment {
                 ft.replace(R.id.content_frame2, new PaymentFragment(), "NewFragmentTag");
                 ft.commit();
                 lv.setVisibility(View.INVISIBLE);
-
+                emptyBasketLayout.setVisibility(View.VISIBLE);
             }
         });
 
