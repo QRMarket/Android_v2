@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
@@ -97,7 +98,7 @@ public class BasketFragment extends Fragment {
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_basket, container, false);
 
-
+        final LinearLayout emptyBasketLayout = (LinearLayout) view.findViewById(R.id.fragment_basket_main_layout);
 
         final ListView lv  = (ListView) view.findViewById(R.id.listViewSwp);
         View header = getActivity().getLayoutInflater().inflate(R.layout.basket_lv_header, null);
@@ -112,11 +113,6 @@ public class BasketFragment extends Fragment {
         setmAdapter(new BasketFragmentListAdapter(getActivity(), MarketUser.getProductList()));
         lv.setAdapter(getmAdapter());
 
-
-
-        // LISTENERs
-            // LISTENERs
-                // LISTENERs
         lv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
@@ -124,9 +120,13 @@ public class BasketFragment extends Fragment {
                 if(MarketUser.getProductList().size()>0){
                     //Toast.makeText( getActivity().getApplicationContext(), "Open Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(true);
+                    emptyBasketLayout.setVisibility(View.INVISIBLE);
+                    lv.setVisibility(View.VISIBLE);
                 }else{
                     //Toast.makeText( getActivity().getApplicationContext(), "Close Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(false);
+                    emptyBasketLayout.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.INVISIBLE);
                 }
 
                 Log.i("-GUPPY- " , "Size of the basket is " + lv.getAdapter().getCount());
@@ -142,13 +142,14 @@ public class BasketFragment extends Fragment {
                 ft.replace(R.id.content_frame2, new PaymentFragment(), "NewFragmentTag");
                 ft.commit();
                 lv.setVisibility(View.INVISIBLE);
-
+                emptyBasketLayout.setVisibility(View.VISIBLE);
             }
         });
 
         return view;
     }
 
+    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

@@ -4,4 +4,6 @@
     <string name="Welcome">Guppy\'ye Hoş Geldiniz..!</string>
     <string name="PaymentResultText">Siparişiniz Başarıyla Bize Ulaşmıştır.</string>
     <string name="PaymentStatusTxt">Teşekkürler!!</string>
+    <string name="empty_basket_txt">Sepetiniz Şu Anda Boş Gözüküyor..</string>
+    <string name="add_new_product_to_basket">Yeni bir barkod tarayarak veya eski siparişlerinizi tekrarlayarak, sepetinize yeni bir ürün ekleye bilirsiniz.</string>
 </resources>
