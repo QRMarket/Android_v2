@@ -118,6 +118,7 @@
                         android:text="2"
                         style="@style/listViewSecondaryDetail"
                         android:textColor="@color/purple_dark"
+                        android:visibility="invisible"
                         />
                     <TextView
                         android:id="@+id/order_amount_title"
@@ -128,6 +129,7 @@
                         android:layout_height="wrap_content"
                         android:text="Adet :"
                         android:textColor="@color/gray"
+                        android:visibility="invisible"
                         />
 
                     <TextView
@@ -137,10 +139,10 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="40dp"
                         android:layout_height="wrap_content"
-
                         android:text="5TL"
                         style="@style/listViewSecondaryDetail"
                         android:textColor="@color/purple_dark"
+                        android:visibility="invisible"
                         />
 
 
