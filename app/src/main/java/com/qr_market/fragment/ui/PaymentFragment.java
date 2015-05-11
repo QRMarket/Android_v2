@@ -20,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.qr_market.Guppy;
@@ -27,10 +29,13 @@ import com.qr_market.R;
 import com.qr_market.http.HttpHandler;
 import com.qr_market.util.MarketUser;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import android.widget.AdapterView.OnItemSelectedListener;
@@ -97,9 +102,6 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
     }
 
 
-
-
-
     /**
      ***********************************************************************************************
      ***********************************************************************************************
@@ -134,8 +136,8 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
         SpinnerArrivalTime=(Spinner) view.findViewById(R.id.ArrivalTimeSpinner);
 
         // display the current date (this method is below)
-        CurrentDate = new StringBuilder().append(month+1).append("-")
-                .append(day).append("-")
+        CurrentDate = new StringBuilder().append(day).append("-")
+                .append(month+1).append("-")
                 .append(year).append("");
 
 
@@ -183,8 +185,6 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
 
 
-
-
         confirmOrder= (Button) view.findViewById(R.id.btnGo);
         confirmOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -195,23 +195,43 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
                 String date = ((EditText)view.findViewById(R.id.timeselect)).getText().toString();
                 String note = ((EditText)view.findViewById(R.id.editTextNot)).getText().toString();
 
-                Map parameters = new HashMap();
-                parameters.put("cdosDo", "confirmOrderList");
-                parameters.put("aid", aid);
-                parameters.put("ptype", ptype);
-                parameters.put("date", date);
-                parameters.put("note", note);
+                String otime;
+                try{
 
-                Map operationInfo = new HashMap();
-                operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
-                operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss", Locale.ENGLISH);
+                    Calendar cal = Calendar.getInstance();
 
-                new HttpHandler( getActivity() , "ORDERCONFIRM" ).execute( operationInfo , parameters);
+                    // Eğer hemen isteniyorsa şimdiki zamanı yolla
+                    // Hemen değilse seçilen zamanı yolla
+                    if(!date.contains("Hemen")){
+                        cal.setTime(simpleDateFormat.parse(date));
+                    }
+                    otime = ""+cal.getTimeInMillis();
 
-                // Bu noktada artık sipariş verilmiştir. Sonuç ise diğer fragment'e dönecektir
-                final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame2, PaymentResultFragment.newInstance("",""), "Payment result");
-                ft.commit();
+
+                    Map parameters = new HashMap();
+                    parameters.put("cdosDo", "confirmOrderList");
+                    parameters.put("aid", aid);
+                    parameters.put("ptype", ptype);
+                    parameters.put("date", otime);
+                    parameters.put("note", note);
+
+                    Map operationInfo = new HashMap();
+                    operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
+                    operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
+
+                    new HttpHandler( getActivity() , "ORDERCONFIRM" ).execute( operationInfo , parameters);
+
+                    // Bu noktada artık sipariş verilmiştir. Sonuç ise diğer fragment'e dönecektir
+                    final FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    ft.replace(R.id.content_frame2, PaymentResultFragment.newInstance("",""), "Payment result");
+                    ft.commit();
+
+
+                }catch (ParseException ex){
+
+                }
+
             }
         });
 
@@ -224,7 +244,6 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
                 ft.commit();
             }
         });
-
 
         return view;
     }
@@ -352,7 +371,7 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
         public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
             // Do something with the time chosen by the user
 
-            time="["+hourOfDay + ":" +minute+"]";
+            time = hourOfDay+":"+minute+ ":00";
 
         }
     }
@@ -378,7 +397,7 @@ public class PaymentFragment extends Fragment implements OnItemSelectedListener 
 
         public void onDateSet(DatePicker view, int year, int month, int day) {
 
-            SelectedDate=month+"/"+day+"/"+year+" ";
+            SelectedDate=day+"-"+month+"-"+year+" ";
             TimeSelect.setText(SelectedDate + time);
 
         }

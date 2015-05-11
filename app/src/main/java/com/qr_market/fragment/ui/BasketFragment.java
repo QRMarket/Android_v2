@@ -25,16 +25,12 @@ import com.qr_market.util.MarketUser;
  * @description
  *      xxx
  *
- * @last 26.04.2015
+ * @last 11.05.2015
  */
 public class BasketFragment extends Fragment {
 
-
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -43,6 +39,7 @@ public class BasketFragment extends Fragment {
         return view;
     }
     private BasketFragmentListAdapter mAdapter;
+    private boolean isChangeToPaymentFragment = false;
 
     private OnFragmentInteractionListener mListener;
 
@@ -54,7 +51,6 @@ public class BasketFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment BasketFragment.
      */
-    // TODO: Rename and change types and number of parameters
     public static BasketFragment newInstance(String param1, String param2) {
         BasketFragment fragment = new BasketFragment();
         Bundle args = new Bundle();
@@ -93,8 +89,8 @@ public class BasketFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         // Inflate the layout for this fragment
         this.view = inflater.inflate(R.layout.fragment_basket, container, false);
 
@@ -112,17 +108,22 @@ public class BasketFragment extends Fragment {
         //SET ADAPTER
         setmAdapter(new BasketFragmentListAdapter(getActivity(), MarketUser.getProductList()));
         lv.setAdapter(getmAdapter());
-
         lv.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
 
-                if(MarketUser.getProductList().size()>0){
+                if(MarketUser.getProductList().size()>0 && !isChangeToPaymentFragment){
                     //Toast.makeText( getActivity().getApplicationContext(), "Open Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(true);
                     emptyBasketLayout.setVisibility(View.INVISIBLE);
                     lv.setVisibility(View.VISIBLE);
-                }else{
+
+                }else if(isChangeToPaymentFragment){
+                    lv.setVisibility(View.INVISIBLE);
+                    emptyBasketLayout.setVisibility(View.INVISIBLE);
+                }
+
+                else{
                     //Toast.makeText( getActivity().getApplicationContext(), "Close Continue button", Toast.LENGTH_LONG).show();
                     LvGoBtn.setEnabled(false);
                     emptyBasketLayout.setVisibility(View.VISIBLE);
@@ -139,17 +140,29 @@ public class BasketFragment extends Fragment {
             public void onClick(View view) {
 
                 final FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.content_frame2, new PaymentFragment(), "NewFragmentTag");
+                ft.replace(R.id.content_frame2, PaymentFragment.newInstance("",""), "NewFragmentTag");
                 ft.commit();
-                lv.setVisibility(View.INVISIBLE);
-                emptyBasketLayout.setVisibility(View.VISIBLE);
+
+                /**
+                 * Payment Fragment, Basket Fragment içerisindeki Fragment Layout'u kullanmaktadır
+                 * Bunun yerine ikisininde ustünde bir fragment tanımlanıp, her iki fragment'inde
+                 * bu çatı layout üzerinden çağırılması aşağıdaki flag olayını çözecektir.
+                 */
+
+                // addOnLayoutChangeListener ilgili listenerden sonra çağırıldığından
+                // "isChangeToPaymentFragment" değeri flag olarak kullanılmıştır.
+                // Daha sonra daha etkili bir yol seçilmelidir.
+                isChangeToPaymentFragment = true;
+
+
             }
         });
 
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

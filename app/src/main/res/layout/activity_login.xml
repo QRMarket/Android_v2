@@ -35,7 +35,7 @@
 
         <com.beardedhen.androidbootstrap.BootstrapEditText
             android:id="@+id/TextUsrname"
-            android:text="kemal"
+            android:text="userone@gmail.com"
             android:padding="8dp"
             android:textColor="@color/gray"
             android:layout_width="fill_parent"
@@ -49,7 +49,7 @@
 
         <com.beardedhen.androidbootstrap.BootstrapEditText
             android:id="@+id/TextPsw"
-            android:text="kemal"
+            android:text="userone"
             android:inputType="textPassword"
             android:padding="8dp"
             android:textColor="@color/gray"

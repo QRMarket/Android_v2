@@ -14,7 +14,10 @@ import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.R;
 import com.qr_market.util.MarketOrder;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Kemal Sami KARACA
@@ -119,7 +122,20 @@ public class OrderFragmentListAdapter extends BaseAdapter {
         // Start settings
         viewHolder.orderId.setText(order.getOrderId());
         viewHolder.orderCompany.setText(order.getCompanyName());
-        viewHolder.orderDate.setText(order.getDate());
+
+        // DATE SETTINGS
+        try {
+            Calendar cal = Calendar.getInstance();
+            long date = Long.parseLong(order.getDate(), 10);
+            cal.setTimeInMillis(date);
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
+            viewHolder.orderDate.setText(simpleDateFormat.format(cal.getTime()));
+
+        }catch (NumberFormatException e){
+
+            viewHolder.orderDate.setText(order.getDate());
+        }
+
         viewHolder.orderAddressCity.setText(order.getAddress().getCity());
         viewHolder.orderAddress.setText(order.getAddress().getBorough() + "/" + order.getAddress().getLocality());
 

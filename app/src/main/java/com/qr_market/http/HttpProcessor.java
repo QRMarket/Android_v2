@@ -233,13 +233,6 @@ public class HttpProcessor {
                 ListView listViewBasket   = (ListView) BasketFragment.getViewBasketFragment().findViewById(R.id.listViewSwp);
                 //listViewBasket.setAdapter(new BasketFragmentListAdapter(context ,MarketUser.getInstance().getProductList()));
                 listViewBasket.setAdapter(new BasketFragmentListAdapter(activity ,MarketUser.getInstance().getProductList()));
-               BasketFragment frg =new BasketFragment();
-                if (frg.isDetached()) {
-                    frg.getFragmentManager().beginTransaction()
-                            .detach(frg)
-                            .attach(frg)
-                            .commit();
-                }
 
 
                 // SET PRODUCT INFO VISIBLE

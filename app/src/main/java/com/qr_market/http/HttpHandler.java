@@ -233,8 +233,14 @@ public class HttpHandler extends AsyncTask< Map , Integer, String > {
 
 
         if(progressDialog!=null){
-            progressDialog.dismiss();
+            try{
+                progressDialog.dismiss();
+            }catch (NullPointerException e){
+                Log.e("<< GUPPY.HTTPHANDLER >>" , "progressDialog null exception");
+            }
         }
+
+
     }
 
 
