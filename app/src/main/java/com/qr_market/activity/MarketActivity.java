@@ -32,6 +32,7 @@ import com.qr_market.fragment.ui.CartFragment;
 import com.qr_market.fragment.ui.OrderFragment;
 import com.qr_market.fragment.ui.PaymentFragment;
 import com.qr_market.fragment.ui.PaymentResultFragment;
+import com.qr_market.fragment.ui.ProfileAddressFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
 import com.qr_market.db.DBHandler;
 import com.qr_market.fragment.ui.ViewPagerFragmentList;
@@ -51,6 +52,7 @@ import java.util.Map;
 public class MarketActivity extends ActionBarActivity implements ViewPagerFragmentList.OnFragmentInteractionListener,
                                                                     CartFragment.OnFragmentInteractionListener,
                                                                     ProfileFragment.OnFragmentInteractionListener,
+                                                                    ProfileAddressFragment.OnFragmentInteractionListener,
                                                                     OrderFragment.OnFragmentInteractionListener,
                                                                     BarcodeFragment.OnFragmentInteractionListener,
                                                                     BasketFragment.OnFragmentInteractionListener,
@@ -287,16 +289,16 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
 
         switch (position) {
             case 0:
-                Toast.makeText(getApplicationContext(), "implement other fragments here", Toast.LENGTH_SHORT).show();
-                Log.i("-- GUPPY --" , "1.1 MainActivity fragmentManager begin transaction called...");
 
                 fragmentManager.beginTransaction().replace(R.id.content_frame, new ViewPagerFragmentList()).commit();
                 break;
             case 1:
-                //fragmentManager.beginTransaction().replace(R.id.content_frame, new MyProfileFragment()).commit();
+                Toast.makeText(getApplicationContext(), "Kişisel bilgilerim called", Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, ProfileFragment.newInstance("","")).commit();
                 break;
             case 2:
-                //fragmentManager.beginTransaction().replace(R.id.content_frame, new MyAdresses()).commit();
+                Toast.makeText(getApplicationContext(), "Adreslerim called", Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, ProfileAddressFragment.newInstance("","")).commit();
                 break;
 
             default:

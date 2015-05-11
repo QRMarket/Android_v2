@@ -329,6 +329,20 @@ public class HttpProcessor {
 
                 operationResultSuccess = true;
 
+            }else if(resCode.equalsIgnoreCase("GUPPY.740")){
+
+                TextView paymentStatus = (TextView)activity.findViewById(R.id.payment_result_status);
+                paymentStatus.setText("Üzgünüz!");
+                paymentStatus.setTextColor(FragmentUtils.colors[7]);
+
+                TextView paymentResult = (TextView) activity.findViewById(R.id.payment_result_text);
+                paymentResult.setText("Uygun tarih girmediniz...");
+                paymentResult.setTextColor(FragmentUtils.colors[7]);
+
+                FontAwesomeText success_icon =(FontAwesomeText) activity.findViewById(R.id.payment_result_icon);
+                success_icon.setIcon("fa-exclamation-triangle");
+                success_icon.setTextColor(FragmentUtils.colors[7]);
+
             }else{
 
                 TextView paymentStatus = (TextView)activity.findViewById(R.id.payment_result_status);
@@ -400,6 +414,11 @@ public class HttpProcessor {
 
                 operationResultSuccess = true;
 
+
+            }else if(resCode.equalsIgnoreCase("GUPPY.010")){
+                Toast.makeText(activity.getApplicationContext(), "Önceki siparişiniz bulunmamaktadır.", Toast.LENGTH_LONG).show();
+            }else if(resCode.equalsIgnoreCase("GUPPY.102")){
+                Toast.makeText(activity.getApplicationContext(), "Önceki siparişleriniz alınırken session kaynaklı hata oluştu", Toast.LENGTH_LONG).show();
             }else{
                 Toast.makeText(activity.getApplicationContext(), "Önceki siparişleriniz alınırken hata oluştu", Toast.LENGTH_LONG).show();
             }

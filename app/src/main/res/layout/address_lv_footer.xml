@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:id="@+id/NewCityTxt"
+        android:background="@android:drawable/edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:textColor="@color/gray"
+        android:hint="Şehriniz"
+        android:gravity="left"
+        android:focusable="true"
+        android:selectAllOnFocus="true"
+        android:enabled="true"
+        android:layout_marginTop="10dp">
+    </EditText>
+    <EditText
+        android:id="@+id/NewAdresTxt"
+        android:background="@android:drawable/edit_text"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:padding="8dp"
+        android:textColor="@color/gray"
+        android:inputType="textMultiLine"
+        android:hint="Yeni Adres Ekle"
+        android:gravity="top"
+        android:ems="10"
+        android:focusable="true"
+        android:selectAllOnFocus="true"
+        android:enabled="true"
+        android:layout_marginTop="10dp">
+    </EditText>
+    <Button
+        android:id="@+id/AddAdress"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:text="Ekle"/>
+
+</LinearLayout>

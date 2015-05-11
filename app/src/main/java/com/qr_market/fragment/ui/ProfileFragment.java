@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.underconstruction_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_profile, container, false);
 
         /*Button uploader = (Button)view.findViewById(R.id.uploader);
         uploader.setOnClickListener(new View.OnClickListener() {
