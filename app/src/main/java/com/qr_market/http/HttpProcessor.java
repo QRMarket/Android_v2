@@ -398,6 +398,7 @@ public class HttpProcessor {
                     marketOrder.setNote(singleOrder.getString("note"));
                     marketOrder.setDate(singleOrder.getString("date"));
 
+
                     // GET Address of Order
                     Address address = new Address();
                     address.setCity(singleOrder.getJSONObject("address").getString("city"));

@@ -3,13 +3,12 @@ package com.qr_market.activity;
 
 import android.app.Activity;
 import android.content.Context;
-import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,16 +24,16 @@ import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.adapter.NavigationAdapter;
 import com.qr_market.adapter.NavigationList;
-import com.qr_market.fragment.adapter.GuppyFragmentPageAdapter;
+import com.qr_market.db.DBHandler;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
+import com.qr_market.fragment.ui.ExpandableFragment;
 import com.qr_market.fragment.ui.OrderFragment;
 import com.qr_market.fragment.ui.PaymentFragment;
 import com.qr_market.fragment.ui.PaymentResultFragment;
 import com.qr_market.fragment.ui.ProfileAddressFragment;
 import com.qr_market.fragment.ui.ProfileFragment;
-import com.qr_market.db.DBHandler;
 import com.qr_market.fragment.ui.ViewPagerFragmentList;
 import com.qr_market.http.HttpHandler;
 import com.qr_market.util.MarketUser;
@@ -299,6 +298,10 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
             case 2:
                 Toast.makeText(getApplicationContext(), "Adreslerim called", Toast.LENGTH_SHORT).show();
                 fragmentManager.beginTransaction().replace(R.id.content_frame, ProfileAddressFragment.newInstance("","")).commit();
+                break;
+            case 3:
+                Toast.makeText(getApplicationContext(), "Önceki Siparişlerim called", Toast.LENGTH_SHORT).show();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, ExpandableFragment.newInstance("", "")).commit();
                 break;
 
             default:

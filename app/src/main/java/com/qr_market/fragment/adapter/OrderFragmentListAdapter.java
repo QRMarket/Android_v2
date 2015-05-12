@@ -34,7 +34,7 @@ public class OrderFragmentListAdapter extends BaseAdapter {
 
     private Activity activity;
     private Context context;
-    private OrderFragmentListAdapter orderListAdapter;
+
     private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
     private LayoutInflater inflater;
     private ViewHolder viewHolder;
@@ -51,7 +51,6 @@ public class OrderFragmentListAdapter extends BaseAdapter {
 
         this.activity           = activity;
         this.context            = activity.getApplicationContext();
-        this.orderListAdapter   = OrderFragmentListAdapter.this;
         this.setOrderList(orderList);
         inflater                = LayoutInflater.from(context);
     }
