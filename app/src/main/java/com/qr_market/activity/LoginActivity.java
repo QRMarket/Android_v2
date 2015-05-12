@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,12 +13,21 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.db.DBHandler;
 import com.qr_market.http.HttpHandler;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -27,6 +37,8 @@ import java.util.Map;
  */
 public class LoginActivity extends ActionBarActivity implements View.OnClickListener {
 
+
+    private CallbackManager callbackManager;
 
     private static View view;
     public static View getView() {
@@ -45,9 +57,19 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
      ***********************************************************************************************
      ***********************************************************************************************
      */
+
+    // FACEBOOK LOGIN TUTORIAL PAGE
+    //      - https://developers.facebook.com/docs/facebook-login/android/v2.2
+    //      - https://developers.facebook.com/docs/android/getting-started#login_share
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // FACEBOOK INITIALIZATION
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        callbackManager = CallbackManager.Factory.create();
+
         setContentView(R.layout.activity_login);
 
         final DBHandler dbHelper = new DBHandler(getApplicationContext());
@@ -59,6 +81,54 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         final BootstrapEditText cduName = (BootstrapEditText) findViewById(R.id.TextUsrname);
         final BootstrapEditText cduPass = (BootstrapEditText) findViewById(R.id.TextPsw);
 
+
+
+        // FACEBOOK LOGIN
+        // -----------------------------------------------------------------------------------------
+        // -----------------------------------------------------------------------------------------
+        List<String> permissionList = new ArrayList<>();
+        permissionList.add("user_friends");
+        permissionList.add("email");
+        permissionList.add("user_about_me");
+        permissionList.add("public_profile");
+
+        LoginButton facebookLoginButton = (LoginButton) this.findViewById(R.id.facebook_login_button);
+
+        facebookLoginButton.setReadPermissions(permissionList);
+        // **** If using in a fragment ****
+        // facebookLoginButton.setFragment(this);
+
+
+        //LoginManager.getInstance().logInWithReadPermissions(this, permissionList);
+
+        // Callback registration
+        facebookLoginButton.registerCallback( callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult) {
+                Toast.makeText(getApplicationContext(),"Facebook login success ",Toast.LENGTH_LONG).show();
+                Log.i("AAAAAAAAAAAAAA","AAAAAAAAAAAAAA");
+            }
+
+            @Override
+            public void onCancel() {
+                Toast.makeText(getApplicationContext(),"Facebook login cancelled ",Toast.LENGTH_LONG).show();
+                Log.i("BBBBBBBBBBBBBBB","BBBBBBBBBBBBBBB");
+            }
+
+            @Override
+            public void onError(FacebookException exception) {
+                Toast.makeText(getApplicationContext(),"Facebook login error occur ",Toast.LENGTH_LONG).show();
+                Log.i("CCCCCCCCCCCCCCC","CCCCCCCCCCCCCCC");
+            }
+        });
+
+
+
+
+
+        // GUPPY
+        // -----------------------------------------------------------------------------------------
+        // -----------------------------------------------------------------------------------------
         login.setOnClickListener(this);
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +154,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext() , "Register button does not work for now" , Toast.LENGTH_LONG);
             }
         });
+
 
 
 
@@ -193,6 +264,24 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // FACEBOOK analytics
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // FACEBOOK analytics
+        AppEventsLogger.deactivateApp(this);
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -221,6 +310,14 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
 
     }
 
+    /**
+     * FACEBOOK CALLBACK HANDLER
+     */
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
 
     /**
      ***********************************************************************************************

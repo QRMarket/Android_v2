@@ -1,5 +1,6 @@
 package com.qr_market.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.AlarmClock;
+import android.service.textservice.SpellCheckerService;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.checker.Checker;
@@ -27,7 +37,10 @@ import com.qr_market.db.DBHandler;
 import com.qr_market.db.contract.GuppyContract;
 import com.qr_market.http.HttpHandler;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -68,6 +81,7 @@ public class MainActivity extends ActionBarActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         getSupportActionBar().hide();
         mainContext = getApplicationContext();
@@ -78,6 +92,7 @@ public class MainActivity extends ActionBarActivity{
             //MainActivity.getMainContext().deleteDatabase(dbHelper.DATABASE_NAME);
         // -----------------------------------
         // -- DB OPERATIONS -- WILL BE DELETED
+
 
         AutoOperationHandler.getUserFromDB();
         if( !Checker.anyNull( MarketUser.getInstance().getUserMail() , MarketUser.getInstance().getUserPass() ) ){
@@ -100,6 +115,7 @@ public class MainActivity extends ActionBarActivity{
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
         }
+
 
     }
 
