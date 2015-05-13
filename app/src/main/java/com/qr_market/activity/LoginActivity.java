@@ -109,9 +109,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
                 Toast.makeText(getApplicationContext(),"Facebook login success " + AccessToken.getCurrentAccessToken().getUserId(),Toast.LENGTH_LONG).show();
                 Log.i("AAAAAAAAAAAAAA","AAAAAAAAAAAAAA");
 
-                Intent intent = new Intent( getApplicationContext() , MarketActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(intent);
+                //Intent intent = new Intent( getApplicationContext() , MarketActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //startActivity(intent);
             }
 
             @Override

@@ -4,6 +4,7 @@ package com.qr_market.fragment.adapter;
  * Created by orxan on 11.05.2015.
  */
 
+import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,43 +22,66 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+
+
 /**
- * Created by orxan on 10.05.2015.
+ * @author Kemal Sami KARACA
+ * @since 26.04.2015
+ * @version v1.01
+ *
+ * @description
+ *      Adapter of order list
+ *
+ * @last 12.05.2015
  */
 public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
-    private List<MarketOrder> list_parent;
+
     private HashMap<String,List<MarketOrder>> list_child;
-    Context context;
 
-    private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
-
-
-    public OrderFragmentListAdapter(HashMap<String, List<MarketOrder>> list_child, List<MarketOrder> list_parent, Context context) {
+    public OrderFragmentListAdapter(HashMap<String, List<MarketOrder>> list_child, List<MarketOrder> orderList, Context context) {
         this.list_child = list_child;
-        this.list_parent=list_parent;
+        //this.orderList=orderList;
         this.context = context;
+    }
 
+
+
+    private Activity activity;
+    private Context context;
+    private OrderFragmentListAdapter orderListAdapter;
+    private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
+    private LayoutInflater inflater;
+    //private ViewHolder viewHolder;
+
+    /**
+     ***********************************************************************************************
+     ***********************************************************************************************
+     *                              CONSTRUCTOR
+     ***********************************************************************************************
+     ***********************************************************************************************
+     */
+    public OrderFragmentListAdapter(Activity activity, List<MarketOrder> orderList) {
+
+        this.activity           = activity;
+        this.context            = activity.getApplicationContext();
+        this.orderListAdapter   = OrderFragmentListAdapter.this;
+        this.inflater           = LayoutInflater.from(context);
+        this.setOrderList(orderList);
     }
 
 
     @Override
     public Object getGroup(int groupPosition) {
 
-
-        return this.list_parent.get(groupPosition).getCompanyName();
-
+        return this.orderList.get(groupPosition);
     }
-
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
 
-
-        return list_child.get(list_parent.get(groupPosition).getCompanyName()).get(childPosititon);
-
+        return getOrderList().get(groupPosition);
+        //return list_child.get(orderList.get(groupPosition).getCompanyName()).get(childPosititon);
     }
-
-
 
     @Override
     public long getChildId(int i, int i1) {
@@ -67,7 +91,8 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        return this.list_child.get(this.list_parent.get(groupPosition).getCompanyName()).size();
+        return getOrderList().size();
+        //return this.list_child.get(this.orderList.get(groupPosition).getCompanyName()).size();
     }
 
 
@@ -76,11 +101,10 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     public View getChildView(int groupPosition, int childPosititon, boolean b, View view, ViewGroup viewGroup) {
 
         //--Here we are getting child values from current position--
-        final MarketOrder childOrderData = (MarketOrder) list_parent.get(groupPosition);
+        final MarketOrder childOrderData = (MarketOrder) orderList.get(groupPosition);
 
         if(view==null){
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = infalInflater.inflate(R.layout.order_list_child_layout, null);
         }
         final TextView product_amount=(TextView)view.findViewById(R.id.ordered_product_amount);
@@ -100,12 +124,8 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getGroupCount() {
-        return list_parent.size();
+        return orderList.size();
     }
-
-
-
-
 
     @Override
     public long getGroupId(int groupPosition) {
@@ -116,13 +136,12 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int groupPosition, boolean b, View view, ViewGroup viewGroup) {
 
         //--Here we are getting parent values from current position--
-        final MarketOrder parentOrderData = list_parent.get(groupPosition);
+        final MarketOrder parentOrderData = orderList.get(groupPosition);
+
 
         if(view==null){
-            LayoutInflater infalInflater = (LayoutInflater) this.context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.order_list_parent_layout, null);
-
+            LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = layoutInflater.inflate(R.layout.order_list_parent_layout, null);
         }
         final TextView market=(TextView)view.findViewById(R.id.market_name);
         final TextView market_city=(TextView)view.findViewById(R.id.market_city);

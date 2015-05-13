@@ -22,43 +22,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link OrderFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link OrderFragment#newInstance} factory method to
- * create an instance of this fragment.
+ * @author Kemal Sami KARACA
+ * @since 26.04.2015
+ * @version v1.01
+ *
+ * @description
+ *      This fragment holds list of user orders
+ *
+ * @last 12.05.2015
  */
 public class OrderFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-
-
-    private List<MarketOrder> parent;
-    private HashMap<String, List<MarketOrder>> child;
+    private View view;
 
     private final String TAG = "ExpAdapter";
     private OnFragmentInteractionListener mListener;
     private OrderFragmentListAdapter orderAdapter;
-    private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment OrderFragment.
-     */
-    // TODO: Rename and change types and number of parameters
+
+    //private HashMap<String, List<MarketOrder>> child;
+    //private List<MarketOrder> parent;
+
     public static OrderFragment newInstance(String param1, String param2) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
@@ -67,7 +58,6 @@ public class OrderFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     public OrderFragment() {
         // Required empty public constructor
@@ -92,26 +82,19 @@ public class OrderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+        this.view = inflater.inflate(R.layout.fragment_order, container, false);
 
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_order, container, false);
-
-        //Define Listview
-        final ExpandableListView lv=(ExpandableListView)view.findViewById(R.id.lvExp);
+        // Get list view
+        final ExpandableListView orderExpandableListView=(ExpandableListView)view.findViewById(R.id.order_expandable_list_view);
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.order_lv_header, null);
-        lv.addHeaderView(header);
-
-        //Prepare Data
-        PrepareDataForExpandableLv();
-
+        orderExpandableListView.addHeaderView(header);
 
         //SET ADAPTER
-        orderAdapter=new OrderFragmentListAdapter(child,parent,getActivity());
-        lv.setAdapter(orderAdapter);
+        setOrderAdapter(new OrderFragmentListAdapter(getActivity(), MarketOrder.getOrderListInstance()));
+        orderExpandableListView.setAdapter(getOrderAdapter());
 
         //INITIAL ORDER-LIST REQUEST
         Map parameters;
@@ -121,13 +104,12 @@ public class OrderFragment extends Fragment {
         Map operationInfo = new HashMap();
         operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
         operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-        new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute(operationInfo, parameters);
+        new HttpHandler( getActivity() , "GETORDERLIST" , getOrderAdapter()).execute( operationInfo , parameters);
 
 
         // Refresh page
         final FontAwesomeText orderRefresh = (FontAwesomeText)view.findViewById(R.id.order_lv_refresh);
         orderRefresh.setIcon("fa-refresh");
-
         orderRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,30 +127,28 @@ public class OrderFragment extends Fragment {
                 operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
                 operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
 
-                new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute( operationInfo , parameters);
+                new HttpHandler( getActivity() , "GETORDERLIST" , getOrderAdapter()).execute( operationInfo , parameters);
 
             }
         });
 
 
-
-
-     //-----Listenere Events-----
-        lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        //-----Listener Events-----
+        orderExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
                 Log.i(TAG, "Group " + groupPosition + " expanded.");
                 Toast.makeText(getActivity(), "Group clicked..", Toast.LENGTH_LONG).show();
             }
         });
-        lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+        orderExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
                 Log.i(TAG, "Group " + groupPosition + " collapsed.");
                 Toast.makeText(getActivity(), "Group collapsed..", Toast.LENGTH_LONG).show();
             }
         });
-        lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        orderExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.i(TAG, "item " + childPosition + " of group " + groupPosition + " clicked.");
@@ -185,7 +165,7 @@ public class OrderFragment extends Fragment {
 
 
 
-
+/*
    public void PrepareDataForExpandableLv(){
        //Parent for ExpandableLv
         parent=new ArrayList<>();
@@ -194,7 +174,7 @@ public class OrderFragment extends Fragment {
         child = new HashMap<>();
 
 
-       for(int i=0;i<orderList.size();i++)
+       for(int i=0;i<MarketOrder.getOrderListInstance().size();i++)
        {
 
            //In here we are getting user orderList
@@ -209,17 +189,13 @@ public class OrderFragment extends Fragment {
 
            //put child value with related parent
            child.put(parent.get(i).getCompanyName(), list_data_for_child);
-
-
        }
 
-
-
    }
-
+*/
 
     public List<MarketOrder> getOrderLists() {
-        return orderList;
+        return MarketOrder.getOrderListInstance();
     }
 
     // TODO: Rename method, update argument and hook method into UI event

@@ -127,8 +127,7 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
         }
 
         TextView drawerUserName = (TextView)findViewById(R.id.drawer_user_name);
-        //drawerUserName.setText(MarketUser.getInstance().getUserName());
-        drawerUserName.setText(AccessToken.getCurrentAccessToken().getUserId());
+        drawerUserName.setText(MarketUser.getInstance().getUserName());
 
         TextView drawerUserMail = (TextView)findViewById(R.id.drawer_user_mail);
         drawerUserMail.setText(MarketUser.getInstance().getUserMail());
