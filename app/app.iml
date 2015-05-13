@@ -9,10 +9,12 @@
     <facet type="android" name="Android">
       <configuration>
         <option name="SELECTED_BUILD_VARIANT" value="debug" />
+        <option name="SELECTED_TEST_ARTIFACT" value="_android_test_" />
         <option name="ASSEMBLE_TASK_NAME" value="assembleDebug" />
         <option name="COMPILE_JAVA_TASK_NAME" value="compileDebugSources" />
-        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
         <option name="SOURCE_GEN_TASK_NAME" value="generateDebugSources" />
+        <option name="ASSEMBLE_TEST_TASK_NAME" value="assembleDebugTest" />
+        <option name="COMPILE_JAVA_TEST_TASK_NAME" value="compileDebugTestSources" />
         <option name="TEST_SOURCE_GEN_TASK_NAME" value="generateDebugTestSources" />
         <option name="ALLOW_USER_CONFIGURATION" value="false" />
         <option name="MANIFEST_FILE_RELATIVE_PATH" value="/src/main/AndroidManifest.xml" />
@@ -90,12 +92,12 @@
     <orderEntry type="library" exported="" name="support-v4-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="commons-logging-1.2" level="project" />
     <orderEntry type="library" exported="" name="bolts-android-1.2.0" level="project" />
-    <orderEntry type="library" exported="" name="httpclient-win-4.4" level="project" />
     <orderEntry type="library" exported="" name="httpcore-4.4" level="project" />
+    <orderEntry type="library" exported="" name="httpclient-win-4.4" level="project" />
     <orderEntry type="library" exported="" name="httpmime-4.4" level="project" />
     <orderEntry type="library" exported="" name="facebook-android-sdk-4.1.1" level="project" />
-    <orderEntry type="library" exported="" name="jna-platform-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="support-annotations-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="jna-platform-4.1.0" level="project" />
     <orderEntry type="library" exported="" name="commons-codec-1.9" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-18.0.0" level="project" />
     <orderEntry type="library" exported="" name="fluent-hc-4.4" level="project" />
@@ -103,4 +105,3 @@
     <orderEntry type="library" exported="" name="httpclient-4.4" level="project" />
   </component>
 </module>
-

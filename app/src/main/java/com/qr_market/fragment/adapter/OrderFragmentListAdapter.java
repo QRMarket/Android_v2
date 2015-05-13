@@ -1,157 +1,169 @@
 package com.qr_market.fragment.adapter;
 
-import android.app.Activity;
+/**
+ * Created by orxan on 11.05.2015.
+ */
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.R;
 import com.qr_market.util.MarketOrder;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 /**
- * @author Kemal Sami KARACA
- * @since 26.04.2015
- * @version v1.01
- *
- * @description
- *      Adapter of order list
- *
- * @last 26.04.2015
+ * Created by orxan on 10.05.2015.
  */
-public class OrderFragmentListAdapter extends BaseAdapter {
+public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
+    private List<MarketOrder> list_parent;
+    private HashMap<String,List<MarketOrder>> list_child;
+    Context context;
 
-
-    private Activity activity;
-    private Context context;
-    private OrderFragmentListAdapter orderListAdapter;
     private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
-    private LayoutInflater inflater;
-    private ViewHolder viewHolder;
 
 
-    /**
-     ***********************************************************************************************
-     ***********************************************************************************************
-     *                              CONSTRUCTOR
-     ***********************************************************************************************
-     ***********************************************************************************************
-     */
-    public OrderFragmentListAdapter(Activity activity, List<MarketOrder> orderList) {
+    public OrderFragmentListAdapter(HashMap<String, List<MarketOrder>> list_child, List<MarketOrder> list_parent, Context context) {
+        this.list_child = list_child;
+        this.list_parent=list_parent;
+        this.context = context;
 
-        this.activity           = activity;
-        this.context            = activity.getApplicationContext();
-        this.orderListAdapter   = OrderFragmentListAdapter.this;
-        this.setOrderList(orderList);
-        inflater                = LayoutInflater.from(context);
+    }
+
+
+    @Override
+    public Object getGroup(int groupPosition) {
+
+
+        return this.list_parent.get(groupPosition).getCompanyName();
+
+    }
+
+
+    @Override
+    public Object getChild(int groupPosition, int childPosititon) {
+
+
+        return list_child.get(list_parent.get(groupPosition).getCompanyName()).get(childPosititon);
+
     }
 
 
 
-    /**
-     ***********************************************************************************************
-     ***********************************************************************************************
-     *                              OVERRIDE METHODS
-     ***********************************************************************************************
-     ***********************************************************************************************
-     */
     @Override
-    public int getCount() {
-        return getOrderList().size();
+    public long getChildId(int i, int i1) {
+        return 0;
     }
 
     @Override
-    public Object getItem(int position) {
-        return getOrderList().get(position);
+    public int getChildrenCount(int groupPosition) {
+
+        return this.list_child.get(this.list_parent.get(groupPosition).getCompanyName()).size();
     }
 
-    @Override
-    public long getItemId(int position) {
-        return position;
-    }
+
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getChildView(int groupPosition, int childPosititon, boolean b, View view, ViewGroup viewGroup) {
 
+        //--Here we are getting child values from current position--
+        final MarketOrder childOrderData = (MarketOrder) list_parent.get(groupPosition);
 
-        View orderView = convertView;
-        if(convertView==null){
-
-                // -1- Create new viewHolder
-                viewHolder = new ViewHolder();
-
-                // -2- inflate the layout
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                orderView = inflater.inflate(R.layout.order_list_style, null);
-
-                // -3- Set up the ViewHolder
-                viewHolder.orderId          = (TextView) orderView.findViewById(R.id.order_item_title);
-                viewHolder.orderCompany     = (TextView) orderView.findViewById(R.id.order_market_name);
-                viewHolder.orderDate        = (TextView) orderView.findViewById(R.id.order_date);
-                viewHolder.orderAddressCity = (TextView) orderView.findViewById(R.id.order_market_city);
-                viewHolder.orderAddress     = (TextView) orderView.findViewById(R.id.ordered_market_adress);
-
-                // -4-store the holder with the view.
-
-                //Set Time Icon
-                FontAwesomeText timeIcon = (FontAwesomeText) orderView.findViewById(R.id.order_time_icon);
-                timeIcon.setIcon("fa-clock-o");
-                orderView.setTag(viewHolder);
-
-
-
-
-        }else{
-
-                viewHolder = (ViewHolder) convertView.getTag();
+        if(view==null){
+            LayoutInflater infalInflater = (LayoutInflater) this.context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = infalInflater.inflate(R.layout.order_list_child_layout, null);
         }
+        final TextView product_amount=(TextView)view.findViewById(R.id.ordered_product_amount);
+        final TextView product_date=(TextView)view.findViewById(R.id.order_date);
+        final FontAwesomeText timeIcon = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
 
-        // At this point we have viewHolder and we need to fill it with orderList
-        MarketOrder order = getOrderList().get(position);
 
-        // Start settings
-        viewHolder.orderId.setText(order.getOrderId());
-        viewHolder.orderCompany.setText(order.getCompanyName());
+        //  --Set The child values to the related layout view--
+
+
+        //Set Time Icon
+        timeIcon.setIcon("fa-clock-o");
+
+        return view;
+    }
+
+
+    @Override
+    public int getGroupCount() {
+        return list_parent.size();
+    }
+
+
+
+
+
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
+
+    @Override
+    public View getGroupView(int groupPosition, boolean b, View view, ViewGroup viewGroup) {
+
+        //--Here we are getting parent values from current position--
+        final MarketOrder parentOrderData = list_parent.get(groupPosition);
+
+        if(view==null){
+            LayoutInflater infalInflater = (LayoutInflater) this.context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = infalInflater.inflate(R.layout.order_list_parent_layout, null);
+
+        }
+        final TextView market=(TextView)view.findViewById(R.id.market_name);
+        final TextView market_city=(TextView)view.findViewById(R.id.market_city);
+        final TextView market_adress=(TextView)view.findViewById(R.id.market_adress);
+        final TextView product_date=(TextView)view.findViewById(R.id.date);
+        final FontAwesomeText timeIcon = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
+
+        //  --Set The parent values to the related layout view--
+        market.setText(parentOrderData.getCompanyName());
+        market_city.setText(parentOrderData.getAddress().getCity());
+        market_adress.setText(parentOrderData.getAddress().getBorough() + "/" + parentOrderData.getAddress().getLocality());
 
         // DATE SETTINGS
         try {
             Calendar cal = Calendar.getInstance();
-            long date = Long.parseLong(order.getDate(), 10);
+            long date = Long.parseLong(parentOrderData.getDate(), 10);
             cal.setTimeInMillis(date);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm", Locale.ENGLISH);
-            viewHolder.orderDate.setText(simpleDateFormat.format(cal.getTime()));
+            product_date.setText(simpleDateFormat.format(cal.getTime()));
 
         }catch (NumberFormatException e){
 
-            viewHolder.orderDate.setText(order.getDate());
+            product_date.setText(parentOrderData.getDate());
         }
 
-        viewHolder.orderAddressCity.setText(order.getAddress().getCity());
-        viewHolder.orderAddress.setText(order.getAddress().getBorough() + "/" + order.getAddress().getLocality());
+        //Set Time Icon
+        timeIcon.setIcon("fa-clock-o");
+
+        return view;
+    }
 
 
-        //ReOrder Button here
-        BootstrapButton reOrder=(BootstrapButton) orderView.findViewById(R.id.ReOrderBtn);
-        reOrder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+    @Override
+    public boolean hasStableIds() {
+        return false;
+    }
 
-                Toast.makeText(context, "Bu işlem yapım aşamasındadır..", Toast.LENGTH_LONG).show();
+    @Override
+    public boolean isChildSelectable(int i, int i1) {
+        return true;
 
-            }
-        });
-
-        return orderView;
     }
 
     public List<MarketOrder> getOrderList() {
@@ -162,19 +174,4 @@ public class OrderFragmentListAdapter extends BaseAdapter {
         this.orderList = orderList;
     }
 
-
-    /**
-     ***********************************************************************************************
-     ***********************************************************************************************
-     *                              CHILD CLASSES
-     ***********************************************************************************************
-     ***********************************************************************************************
-     */
-    public class ViewHolder {
-        TextView orderId;
-        TextView orderCompany;
-        TextView orderDate;
-        TextView orderAddressCity;
-        TextView orderAddress;
-    }
 }

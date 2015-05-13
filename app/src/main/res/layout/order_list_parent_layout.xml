@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bootstrap="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="#eee"
+    android:padding="8dp">
+
+
+    <TextView
+        android:id="@+id/market_name"
+        android:layout_alignParentTop="true"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        style="@style/listViewPrimaryDetail"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textSize="17dp"
+        android:textColor="@color/bbutton_success_edge" />
+    <TextView
+        android:id="@+id/market_city"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/market_name"
+        style="@style/listViewSecondaryDetail"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:text="bla bla"/>
+    <TextView
+        android:id="@+id/market_adress"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/market_city"
+        style="@style/listViewSecondaryDetail"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:text="bla bla"/>
+
+
+
+    <com.beardedhen.androidbootstrap.FontAwesomeText
+        android:id="@+id/order_time_icon"
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:layout_width="wrap_content"
+        style="@style/listViewSecondaryDetail"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_alignParentBottom="true"
+        android:textSize="24sp"
+        android:layout_below="@+id/market_adress"
+        android:textColor="@color/purple_light"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/gray"
+        android:layout_toRightOf="@+id/order_time_icon"
+        android:textSize="14dp"
+        style="@style/listViewSecondaryDetail"
+        android:layout_marginLeft="10dp"
+        android:layout_below="@+id/market_adress"
+        android:text="12 Nisan 2015"/>
+
+
+</RelativeLayout>
