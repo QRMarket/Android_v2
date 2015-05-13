@@ -21,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.adapter.NavigationAdapter;
@@ -128,7 +129,8 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
         }
 
         TextView drawerUserName = (TextView)findViewById(R.id.drawer_user_name);
-        drawerUserName.setText(MarketUser.getInstance().getUserName());
+        //drawerUserName.setText(MarketUser.getInstance().getUserName());
+        drawerUserName.setText(AccessToken.getCurrentAccessToken().getUserId());
 
         TextView drawerUserMail = (TextView)findViewById(R.id.drawer_user_mail);
         drawerUserMail.setText(MarketUser.getInstance().getUserMail());
