@@ -92,12 +92,6 @@ public class ViewPagerFragmentList extends Fragment {
         fragmentTabs.add(new FragmentPagerList(BasketFragment.newInstance("","") , "Sepet", getResources().getColor(FragmentUtils.colors[3]),  Color.BLUE));
         fragmentTabs.add(new FragmentPagerList(ProfileFragment.newInstance("","") , "Kampanyalar", getResources().getColor(FragmentUtils.colors[5]),  Color.BLUE));
         fragmentTabs.add(new FragmentPagerList(OrderFragment.newInstance("", "") , "Önceki Siparişler", getResources().getColor(FragmentUtils.colors[8]),  Color.BLUE));
-/*
-        fragmentTabs.add(new FragmentPagerList(0, "Ana Sayfa", getResources().getColor(FragmentUtils.colors[0]),  Color.YELLOW));
-        fragmentTabs.add(new FragmentPagerList(1, "Sepet", getResources().getColor(FragmentUtils.colors[3]),  Color.YELLOW));
-        fragmentTabs.add(new FragmentPagerList(2, "Kampanyalar", getResources().getColor(FragmentUtils.colors[5]),  Color.YELLOW));
-        fragmentTabs.add(new FragmentPagerList(3, "Önceki Siparişler", getResources().getColor(FragmentUtils.colors[8]),  Color.YELLOW));
-*/
 
     }
 

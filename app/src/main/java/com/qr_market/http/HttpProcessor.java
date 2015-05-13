@@ -410,8 +410,6 @@ public class HttpProcessor {
 
                 }
 
-                Log.i("XXXXXXXXXXXXXXX", "----------" + MarketOrder.getOrderListInstance().size());
-
                 myOrderAdapter.setOrderList(MarketOrder.getOrderListInstance());
                 myOrderAdapter.notifyDataSetChanged();
 
