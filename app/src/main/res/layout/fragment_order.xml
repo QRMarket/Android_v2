@@ -3,8 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.qr_market.fragment.ui.OrderFragmentOld">
-
+    tools:context="com.qr_market.fragment.ui.OrderFragment">
 
     <FrameLayout
         android:id="@+id/order_content_frame"
@@ -14,7 +13,11 @@
 
     <ExpandableListView
         android:id="@+id/lvExp"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"/>
+        android:layout_width="fill_parent"
+        android:background="#eee"
+        android:layout_height="fill_parent"
+        android:focusable="false"
+        android:divider="@null"
+        android:layout_margin="10dp"/>
 
 </FrameLayout>

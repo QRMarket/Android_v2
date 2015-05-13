@@ -50,6 +50,8 @@ public class OrderFragment extends Fragment {
     private OrderFragmentListAdapter orderAdapter;
     private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
 
+    ExpandableListView lv;
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -85,11 +87,14 @@ public class OrderFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -100,7 +105,7 @@ public class OrderFragment extends Fragment {
         View view= inflater.inflate(R.layout.fragment_order, container, false);
 
         //Define Listview
-        final ExpandableListView lv=(ExpandableListView)view.findViewById(R.id.lvExp);
+        lv=(ExpandableListView)view.findViewById(R.id.lvExp);
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.order_lv_header, null);
         lv.addHeaderView(header);
@@ -153,7 +158,7 @@ public class OrderFragment extends Fragment {
 
 
 
-     //-----Listenere Events-----
+       //-----Listener Events-----
         lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
@@ -196,7 +201,6 @@ public class OrderFragment extends Fragment {
 
        for(int i=0;i<orderList.size();i++)
        {
-
            //In here we are getting user orderList
            MarketOrder order=getOrderLists().get(i);
 
@@ -209,7 +213,6 @@ public class OrderFragment extends Fragment {
 
            //put child value with related parent
            child.put(parent.get(i).getOrderId(), list_data_for_child);
-
 
        }
 
