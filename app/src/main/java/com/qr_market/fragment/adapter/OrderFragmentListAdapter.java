@@ -6,6 +6,7 @@ package com.qr_market.fragment.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.R;
 import com.qr_market.util.MarketOrder;
+import com.qr_market.util.MarketProduct;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -36,24 +38,23 @@ import java.util.Locale;
  */
 public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
 
+    /*
     private HashMap<String,List<MarketOrder>> list_child;
+    public OrderFragmentListAdapter(HashMap<String, List<MarketOrder>> list_child, List<MarketOrder> orderList, Context context) {
+        this.list_child = list_child;
+        //this.orderList=orderList;
+        this.context = context;
+    }
+    */
+
+
+
     private Activity activity;
     private Context context;
     private OrderFragmentListAdapter orderListAdapter;
     private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
+    private List<MarketProduct> orderProductList = null;
     private LayoutInflater inflater;
-
-    public OrderFragmentListAdapter(HashMap<String, List<MarketOrder>> list_child, List<MarketOrder> orderList, Context context) {
-        this.list_child = list_child;
-        this.orderList=orderList;
-        this.context = context;
-
-
-    }
-
-
-
-
     //private ViewHolder viewHolder;
 
     /**
@@ -70,22 +71,48 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
         this.orderListAdapter   = OrderFragmentListAdapter.this;
         this.inflater           = LayoutInflater.from(context);
         this.setOrderList(orderList);
-
-
     }
-
 
     @Override
     public Object getGroup(int groupPosition) {
-
         return this.orderList.get(groupPosition);
     }
 
     @Override
-    public Object getChild(int groupPosition, int childPosititon) {
+    public Object getChild(int groupPosition, int childPosition) {
 
-        //return getOrderList().get(groupPosition);
-        return this.list_child.get(this.orderList.get(groupPosition).getOrderId()).get(childPosititon);
+        if(this.orderList.get(groupPosition).getOrderProductList().size()!=0){
+
+            return this.orderList.get(groupPosition).getOrderProductList().get(childPosition);
+
+        }else{
+
+            // GET PRODUCT LIST FROM SERVER
+            // HTTP CALL
+            MarketProduct myProduct = new MarketProduct();
+            myProduct.setProduct_amount(12);
+            myProduct.setProduct_price("13");
+            return myProduct;
+        }
+
+/*
+        MarketProduct childProduct;
+        try{
+            childProduct = this.orderList.get(groupPosition).getOrderProductList().get(childPosition);
+
+        }catch (NullPointerException err){
+
+            // GET PRODUCT LIST FROM SERVER
+            // HTTP CALL
+            MarketProduct myProduct = new MarketProduct();
+            myProduct.setProduct_amount(12);
+            myProduct.setProduct_price("13");
+            childProduct = myProduct;
+        }
+
+        return childProduct;
+*/
+
     }
 
     @Override
@@ -96,33 +123,29 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        //return getOrderList().size();
-        //return this.list_child.get(this.orderList.get(groupPosition).getOrderId()).size();
-
-        return 1;
-
+        return 5;
+        // return this.orderList.get(groupPosition).getOrderProductList().size();
     }
 
-
-
     @Override
-    public View getChildView(int groupPosition, int childPosititon, boolean b, View view, ViewGroup viewGroup) {
+    public View getChildView(int groupPosition, int childPosition, boolean b, View view, ViewGroup viewGroup) {
 
         //--Here we are getting child values from current position--
-        final MarketOrder childOrderData = (MarketOrder) orderList.get(groupPosition);
+        MarketProduct currentProduct = (MarketProduct)getChild(groupPosition,childPosition);
 
+        //--Here we are getting child view--
         if(view==null){
-            LayoutInflater infalInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            view = infalInflater.inflate(R.layout.order_list_child_layout, null);
+            LayoutInflater layoutInflater = (LayoutInflater) this.context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            view = layoutInflater.inflate(R.layout.order_list_child_layout, null);
         }
-        final TextView product_amount=(TextView)view.findViewById(R.id.ordered_product_amount);
-        final TextView product_date=(TextView)view.findViewById(R.id.order_date);
-        final FontAwesomeText timeIcon = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
-        final TextView market = (TextView) view.findViewById(R.id.order_market_name);
+
+        final TextView product_amount   = (TextView)view.findViewById(R.id.ordered_product_amount);
+        final TextView product_date     = (TextView)view.findViewById(R.id.order_date);
+        final FontAwesomeText timeIcon  = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
 
 
-        //  --Set The child values to the related layout view--
-        market.setText(childOrderData.getOrderId());
+        //--Set The child values to the related layout view--
+        product_amount.setText(""+currentProduct.getProduct_amount());
 
         //Set Time Icon
         timeIcon.setIcon("fa-clock-o");
@@ -131,9 +154,12 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     }
 
 
+
+
+
     @Override
     public int getGroupCount() {
-        return orderList.size();
+        return this.orderList.size();
     }
 
     @Override
@@ -201,5 +227,4 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     public void setOrderList(List<MarketOrder> orderList) {
         this.orderList = orderList;
     }
-
 }

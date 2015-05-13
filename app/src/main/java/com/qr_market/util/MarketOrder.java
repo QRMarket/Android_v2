@@ -24,6 +24,7 @@ public class MarketOrder {
     private String date;
     private String companyName;
     private Address address;
+    private List<MarketProduct> orderProductList = null;
 
 
     /**
@@ -114,5 +115,16 @@ public class MarketOrder {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public List<MarketProduct> getOrderProductList() {
+        if(orderProductList == null) {
+            orderProductList = new ArrayList();
+        }
+        return orderProductList;
+    }
+
+    public void setOrderProductList(List<MarketProduct> orderProductList) {
+        this.orderProductList = orderProductList;
     }
 }

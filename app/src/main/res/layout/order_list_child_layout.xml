@@ -118,7 +118,6 @@
                         android:text="2"
                         style="@style/listViewSecondaryDetail"
                         android:textColor="@color/purple_dark"
-                        android:visibility="invisible"
                         />
                     <TextView
                         android:id="@+id/order_amount_title"

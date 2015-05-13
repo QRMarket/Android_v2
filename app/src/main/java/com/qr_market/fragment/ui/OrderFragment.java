@@ -39,7 +39,7 @@ public class OrderFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-
+    private View view;
 
     private List<MarketOrder> parent;
     private HashMap<String, List<MarketOrder>> child;
@@ -91,26 +91,20 @@ public class OrderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+        // Get View
+        this.view = inflater.inflate(R.layout.fragment_order, container, false);
 
-        // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_order, container, false);
-
-        //Define Listview
-        final ExpandableListView lv=(ExpandableListView)view.findViewById(R.id.order_expandable_list_view);
+        // Get list view
+        final ExpandableListView orderExpandableListView=(ExpandableListView)view.findViewById(R.id.order_expandable_list_view);
 
         View header = getActivity().getLayoutInflater().inflate(R.layout.order_lv_header, null);
-        lv.addHeaderView(header);
-
-        //Prepare Data
-        PrepareDataForExpandableLv();
-
+        orderExpandableListView.addHeaderView(header);
 
         //SET ADAPTER
-        orderAdapter=new OrderFragmentListAdapter(child,parent,getActivity());
-        lv.setAdapter(getOrderAdapter());
+        setOrderAdapter(new OrderFragmentListAdapter(getActivity(), MarketOrder.getOrderListInstance()));
+        orderExpandableListView.setAdapter(getOrderAdapter());
 
         //INITIAL ORDER-LIST REQUEST
         Map parameters;
@@ -120,13 +114,12 @@ public class OrderFragment extends Fragment {
         Map operationInfo = new HashMap();
         operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
         operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-        new HttpHandler( getActivity() , "GETORDERLIST" , getOrderAdapter()).execute(operationInfo, parameters);
+        new HttpHandler( getActivity() , "GETORDERLIST" , getOrderAdapter()).execute( operationInfo , parameters);
 
 
         // Refresh page
         final FontAwesomeText orderRefresh = (FontAwesomeText)view.findViewById(R.id.order_lv_refresh);
         orderRefresh.setIcon("fa-refresh");
-
         orderRefresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -150,24 +143,22 @@ public class OrderFragment extends Fragment {
         });
 
 
-
-
-     //-----Listenere Events-----
-        lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        //-----Listener Events-----
+        orderExpandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
             @Override
             public void onGroupExpand(int groupPosition) {
                 Log.i(TAG, "Group " + groupPosition + " expanded.");
                 Toast.makeText(getActivity(), "Group clicked..", Toast.LENGTH_LONG).show();
             }
         });
-        lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+        orderExpandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
             @Override
             public void onGroupCollapse(int groupPosition) {
                 Log.i(TAG, "Group " + groupPosition + " collapsed.");
                 Toast.makeText(getActivity(), "Group collapsed..", Toast.LENGTH_LONG).show();
             }
         });
-        lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+        orderExpandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
             @Override
             public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
                 Log.i(TAG, "item " + childPosition + " of group " + groupPosition + " clicked.");
@@ -175,6 +166,7 @@ public class OrderFragment extends Fragment {
                 return false;
             }
         });
+
 
         return view;
     }
