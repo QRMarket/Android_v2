@@ -13,10 +13,12 @@ import android.widget.Toast;
 
 import com.beardedhen.androidbootstrap.BootstrapButton;
 import com.beardedhen.androidbootstrap.BootstrapEditText;
+import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -91,6 +93,7 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         permissionList.add("email");
         permissionList.add("user_about_me");
         permissionList.add("public_profile");
+        permissionList.add("user_photos");
 
         LoginButton facebookLoginButton = (LoginButton) this.findViewById(R.id.facebook_login_button);
 
@@ -99,14 +102,16 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         // facebookLoginButton.setFragment(this);
 
 
-        //LoginManager.getInstance().logInWithReadPermissions(this, permissionList);
-
         // Callback registration
         facebookLoginButton.registerCallback( callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                Toast.makeText(getApplicationContext(),"Facebook login success ",Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(),"Facebook login success " + AccessToken.getCurrentAccessToken().getUserId(),Toast.LENGTH_LONG).show();
                 Log.i("AAAAAAAAAAAAAA","AAAAAAAAAAAAAA");
+
+                //Intent intent = new Intent( getApplicationContext() , MarketActivity.class);
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                //startActivity(intent);
             }
 
             @Override

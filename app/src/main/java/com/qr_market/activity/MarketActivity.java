@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.adapter.NavigationAdapter;
