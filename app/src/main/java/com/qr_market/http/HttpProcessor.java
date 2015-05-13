@@ -16,7 +16,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.Guppy;
 import com.qr_market.R;
@@ -39,6 +38,7 @@ import com.qr_market.util.MarketUserAddress;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -376,6 +376,7 @@ public class HttpProcessor {
      *
      * This function is used to handle "getOrderList" RESPONSES
      *
+     * @param myOrderAdapter
      */
     public boolean getOrderList(OrderFragmentListAdapter myOrderAdapter){
         boolean operationResultSuccess = false;
@@ -397,7 +398,6 @@ public class HttpProcessor {
                     marketOrder.setPaymentType(singleOrder.getString("paymentType"));
                     marketOrder.setNote(singleOrder.getString("note"));
                     marketOrder.setDate(singleOrder.getString("date"));
-
 
                     // GET Address of Order
                     Address address = new Address();

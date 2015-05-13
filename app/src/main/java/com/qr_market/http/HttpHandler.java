@@ -1,15 +1,20 @@
 package com.qr_market.http;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import com.qr_market.Guppy;
+import com.qr_market.activity.LoginActivity;
+import com.qr_market.activity.MainActivity;
+import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
+import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
+import com.qr_market.util.MarketUser;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -24,42 +29,15 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.qr_market.Guppy;
-import com.qr_market.R;
-import com.qr_market.activity.LoginActivity;
-import com.qr_market.activity.MainActivity;
-import com.qr_market.activity.MarketActivity;
-import com.qr_market.async.ImageHandler;
-import com.qr_market.checker.Checker;
-import com.qr_market.db.DBHandler;
-import com.qr_market.db.contract.GuppyContract;
-import com.qr_market.fragment.adapter.BasketFragmentListAdapter;
-import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
-import com.qr_market.fragment.ui.BarcodeFragment;
-import com.qr_market.fragment.ui.CartFragment;
-import com.qr_market.util.MarketProduct;
-import com.qr_market.util.MarketUser;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 
 /**

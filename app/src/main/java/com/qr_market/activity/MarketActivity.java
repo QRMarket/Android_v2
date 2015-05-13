@@ -28,7 +28,6 @@ import com.qr_market.db.DBHandler;
 import com.qr_market.fragment.ui.BarcodeFragment;
 import com.qr_market.fragment.ui.BasketFragment;
 import com.qr_market.fragment.ui.CartFragment;
-import com.qr_market.fragment.ui.ExpandableFragment;
 import com.qr_market.fragment.ui.OrderFragment;
 import com.qr_market.fragment.ui.PaymentFragment;
 import com.qr_market.fragment.ui.PaymentResultFragment;
@@ -301,7 +300,7 @@ public class MarketActivity extends ActionBarActivity implements ViewPagerFragme
                 break;
             case 3:
                 Toast.makeText(getApplicationContext(), "Önceki Siparişlerim called", Toast.LENGTH_SHORT).show();
-                fragmentManager.beginTransaction().replace(R.id.content_frame, ExpandableFragment.newInstance("", "")).commit();
+                fragmentManager.beginTransaction().replace(R.id.content_frame, OrderFragment.newInstance("", "")).commit();
                 break;
 
             default:

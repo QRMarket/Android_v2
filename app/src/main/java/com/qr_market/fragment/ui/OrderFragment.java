@@ -1,48 +1,54 @@
 package com.qr_market.fragment.ui;
 
-import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ListView;
+import android.widget.ExpandableListView;
 import android.widget.Toast;
-
 import com.beardedhen.androidbootstrap.FontAwesomeText;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.fragment.adapter.OrderFragmentListAdapter;
 import com.qr_market.http.HttpHandler;
 import com.qr_market.util.MarketOrder;
-
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * @author Kemal Sami KARACA
- * @since 26.04.2015
- * @version v1.01
- *
- * @description
- *      This fragment holds list of user orders
- *
- * @last 26.04.2015
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link OrderFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link OrderFragment#newInstance} factory method to
+ * create an instance of this fragment.
  */
 public class OrderFragment extends Fragment {
-
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
+
+
+    private List<MarketOrder> parent;
+    private HashMap<String, List<MarketOrder>> child;
+
+    private final String TAG = "ExpAdapter";
     private OnFragmentInteractionListener mListener;
     private OrderFragmentListAdapter orderAdapter;
-
-    private View view;
+    private List<MarketOrder> orderList = MarketOrder.getOrderListInstance();
 
     /**
      * Use this factory method to create a new instance of
@@ -52,6 +58,7 @@ public class OrderFragment extends Fragment {
      * @param param2 Parameter 2.
      * @return A new instance of fragment OrderFragment.
      */
+    // TODO: Rename and change types and number of parameters
     public static OrderFragment newInstance(String param1, String param2) {
         OrderFragment fragment = new OrderFragment();
         Bundle args = new Bundle();
@@ -61,18 +68,12 @@ public class OrderFragment extends Fragment {
         return fragment;
     }
 
+
     public OrderFragment() {
         // Required empty public constructor
     }
 
 
-    /**
-     ***********************************************************************************************
-     ***********************************************************************************************
-     *                              ENCAPSULATION
-     ***********************************************************************************************
-     ***********************************************************************************************
-     */
     public OrderFragmentListAdapter getOrderAdapter() {
         return orderAdapter;
     }
@@ -81,13 +82,6 @@ public class OrderFragment extends Fragment {
         this.orderAdapter = orderAdapter;
     }
 
-    /**
-     ***********************************************************************************************
-     ***********************************************************************************************
-     *                              OVERRIDE METHODS
-     ***********************************************************************************************
-     ***********************************************************************************************
-     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,18 +92,26 @@ public class OrderFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
 
-        this.view = inflater.inflate(R.layout.fragment_order, container, false);
 
-        // Get list view
-        final ListView orderListView  = (ListView) view.findViewById(R.id.order_list_view);
+        // Inflate the layout for this fragment
+        View view= inflater.inflate(R.layout.fragment_order, container, false);
+
+        //Define Listview
+        final ExpandableListView lv=(ExpandableListView)view.findViewById(R.id.lvExp);
+
         View header = getActivity().getLayoutInflater().inflate(R.layout.order_lv_header, null);
-        orderListView.addHeaderView(header);
+        lv.addHeaderView(header);
+
+        //Prepare Data
+        PrepareDataForExpandableLv();
+
 
         //SET ADAPTER
-        setOrderAdapter(new OrderFragmentListAdapter(getActivity(), MarketOrder.getOrderListInstance()));
-        orderListView.setAdapter(getOrderAdapter());
+        orderAdapter=new OrderFragmentListAdapter(child,parent,getActivity());
+        lv.setAdapter(orderAdapter);
 
         //INITIAL ORDER-LIST REQUEST
         Map parameters;
@@ -119,8 +121,7 @@ public class OrderFragment extends Fragment {
         Map operationInfo = new HashMap();
         operationInfo.put(Guppy.http_Map_OP_TYPE, HttpHandler.HTTP_OP_NORMAL);
         operationInfo.put(Guppy.http_Map_OP_URL, Guppy.url_Servlet_Order);
-        new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute( operationInfo , parameters);
-
+        new HttpHandler( getActivity() , "GETORDERLIST" , orderAdapter).execute(operationInfo, parameters);
 
 
         // Refresh page
@@ -150,7 +151,75 @@ public class OrderFragment extends Fragment {
         });
 
 
+
+
+     //-----Listenere Events-----
+        lv.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+            @Override
+            public void onGroupExpand(int groupPosition) {
+                Log.i(TAG, "Group " + groupPosition + " expanded.");
+                Toast.makeText(getActivity(), "Group clicked..", Toast.LENGTH_LONG).show();
+            }
+        });
+        lv.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
+            @Override
+            public void onGroupCollapse(int groupPosition) {
+                Log.i(TAG, "Group " + groupPosition + " collapsed.");
+                Toast.makeText(getActivity(), "Group collapsed..", Toast.LENGTH_LONG).show();
+            }
+        });
+        lv.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
+            @Override
+            public boolean onChildClick(ExpandableListView parent, View v, int groupPosition, int childPosition, long id) {
+                Log.i(TAG, "item " + childPosition + " of group " + groupPosition + " clicked.");
+                Toast.makeText(getActivity(), "Child Clikc..", Toast.LENGTH_LONG).show();
+                return false;
+            }
+        });
+
         return view;
+    }
+
+
+
+
+
+
+
+   public void PrepareDataForExpandableLv(){
+       //Parent for ExpandableLv
+        parent=new ArrayList<>();
+
+       //Child of Parent for ExpandableLv
+        child = new HashMap<>();
+
+
+       for(int i=0;i<orderList.size();i++)
+       {
+
+           //In here we are getting user orderList
+           MarketOrder order=getOrderLists().get(i);
+
+           //and then we add taken order to parent of ExpandableLv
+           parent.add(order);
+
+           //We are define child data for order and set this child datas to Child in ExpandableLv with related Parent
+           List<MarketOrder>list_data_for_child=new ArrayList<>();
+           list_data_for_child.add(order);
+
+           //put child value with related parent
+           child.put(parent.get(i).getCompanyName(), list_data_for_child);
+
+
+       }
+
+
+
+   }
+
+
+    public List<MarketOrder> getOrderLists() {
+        return orderList;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -160,16 +229,6 @@ public class OrderFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        try {
-            mListener = (OnFragmentInteractionListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
 
     @Override
     public void onDetach() {
