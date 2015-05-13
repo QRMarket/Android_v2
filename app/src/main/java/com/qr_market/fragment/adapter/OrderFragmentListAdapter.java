@@ -44,7 +44,7 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     public Object getGroup(int groupPosition) {
 
 
-        return this.list_parent.get(groupPosition).getCompanyName();
+        return this.list_parent.get(groupPosition).getOrderId();
 
     }
 
@@ -53,7 +53,7 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     public Object getChild(int groupPosition, int childPosititon) {
 
 
-        return list_child.get(list_parent.get(groupPosition).getCompanyName()).get(childPosititon);
+        return list_child.get(list_parent.get(groupPosition).getOrderId()).get(childPosititon);
 
     }
 
@@ -67,7 +67,7 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        return this.list_child.get(this.list_parent.get(groupPosition).getCompanyName()).size();
+        return this.list_child.get(this.list_parent.get(groupPosition).getOrderId()).size();
     }
 
 

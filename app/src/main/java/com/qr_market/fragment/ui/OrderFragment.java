@@ -208,7 +208,7 @@ public class OrderFragment extends Fragment {
            list_data_for_child.add(order);
 
            //put child value with related parent
-           child.put(parent.get(i).getCompanyName(), list_data_for_child);
+           child.put(parent.get(i).getOrderId(), list_data_for_child);
 
 
        }
