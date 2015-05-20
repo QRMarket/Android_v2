@@ -9,20 +9,20 @@
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-
+        android:layout_gravity="center_horizontal"
         android:gravity="center_horizontal"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="150dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/payment_result_status"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/bbutton_success_pressed"
             android:textStyle="bold"
             android:textSize="18dp"
             android:text="@string/PaymentStatusTxt"/>
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/payment_result_text"
             android:textColor="@color/bbutton_success"
