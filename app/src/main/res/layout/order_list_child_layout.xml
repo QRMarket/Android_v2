@@ -12,62 +12,36 @@
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="@dimen/lvDividerHeight"
-        android:background="@color/purple_light"/>
-
-
+        android:background="@color/gray_line"/>
 
 
     <TextView
-        style="@style/listViewPrimaryDetail"
-        android:textIsSelectable="false"
-        android:id="@+id/order_item_title"
-        android:textColor="@color/gray_line"
+        android:id="@+id/order_product_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        style="@style/listViewPrimaryDetail"
+        android:layout_marginTop="50dp"
         android:layout_alignParentTop="true"
-        android:singleLine="true"
-        android:layout_gravity="left"
-        />
-
-
-
-    <TextView
-        android:textIsSelectable="false"
-        android:id="@+id/order_market_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/order_item_title"
-        style="@style/listViewPrimaryDetail"
-        android:textColor="@color/bbutton_success"
-        android:text="Migros"
-        android:textSize="@dimen/lvPrimaryTextSize"
-        android:singleLine="true"
-        android:layout_gravity="left"
-        />
-
-
-    <TextView
-        android:id="@+id/order_market_city"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/listViewPrimaryDetail"
-        android:layout_below="@id/order_market_name"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="@dimen/lvSecondaryTextSize"
-        android:text="Ankara"
+        android:text="Coco-Cola 2.5 L"
         android:singleLine="true"
         android:layout_gravity="left"
         />
     <TextView
         android:textIsSelectable="false"
-        android:id="@+id/ordered_market_adress"
+        android:id="@+id/order_product_list_sample"
         style="@style/listViewSecondaryDetail"
-        android:layout_below="@id/order_market_city"
+        android:textStyle="bold"
+        android:layout_marginLeft="40dp"
+        android:layout_below="@id/order_product_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/gray"
+        android:textColor="@color/black"
         android:textSize="@dimen/lvSecondaryTextSize"
-        android:text="Bahçelievler 7.cadde"
+        android:text="Olips Nane"
         android:singleLine="true"
         android:layout_gravity="left"
         />
@@ -76,63 +50,69 @@
         android:layout_width="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="5dp"
-        android:layout_below="@+id/ordered_market_adress"
-        android:layout_height="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/order_product_list_sample"
+        android:layout_height="1dp"
         android:background="@color/lvDividerColor"
         />
 
 
-            <com.beardedhen.androidbootstrap.FontAwesomeText
-                android:id="@+id/order_time_icon"
+                <TextView
+                android:id="@+id/order_price_title"
+                    android:layout_below="@+id/order_button_separator"
                 android:layout_width="wrap_content"
                 style="@style/listViewSecondaryDetail"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:layout_below="@+id/order_button_separator"
-                android:textSize="24sp"
+                    android:text="@string/totPrice"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="70dp"
+
                 android:textColor="@color/purple_light"
                 />
 
                 <TextView
-                    android:id="@+id/order_date"
+                    android:id="@+id/order_price"
                     android:layout_width="wrap_content"
-                    android:layout_toRightOf="@+id/order_time_icon"
+                    android:layout_toRightOf="@+id/order_price_title"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:textColor="@color/black"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/gray"
+                    android:textStyle="bold"
                     style="@style/listViewSecondaryDetail"
                     android:layout_marginLeft="10dp"
                     android:layout_below="@+id/order_button_separator"
-                    android:text="12 Nisan 2015"
+                    android:text="7 TL"
                     />
 
                     <TextView
-                        android:id="@+id/ordered_product_amount"
-                        android:layout_below="@id/order_button_separator"
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="30dp"
-                        android:layout_height="wrap_content"
-                        android:text="2"
-                        style="@style/listViewSecondaryDetail"
-                        android:textColor="@color/purple_dark"
-                        />
-                    <TextView
-                        android:id="@+id/order_amount_title"
+                        android:id="@+id/ordered_amount_title"
+                        android:layout_toRightOf="@id/order_price"
                         android:layout_below="@+id/order_button_separator"
                         android:layout_width="wrap_content"
-                        android:layout_toLeftOf="@id/ordered_product_amount"
                         style="@style/listViewSecondaryDetail"
                         android:layout_height="wrap_content"
+                        android:text="@string/productAmountTitle"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:textColor="@color/purple_light"
+                        />
+                    <TextView
+                        android:id="@+id/ordered_product_amount"
+                        android:layout_toRightOf="@+id/ordered_amount_title"
+                        android:layout_below="@+id/order_button_separator"
+                        android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        style="@style/listViewSecondaryDetail"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:textStyle="bold"
                         android:text="Adet :"
                         android:textColor="@color/gray"
-                        android:visibility="invisible"
+
                         />
 
                     <TextView
-                        android:id="@+id/order_price"
+                        android:id="@+id/order_date"
                         android:layout_below="@id/ordered_product_amount"
                         android:layout_width="wrap_content"
                         android:layout_alignParentRight="true"
@@ -147,17 +127,38 @@
 
 
 
+<LinearLayout
+    android:id="@+id/bootstrapButtonsLayout"
+    android:layout_below="@id/order_price_title"
+    android:layout_alignParentRight="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:paddingBottom="30dp"
+    android:paddingTop="10dp"
+    android:orientation="horizontal">
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/rateBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="5dp"
+        bootstrap:bb_icon_left="fa-flag"
+        android:text="@string/rate"
+        bootstrap:bb_type="default"/>
+    <com.beardedhen.androidbootstrap.BootstrapButton
+        android:id="@+id/ReOrderBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        bootstrap:bb_icon_left="fa-repeat"
+        android:text="@string/reorder_btn"
+        bootstrap:bb_type="success"/>
 
-             <com.beardedhen.androidbootstrap.BootstrapButton
-             android:id="@+id/ReOrderBtn"
-             android:layout_width="wrap_content"
-             android:layout_alignParentRight="true"
-             android:layout_height="wrap_content"
-             android:layout_marginRight="20dp"
-             android:layout_centerVertical="true"
-             android:layout_below="@+id/order_button_separator"
-             android:text="@string/reorder_btn"
-             bootstrap:bb_type="success"/>
+
+</LinearLayout>
 
 
 

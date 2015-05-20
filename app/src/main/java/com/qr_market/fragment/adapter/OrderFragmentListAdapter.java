@@ -6,7 +6,6 @@ package com.qr_market.fragment.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +19,6 @@ import com.qr_market.util.MarketProduct;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -123,7 +121,7 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
     @Override
     public int getChildrenCount(int groupPosition) {
 
-        return 5;
+        return 1;
         // return this.orderList.get(groupPosition).getOrderProductList().size();
     }
 
@@ -141,14 +139,14 @@ public class OrderFragmentListAdapter extends BaseExpandableListAdapter {
 
         final TextView product_amount   = (TextView)view.findViewById(R.id.ordered_product_amount);
         final TextView product_date     = (TextView)view.findViewById(R.id.order_date);
-        final FontAwesomeText timeIcon  = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
+       // final FontAwesomeText timeIcon  = (FontAwesomeText) view.findViewById(R.id.order_time_icon);
 
 
         //--Set The child values to the related layout view--
         product_amount.setText(""+currentProduct.getProduct_amount());
 
         //Set Time Icon
-        timeIcon.setIcon("fa-clock-o");
+        //timeIcon.setIcon("fa-clock-o");
 
         return view;
     }

@@ -48,5 +48,8 @@
     <string name="reorder_btn">Siparişi Tekrarla</string>
     <string name="empty_basket_txt">Sepetiniz Şu Anda Boş Gözüküyor..</string>
     <string name="add_new_product_to_basket">Yeni bir barkod tarayarak veya eski siparişlerinizi tekrarlayarak, sepetinize yeni bir ürün ekleye bilirsiniz.</string>
+    <string name="totPrice">Toplam Fiyat</string>
+    <string name="productAmountTitle">Ürün Sayısı</string>
+    <string name="rate">Puanla</string>
 
 </resources>
