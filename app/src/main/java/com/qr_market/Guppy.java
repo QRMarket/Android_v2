@@ -28,6 +28,14 @@ public class Guppy {
 
 
 
+    public static boolean checkInternetConnection(Context context){
+        ConnectivityManager con=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nf=con.getActiveNetworkInfo();
+        if(con.getActiveNetworkInfo()==null || !nf.isConnected()){
+            return false;
+        }
+        return true;
+    }
 
 
 

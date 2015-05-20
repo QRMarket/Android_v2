@@ -2,8 +2,6 @@ package com.qr_market.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -62,7 +60,7 @@ public class MainActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
 
        //Check Internet Connection
-        internetConnection=checkInternetConnection(this);
+        internetConnection=Guppy.checkInternetConnection(this);
 
         if(!internetConnection){
             setContentView(R.layout.need_network);
@@ -127,14 +125,5 @@ public class MainActivity extends ActionBarActivity{
         return super.onOptionsItemSelected(item);
 
     }
-    public static boolean checkInternetConnection(Context context){
-        ConnectivityManager con=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo nf=con.getActiveNetworkInfo();
-        if(con.getActiveNetworkInfo()==null || !nf.isConnected()){
-            return false;
-        }
-        return true;
-    }
-
 
 }
