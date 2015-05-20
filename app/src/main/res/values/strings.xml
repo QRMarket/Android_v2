@@ -51,5 +51,6 @@
     <string name="totPrice">Toplam Fiyat</string>
     <string name="productAmountTitle">Ürün Sayısı</string>
     <string name="rate">Puanla</string>
+    <string name="networkconnectionerrormessage">Ağ bağlantısı yok gibi. Lütfen WiFi noktası bulmayı deneyin  veya cihazınızın internet ayarlarına gözatın.</string>
 
 </resources>

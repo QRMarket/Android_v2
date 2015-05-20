@@ -57,18 +57,17 @@
         />
 
 
-                <TextView
-                android:id="@+id/order_price_title"
+                    <TextView
+                    android:id="@+id/order_price_title"
                     android:layout_below="@+id/order_button_separator"
-                android:layout_width="wrap_content"
-                style="@style/listViewSecondaryDetail"
-                android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    style="@style/listViewSecondaryDetail"
+                    android:layout_height="wrap_content"
                     android:text="@string/totPrice"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="70dp"
-
-                android:textColor="@color/purple_light"
-                />
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="70dp"
+                    android:textColor="@color/purple_light"
+                     />
 
                 <TextView
                     android:id="@+id/order_price"

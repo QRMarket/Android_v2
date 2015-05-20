@@ -1,46 +1,23 @@
 package com.qr_market.activity;
 
-import android.app.Activity;
-import android.app.ProgressDialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.AlarmClock;
-import android.service.textservice.SpellCheckerService;
-import android.support.v7.app.ActionBarActivity;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
 import com.qr_market.Guppy;
 import com.qr_market.R;
 import com.qr_market.checker.Checker;
+import com.qr_market.http.HttpHandler;
 import com.qr_market.util.AutoOperationHandler;
 import com.qr_market.util.MarketUser;
-import com.qr_market.db.DBHandler;
-import com.qr_market.db.contract.GuppyContract;
-import com.qr_market.http.HttpHandler;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -53,6 +30,8 @@ public class MainActivity extends ActionBarActivity{
 
     private static View view;
     private static Context mainContext = null;
+
+    public static boolean internetConnection=true;
 
     public static Context getMainContext() {
         return mainContext;
@@ -82,7 +61,16 @@ public class MainActivity extends ActionBarActivity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+       //Check Internet Connection
+        internetConnection=checkInternetConnection(this);
+
+        if(!internetConnection){
+            setContentView(R.layout.need_network);
+            return;
+        }else {
+            setContentView(R.layout.activity_main);
+        }
+
         getSupportActionBar().hide();
         mainContext = getApplicationContext();
 
@@ -138,6 +126,14 @@ public class MainActivity extends ActionBarActivity{
 
         return super.onOptionsItemSelected(item);
 
+    }
+    public static boolean checkInternetConnection(Context context){
+        ConnectivityManager con=(ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo nf=con.getActiveNetworkInfo();
+        if(con.getActiveNetworkInfo()==null || !nf.isConnected()){
+            return false;
+        }
+        return true;
     }
 
 

@@ -18,7 +18,6 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
-import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
@@ -72,7 +71,9 @@ public class LoginActivity extends ActionBarActivity implements View.OnClickList
         FacebookSdk.sdkInitialize(getApplicationContext());
         callbackManager = CallbackManager.Factory.create();
 
-        setContentView(R.layout.activity_login);
+       setContentView(R.layout.activity_login);
+
+
 
         final DBHandler dbHelper = new DBHandler(getApplicationContext());
 

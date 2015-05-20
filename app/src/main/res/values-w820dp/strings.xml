@@ -8,4 +8,5 @@
     <string name="add_new_product_to_basket">Yeni bir barkod tarayarak veya eski siparişlerinizi tekrarlayarak, sepetinize yeni bir ürün ekleye bilirsiniz.</string>
     <string name="totPrice">Toplam Fiyat</string>
     <string name="rate">Puanla</string>
+    <string name="networkconnectionerrormessage">Ağ bağlantısı yok gibi. Lütfen WiFi noktası bulmayı deneyin  veya cihazınızın internet ayarlarına gözatın.</string>
 </resources>

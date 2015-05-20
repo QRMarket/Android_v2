@@ -1,5 +1,9 @@
 package com.qr_market;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 /**
  * @author Kemal Sami KARACA
  * @since 05.03.2015
@@ -23,4 +27,9 @@ public class Guppy {
     public static String http_Map_OP_URL    = "opUrl";
 
 
+
+
+
+
 }
+
