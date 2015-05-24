@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.qr_market" >
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.qr_market">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,7 +22,7 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,29 +31,27 @@
         </activity>
         <activity
             android:name=".activity.MarketActivity"
-            android:label="@string/title_activity_market" >
-        </activity>
+            android:label="@string/title_activity_market"></activity>
         <activity
             android:name=".activity.LoginActivity"
-            android:label="@string/title_activity_login" >
-        </activity>
+            android:label="@string/title_activity_login"></activity>
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar"
-            android:label="@string/app_name">
-        </activity>
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"></activity>
 
 
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebookApplicationID" />
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebookApplicationID"/>
-
-        <provider android:authorities="com.facebook.app.FacebookContentProvider813393702062735"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider813393702062735"
             android:exported="true" />
 
     </application>
-
 
 
 </manifest>

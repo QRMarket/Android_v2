@@ -1,7 +1,8 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".MainActivity"
     style="@style/listViewItem"
     android:background="@android:drawable/list_selector_background"
@@ -18,7 +19,7 @@
         style="@style/listViewItemButtonStyle"
         android:background="@android:drawable/list_selector_background"
         android:src="@android:drawable/checkbox_off_background"
-        android:id="@+id/button"
+        android:id="@+id/selectedAdress"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:clickable="true"
@@ -29,12 +30,12 @@
         android:id="@+id/vertical_divider"
         style="@style/listViewVerticalDivider"
         android:layout_height="fill_parent"
-        android:layout_toLeftOf="@id/button"
+        android:layout_toLeftOf="@id/selectedAdress"
         />
 
     <TextView
         android:textIsSelectable="false"
-        android:id="@+id/lv_item_header"
+        android:id="@+id/user_city"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -47,14 +48,11 @@
 
     <TextView
         android:textIsSelectable="false"
-        android:id="@+id/lv_item_subtext"
+        android:id="@+id/user_adress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/lv_item_header"
+        android:layout_below="@id/user_city"
         style="@style/listViewSecondaryDetail"
-        android:layout_above="@id/item_separator"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/vertical_divider"
         android:ellipsize="marquee"
         android:singleLine="true"
         />

@@ -1,23 +1,20 @@
 package com.qr_market.fragment.ui;
 
 import android.app.Activity;
-import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.qr_market.R;
-import com.qr_market.util.Address;
+import com.qr_market.fragment.adapter.AdressFragmentListAdapter;
+import com.qr_market.util.MarketUser;
+import com.qr_market.util.MarketUserAddress;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,8 +25,8 @@ public class ProfileAddressFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private MyListAdapter mAdapter;
-    private List<Address> list =new ArrayList<Address>();
+    private AdressFragmentListAdapter mAdapter;
+    private List<MarketUserAddress> list = MarketUser.getAddressList();
 
     private OnFragmentInteractionListener mListener;
 
@@ -69,23 +66,21 @@ public class ProfileAddressFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_profile_address, container, false);
 
+        // Initialize Listview
+        final ListView lv = (ListView) view.findViewById(R.id.listView1);
 
-                Address item1=new Address();
-                item1.setCity("Ankara");
-                item1.setLocality("Emek");
-                item1.setBorough("Cankaya");
-                list.add(item1);
+        //Layout For header
+        View header = getActivity().getLayoutInflater().inflate(R.layout.address_lv_header, null);
+        lv.addHeaderView(header);
 
-                // Get the ListView by Id and Get Data using Adapter
-                final ListView lv = (ListView)view.findViewById(R.id.listView1);
+        //Initialize adapter and set adapter to listview
+        mAdapter=new AdressFragmentListAdapter(getActivity(),list);
+        lv.setAdapter(mAdapter);
 
 
-                View footer=getActivity().getLayoutInflater().inflate(R.layout.address_lv_footer,null);
-                Button LvGoBtn=(Button) footer.findViewById(R.id.AddAdress);
-                LvGoBtn.setEnabled(true);
-                lv.addFooterView(footer);
-                lv.setAdapter(new MyListAdapter(getActivity(),list));
-                view.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT ));
+        if(lv.getCount()==0){
+            Toast.makeText(getActivity(),"No Data in list",Toast.LENGTH_LONG).show();
+        }
 
         return view;
     }
@@ -126,88 +121,6 @@ public class ProfileAddressFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         public void onFragmentInteraction(Uri uri);
-    }
-
-
-
-    //**********************LV ADAPTER**************************************
-    private class MyListAdapter extends BaseAdapter {
-
-        ViewHolder viewHolder;
-        List<Address> list = new ArrayList<Address>();
-
-        public MyListAdapter(Context context, List<Address> list) {
-            mContext = context;
-        }
-
-
-        @Override
-
-        public boolean areAllItemsEnabled() {
-            return true;
-        }
-
-        @Override
-        public boolean isEnabled(int position) {
-            return true;
-        }
-
-        @Override
-        public int getCount() {
-            return list.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return list.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-
-        @Override
-        public View getView(final int position, View convertView, ViewGroup parent) {
-
-            View adapterView = convertView;
-
-            viewHolder = new ViewHolder();
-            if(convertView == null) {
-
-                LayoutInflater inflater;
-
-                inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                adapterView = inflater.inflate(R.layout.address_layout_style, null);
-
-
-                viewHolder.city = (TextView)adapterView.findViewById(R.id.lv_item_header);
-                viewHolder.borough  = (TextView)adapterView.findViewById(R.id.lv_item_subtext);
-                adapterView.setTag(viewHolder);
-            }
-            else{
-                viewHolder = (ViewHolder)convertView.getTag();
-            }
-
-
-            final String city = list.get(position).getCity();
-            final String borough = list.get(position).getBorough();
-
-            viewHolder.city.setText(city);
-            viewHolder.borough.setText(borough);
-
-
-            return adapterView;
-        }
-
-        public class ViewHolder {
-            TextView city;
-            TextView borough;
-
-        }
-
-        private final Context mContext;
     }
 
 
